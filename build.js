@@ -27,7 +27,7 @@ async function transpileTS() {
 
 // Função para processar HTML
 async function processHTML() {
- const htmlPath = path.join(srcDir, 'index.html');
+    const htmlPath = path.join(srcDir, 'index.html');
     let htmlContent = await fs.promises.readFile(htmlPath, 'utf8');
 
     // Carrega o conteúdo HTML com Cheerio
@@ -36,17 +36,34 @@ async function processHTML() {
     // Substitui as tags <comp>
     const components = $('comp');
     for (let i = 0; i < components.length; i++) {
-        const src = $(components[i]).attr('src');
+        const comp = $(components[i]);
+        const src = comp.attr('src');
+
         if (src) {
             const componentPath = path.join(srcDir, src);
             const componentContent = await fs.promises.readFile(componentPath, 'utf8');
-            $(components[i]).replaceWith(componentContent); // Substitui a tag <comp> pelo conteúdo
+            
+            // Cria um novo elemento usando o conteúdo do componente
+            const newElement = $(componentContent);
+
+            // Copia todos os atributos, exceto o src
+            comp.each((_, el) => {
+                const attributes = el.attributes;
+                for (let j = 0; j < attributes.length; j++) {
+                    const attrName = attributes[j].name;
+                    if (attrName !== 'src') {
+                        newElement.attr(attrName, attributes[j].value);
+                    }
+                }
+            });
+
+            // Substitui a tag <comp> pelo novo conteúdo
+            comp.replaceWith(newElement);
         }
     }
 
     // Salva o HTML modificado
-    await fs.promises.writeFile(path.join(buildDir, 'index.html'), $.html());
-}
+    await fs.promises.writeFile(path.join(buildDir, 'index.html'), $.html());}
 
 // Função principal
 async function main() {
