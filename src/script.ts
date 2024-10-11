@@ -1,3 +1,2 @@
-const message: string = "Hello, PAB!";
-console.log(message);
+console.log("Script TypeScript executado!");
 
