@@ -3,62 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Projeto PAB</title>
+    <link rel="stylesheet" href="./styles.css" media="all">
 </head>
 <body style="margin:0;">
     <div style="width: 100vw; height: 100vh;">
-        <div style="width: 100vw; height: 48px; display: flex;">
-            <div style="width: 240px; height: 100%; display: flex; align-items: center;">
-                <comp src="./components/button.html">
-                    <comp src="./components/icons/menu.html"></comp>
-                </comp>
-                <comp src="./components/button.html" style="width: 100%; display: flex; height: 100%; align-items: center; padding: 12px;">
-                    <h3 style="margin: 0; padding: 0 12px; flex-grow: 1;">Projet Name</h3>
-                    <comp src="./components/icons/arrow_down.html"></comp>
-                </comp>
-            </div>
-            <div style="height: 100%; display: flex; flex-grow: 1;">
-                <comp src="./components/button.html">
-                    <comp src="./components/icons/frame.html"></comp>
-                    <comp src="./components/icons/arrow_down_16.html"></comp>
-                </comp>
-                <comp src="./components/button.html">
-                    <comp src="./components/icons/move.html"></comp>
-                </comp>
-                <comp src="./components/button.html">
-                    <comp src="./components/icons/zoom_in.html"></comp>
-                </comp>
-                <comp src="./components/button.html">
-                    <comp src="./components/icons/plugins.html"></comp>
-                </comp>
-            </div>
-            <div style="width: 240px; height: 100%; display: flex; align-items: center;">
-                <h3 style="margin: 0; padding: 0 12px; width: 186px;">Username</h3>
-            </div>
-        </div>
+        <comp src="./components/topbar.html"></comp>
         <div style="width: 100vw; height: 100%; display: flex;">
-            <comp src="./components/side_bar.html">
-                <div style="display: flex;">
-                    <comp src="./components/button.html">Html</comp>
-                    <comp src="./components/button.html">Css</comp>
-                    <comp src="./components/button.html">Js</comp>
-                    <comp src="./components/button.html">Assets</comp>
-                </div>
-                <hr style="width: 100%; margin: 0;">
-            </comp>
+            <comp src="./components/side_bar_left.html"></comp>
             <div style="flex-grow: 1; height: 100%;">
-
             </div>
-            <comp src="./components/side_bar.html">
-                <div style="display: flex;">
-                    <comp src="./components/button.html">Design</comp>
-                    <comp src="./components/button.html">Prototype</comp>
-                </div>
-                <hr style="width: 100%; margin: 0;">
-            </comp>
+            <comp src="./components/side_bar_right.html"></comp>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
 

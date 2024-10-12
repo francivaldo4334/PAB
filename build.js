@@ -6,7 +6,19 @@ const srcDir = path.join(__dirname, 'src');
 const buildDir = path.join(__dirname, 'build');
 
 async function copyStyles() {
-    await fs.promises.copyFile(path.join(srcDir, 'styles.css'), path.join(buildDir, 'styles.css'));
+    try {
+        const files = await fs.promises.readdir(srcDir);
+        const cssFiles = files.filter(file => path.extname(file) === '.css');
+        await Promise.all(cssFiles.map(file => 
+            fs.promises.copyFile(
+                path.join(srcDir, file), 
+                path.join(buildDir, file)
+            )
+        ));
+        console.log('Todos os arquivos CSS foram copiados com sucesso!');
+    } catch (error) {
+        console.error('Erro ao copiar os arquivos CSS:', error);
+    }
 }
 
 async function transpileTS() {
@@ -22,24 +34,38 @@ async function transpileTS() {
     });
 }
 
+async function replaceAttributes(element, newElement) {
+    element.each((_, el) => {
+        const attributes = el.attributes;
+        for (let attribute of attributes){
+            const subelements = newElement.find(attribute.name)
+            if (subelements.length > 0) {
+                subelements.replaceWith(attribute.value);
+            }
+            else if (attribute.name !== "src") {
+                newElement.attr(attribute.name, attribute.value);
+            } 
+        };
+    });
+}
+
+async function replaceElement(element, newElement, $) {
+
+    await replaceAttributes(element, newElement);
+    const contentNewElement = newElement.find("content").first();
+    if (contentNewElement.length > 0) {
+        contentNewElement.replaceWith(element.html());
+    }
+    element.replaceWith(newElement);
+};
+
 async function processComponet(comp, $) {
     const src = comp.attr('src');
     if (src) {
         const componentPath = path.join(srcDir, src);
         const componentContent = await fs.promises.readFile(componentPath, 'utf8');
         const newElement = $(componentContent);
-        comp.each((_, el) => {
-            const attributes = el.attributes;
-            attributes.forEach(attribute => {
-                if (attribute.name !== "src") {
-                    newElement.attr(attribute.name, attribute.value);
-                } 
-            });
-        });
-        if (comp.html()) {
-            newElement.html(comp.html())
-        }
-        comp.replaceWith(newElement);
+        await replaceElement(comp, newElement, $);
     }
 
 };

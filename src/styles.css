@@ -1,6 +1,19 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
+[visible="false"] {
+    visibility: hidden;
+}
+[visible="true"] {
+    visibility: visible;
+}
+[expanded][is_open="false"] + .content {
+    display: none;
+}
+[expanded][is_open="true"] + .content {
+    display: block;
+}
+[expanded][is_open="false"] > [arrow_down_16] {
+    transform: rotate(-90deg);
+}
+[expanded][is_open="true"] > [arrow_down_16] {
+    transform: rotate(0deg);
 }
 
