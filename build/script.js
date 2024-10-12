@@ -1,5 +1,5 @@
 "use strict";
-function togleeFolder(element) {
+function toggleFlagIsOpen(element) {
     var attributeName = "is_open";
     var currentValue = element.getAttribute(attributeName);
     if (currentValue === "true") {

@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="./styles.css" media="all">
 </head>
 <body style="margin:0;">
-    <div style="width: 100vw; height: 100vh;">
+    <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
         <div style="width: 100vw; height: 48px; display: flex;">
     <div style="width: 240px; height: 100%; display: flex; align-items: center;">
         <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
@@ -62,30 +62,36 @@
 </div>
 <hr style="width: 100%; margin: 0;">
 
-        <div style="width: 100vw; height: 100%; display: flex;">
-            <div style="display: flex; flex-direction: column; width: 240px; height: 100%;">
+        <div style="width: 100vw; flex-grow:1; display: flex;">
+            <div style="display: flex; flex-direction: row-reverse;">
+    <div style="width: 16px; flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleFlagIsOpen(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-left" chevrons_left=""><path d="m11 17-5-5 5-5"></path><path d="m18 17-5-5 5-5"></path></svg>
+
+    </div>
+    <div class="content">
+        <div style="display: flex; flex-direction: column; width: 240px; height: 100%;">
   
-    <div style="display: flex;">
-        <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
+            <div style="display: flex;">
+                <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
   Html
 </button>
 
-        <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
+                <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
   Css
 </button>
 
-        <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
+                <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
   Js
 </button>
 
-        <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
+                <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
   Assets
 </button>
 
-    </div>
-    <hr style="width: 100%; margin: 0;">
-    <div style="padding: 8px 12px; width: 100%;">
-  <div style="display: flex; align-items:center;" expanded="" is_open="false" onclick="togleeFolder(this)">
+            </div>
+            <hr style="width: 100%; margin: 0;">
+            <div style="padding: 8px 12px; width: 100%;">
+  <div style="display: flex; align-items:center;" expanded="" is_open="false" onclick="toggleFlagIsOpen(this)">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" arrow_down_16=""><path d="m6 9 6 6 6-6"></path></svg>
 
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder" style="margin-right: 8px;"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
@@ -94,32 +100,56 @@
   </div>
   <div class="content">
     
+                <div style="padding: 8px 12px; width: 100%;">
+  <div style="display: flex; align-items:center;" expanded="" is_open="false" onclick="toggleFlagIsOpen(this)">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" arrow_down_16=""><path d="m6 9 6 6 6-6"></path></svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder" style="margin-right: 8px;"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+
+    teste
+  </div>
+  <div class="content">
     
+                
   </div>
 </div>
 
-
+            
+  </div>
 </div>
 
+        
+</div>
 
-            <div style="flex-grow: 1; height: 100%;">
+    </div>
+</div>
+
+            <div style="flex-grow: 1; flex-grow:1;">
             </div>
-            <div style="display: flex; flex-direction: column; width: 240px; height: 100%;">
+            <div style="display: flex; flex-direction: row;">
+    <div style="width: 16px; flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleFlagIsOpen(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-right" chevrons_right=""><path d="m6 17 5-5-5-5"></path><path d="m13 17 5-5-5-5"></path></svg>
+
+    </div>
+    <div class="content">
+        <div style="display: flex; flex-direction: column; width: 240px; height: 100%;">
   
-    <div style="display: flex;">
-        <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
+            <div style="display: flex;">
+                <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
   Design
 </button>
 
-        <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
+                <button style="min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; padding: 12px;" class="base_button">
   Prototype
 </button>
 
-    </div>
-    <hr style="width: 100%; margin: 0;">
-
+            </div>
+            <hr style="width: 100%; margin: 0;">
+        
 </div>
 
+    </div>
+</div>
 
         </div>
     </div>

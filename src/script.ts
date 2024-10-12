@@ -1,4 +1,4 @@
-function togleeFolder(element) {
+function toggleFlagIsOpen(element) {
   const attributeName = "is_open"
   const currentValue = element.getAttribute(attributeName);
   if (currentValue === "true") {

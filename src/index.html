@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="./styles.css" media="all">
 </head>
 <body style="margin:0;">
-    <div style="width: 100vw; height: 100vh;">
+    <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
         <comp src="./components/topbar.html"></comp>
-        <div style="width: 100vw; height: 100%; display: flex;">
+        <div style="width: 100vw; flex-grow:1; display: flex;">
             <comp src="./components/side_bar_left.html"></comp>
-            <div style="flex-grow: 1; height: 100%;">
+            <div style="flex-grow: 1; flex-grow:1;">
             </div>
             <comp src="./components/side_bar_right.html"></comp>
         </div>

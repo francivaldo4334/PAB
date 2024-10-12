@@ -1,11 +1,20 @@
-<comp src="./components/side_bar.html">
-    <div style="display: flex;">
-        <comp src="./components/button.html">Html</comp>
-        <comp src="./components/button.html">Css</comp>
-        <comp src="./components/button.html">Js</comp>
-        <comp src="./components/button.html">Assets</comp>
+<div style="display: flex; flex-direction: row-reverse;">
+    <div style="width: 16px; flex-grow:1; background: gray; display: flex; align-items: center;" expanded is_open="true" onclick="toggleFlagIsOpen(this)">
+        <comp src="./components/icons/chevrons_left.html" chevrons_left></comp>
     </div>
-    <hr style="width: 100%; margin: 0;">
-    <comp src="./components/item_folder.html" text="teste">
-    </comp>
-</comp>
+    <div class="content">
+        <comp src="./components/side_bar.html">
+            <div style="display: flex;">
+                <comp src="./components/button.html">Html</comp>
+                <comp src="./components/button.html">Css</comp>
+                <comp src="./components/button.html">Js</comp>
+                <comp src="./components/button.html">Assets</comp>
+            </div>
+            <hr style="width: 100%; margin: 0;">
+            <comp src="./components/item_folder.html" text="teste">
+                <comp src="./components/item_folder.html" text="teste">
+                </comp>
+            </comp>
+        </comp>
+    </div>
+</div>
