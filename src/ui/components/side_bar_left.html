@@ -1,0 +1,20 @@
+<div style="display: flex; flex-direction: row-reverse;">
+    <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded is_open="true" onclick="toggleIsOpen(this)">
+        <comp src="./ui/components/icons/chevrons_left.html" chevrons_left></comp>
+    </div>
+    <div class="content">
+        <comp src="./ui/components/side_bar.html">
+            <div style="display: flex;">
+                <comp src="./ui/components/button.html">Html</comp>
+                <comp src="./ui/components/button.html">Css</comp>
+                <comp src="./ui/components/button.html">Js</comp>
+                <comp src="./ui/components/button.html">Assets</comp>
+            </div>
+            <hr style="width: 100%; margin: 0;">
+            <comp src="./ui/components/item_folder.html" text="teste">
+                <comp src="./ui/components/item_folder.html" text="teste">
+                </comp>
+            </comp>
+        </comp>
+    </div>
+</div>

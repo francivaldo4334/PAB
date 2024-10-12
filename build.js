@@ -5,16 +5,23 @@ const cheerio = require('cheerio')
 const srcDir = path.join(__dirname, 'src');
 const buildDir = path.join(__dirname, 'build');
 
-async function copyStyles() {
-    try {
+async function copyStyles(srcDir, buildDir) {
+   try {
         const files = await fs.promises.readdir(srcDir);
-        const cssFiles = files.filter(file => path.extname(file) === '.css');
-        await Promise.all(cssFiles.map(file => 
-            fs.promises.copyFile(
-                path.join(srcDir, file), 
-                path.join(buildDir, file)
-            )
-        ));
+        await Promise.all(files.map(async (file) => {
+            const srcFilePath = path.join(srcDir, file);
+            const stat = await fs.promises.stat(srcFilePath);
+            if (stat.isDirectory()) {
+                const newBuildDir = path.join(buildDir, file);
+                await fs.promises.mkdir(newBuildDir, { recursive: true });
+                await copyStyles(srcFilePath, newBuildDir);
+            } else if (path.extname(file) === '.css') {
+                const destFilePath = path.join(buildDir, file);
+                console.log(`Copiando: ${srcFilePath} para ${destFilePath}`);
+                await fs.promises.mkdir(buildDir, { recursive: true });
+                await fs.promises.copyFile(srcFilePath, destFilePath);
+            }
+        }));
         console.log('Todos os arquivos CSS foram copiados com sucesso!');
     } catch (error) {
         console.error('Erro ao copiar os arquivos CSS:', error);
@@ -42,8 +49,22 @@ async function replaceAttributes(element, newElement) {
             if (subelements.length > 0) {
                 subelements.replaceWith(attribute.value);
             }
-            else if (attribute.name !== "src") {
+            else if (attribute.name !== "src" && attribute.name !=="include") {
                 newElement.attr(attribute.name, attribute.value);
+            } 
+        };
+    });
+}
+
+async function loadAttributesIncludes(element, newElement) {
+    element.each((_, el) => {
+        const attributes = el.attributes;
+        for (let attribute of attributes){
+            if (attribute.name === "include") {
+                const parentAttr = Array.from(attributes).find(attr => attr.name == attribute.value)
+                if (parentAttr){
+                    newElement.attr(parentAttr.name, parentAttr.value);
+                }
             } 
         };
     });
@@ -55,6 +76,7 @@ async function replaceElement(element, newElement, $) {
     const contentNewElement = newElement.find("content").first();
     if (contentNewElement.length > 0) {
         contentNewElement.replaceWith(element.html());
+        await loadAttributesIncludes(element, contentNewElement)
     }
     element.replaceWith(newElement);
 };
@@ -89,7 +111,7 @@ async function main() {
     try {
         await fs.promises.rm(buildDir, { recursive: true, force: true });
         await fs.promises.mkdir(buildDir);
-        await copyStyles();
+        await copyStyles(srcDir, buildDir);
         await processHTML();
         await transpileTS();
     } catch (error) {

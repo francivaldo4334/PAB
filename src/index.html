@@ -4,19 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projeto PAB</title>
-    <link rel="stylesheet" href="./styles.css" media="all">
+    <style>
+        [visible="false"] {
+            visibility: hidden;
+            width: 0;
+            height: 0;
+        }
+        [visible="true"] {
+            visibility: visible;
+        }
+        [expanded][is_open="false"] + .content {
+            display: none;
+        }
+        [expanded][is_open="true"] + .content {
+            display: block;
+        }
+        [expanded][is_open="false"] > [arrow_down_folder] {
+            transform: rotate(-90deg);
+        }
+        [expanded][is_open="true"] > [arrow_down_folder] {
+            transform: rotate(0deg);
+        }
+        [expanded][is_open="true"] > [arrow_down_16],
+        [expanded][is_open="false"] > [chevrons_left],
+        [expanded][is_open="false"] > [chevrons_right] {
+            transform: rotate(-180deg);
+        }
+        [expanded][is_open="false"] > [arrow_down_16],
+        [expanded][is_open="true"] > [chevrons_left],
+        [expanded][is_open="true"] > [chevrons_right] {
+            transform: rotate(0deg);
+        }
+    </style>
+    <style>
+        :root {
+            --4dp: 0.25rem;
+            --8dp: 0.5rem;
+            --12dp: 0.75rem;
+            --16dp: 1rem;
+            --24dp: 1.5rem;
+            --32dp: 2rem;
+            --40dp: 2.5rem;
+            --48dp: 3rem;
+            --224dp: 14rem;
+            --240dp: 15rem;
+        } 
+    </style>
 </head>
 <body style="margin:0;">
+    <comp src="./ui/components/templates/templates.html"></comp>
     <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
-        <comp src="./components/topbar.html"></comp>
+        <comp src="./ui/components/topbar.html"></comp>
         <div style="width: 100vw; flex-grow:1; display: flex;">
-            <comp src="./components/side_bar_left.html"></comp>
+            <comp src="./ui/components/side_bar_left.html"></comp>
             <div style="flex-grow: 1; flex-grow:1;">
             </div>
-            <comp src="./components/side_bar_right.html"></comp>
+            <comp src="./ui/components/side_bar_right.html"></comp>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="./ui/script.js"></script>
 </body>
 </html>
 
