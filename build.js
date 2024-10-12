@@ -2,12 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 const cheerio = require('cheerio')
-
-// Diretórios
 const srcDir = path.join(__dirname, 'src');
 const buildDir = path.join(__dirname, 'build');
 
-// Função para copiar estilos e transpilar TypeScript
 async function copyStyles() {
     await fs.promises.copyFile(path.join(srcDir, 'styles.css'), path.join(buildDir, 'styles.css'));
 }
@@ -24,6 +21,7 @@ async function transpileTS() {
         });
     });
 }
+
 async function processComponet(comp, $) {
     const src = comp.attr('src');
     if (src) {
@@ -34,7 +32,7 @@ async function processComponet(comp, $) {
             const attributes = el.attributes;
             attributes.forEach(attribute => {
                 if (attribute.name !== "src") {
-                    newElement.attr(attribute)
+                    newElement.attr(attribute.name, attribute.value);
                 } 
             });
         });
@@ -45,7 +43,6 @@ async function processComponet(comp, $) {
     }
 
 };
-
 
 async function processHTML() {
     const htmlPath = path.join(srcDir, 'index.html');
@@ -62,13 +59,10 @@ async function processHTML() {
     await fs.promises.writeFile(path.join(buildDir, 'index.html'), $.html());
 }
 
-// Função principal
 async function main() {
     try {
-        // Limpa a pasta build
         await fs.promises.rm(buildDir, { recursive: true, force: true });
         await fs.promises.mkdir(buildDir);
-
         await copyStyles();
         await processHTML();
         await transpileTS();
