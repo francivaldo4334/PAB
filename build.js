@@ -24,46 +24,43 @@ async function transpileTS() {
         });
     });
 }
+async function processComponet(comp, $) {
+    const src = comp.attr('src');
+    if (src) {
+        const componentPath = path.join(srcDir, src);
+        const componentContent = await fs.promises.readFile(componentPath, 'utf8');
+        const newElement = $(componentContent);
+        comp.each((_, el) => {
+            const attributes = el.attributes;
+            attributes.forEach(attribute => {
+                if (attribute.name !== "src") {
+                    newElement.attr(attribute)
+                } 
+            });
+        });
+        if (comp.html()) {
+            newElement.html(comp.html())
+        }
+        comp.replaceWith(newElement);
+    }
 
-// Função para processar HTML
+};
+
+
 async function processHTML() {
     const htmlPath = path.join(srcDir, 'index.html');
     let htmlContent = await fs.promises.readFile(htmlPath, 'utf8');
-
-    // Carrega o conteúdo HTML com Cheerio
     const $ = cheerio.load(htmlContent);
-
-    // Substitui as tags <comp>
-    const components = $('comp');
-    for (let i = 0; i < components.length; i++) {
-        const comp = $(components[i]);
-        const src = comp.attr('src');
-
-        if (src) {
-            const componentPath = path.join(srcDir, src);
-            const componentContent = await fs.promises.readFile(componentPath, 'utf8');
-            
-            // Cria um novo elemento usando o conteúdo do componente
-            const newElement = $(componentContent);
-
-            // Copia todos os atributos, exceto o src
-            comp.each((_, el) => {
-                const attributes = el.attributes;
-                for (let j = 0; j < attributes.length; j++) {
-                    const attrName = attributes[j].name;
-                    if (attrName !== 'src') {
-                        newElement.attr(attrName, attributes[j].value);
-                    }
-                }
-            });
-
-            // Substitui a tag <comp> pelo novo conteúdo
-            comp.replaceWith(newElement);
+    let components = $('comp');
+    while(components.length !== 0) {
+        for (const component of components.toArray()) {
+            const comp = $(component);
+            await processComponet(comp, $);
         }
+        components = $('comp');
     }
-
-    // Salva o HTML modificado
-    await fs.promises.writeFile(path.join(buildDir, 'index.html'), $.html());}
+    await fs.promises.writeFile(path.join(buildDir, 'index.html'), $.html());
+}
 
 // Função principal
 async function main() {

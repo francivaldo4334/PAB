@@ -7,7 +7,7 @@
     "build": "node build.js",
     "tsc": "tsc",
     "serve": "http-server build",
-    "watch": "nodemon --watch src -e html,css,ts --exec 'npm run build && sleep 1 && xdg-open http://localhost:8080'"
+    "watch": "nodemon --watch src -e html,css,ts --exec 'npm run build'"
   },
   "devDependencies": {
     "http-server": "^14.1.1",
