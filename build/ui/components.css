@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+:root {
+  --p-50: #FCFCFC; 
+  --p-600: #818181; 
+  --p-700: #6D6D6D; 
+  --p-800: #4D4D4D; 
+  --p-900: #2B2B2B; 
+  --background: #1E1E1E; 
+  --black: #000; 
+  --white: #fff; 
+}
+body {
+  background: var(--background);
+  color: var(--white);
+}
+
+hr {
+  background: var(--p-700);
+}
+
+.button {
+  background: var(--p-900);
+  border: none;
+  color: var(--white);
+}
+
+.button:hover {
+  background: var(--p-800);
+}
+
+.button:active {
+  background: var(--p-700);
+}
+
+.multiselection {
+  background: var(--p-900);
+}
+
+.menu_bar {
+  background: var(--p-900);
+}
+
+.item_multiselection {
+}
+
+.side_bar {
+  background: var(--p-900);
+}
+
+.side_bar_border {
+  background: var(--p-700);
+  color: var(--black)
+}
+
+.prop_input input{
+  border-radius: var(--4dp);
+  border: none;
+  background: var(--background);
+}
+
+.prop_list {
+  gap: var(--8dp);
+}

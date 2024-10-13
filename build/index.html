@@ -2,6 +2,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projeto PAB</title>
+    <link rel="stylesheet" type="text/css" href="./ui/components.css">
     <style>
         [visible="false"] {
             visibility: hidden;
@@ -51,21 +52,21 @@
 </head>
 <body style="margin:0;">
     <div class="item" style="display: flex; justify-content: space-between; padding: 0 var(--8dp) 0 var(--12dp); gap: var(--8dp); align-items: end;" visible="false" id="item_prop_template">
-  <div style="flex-grow: 1;">
+  <div style="flex-grow: 1;" class="prop_input">
   <h6 style="margin: 0;">Name</h6>
   <div style="display: flex;">
     <input style="width: 0; flex-grow: 1;">
   </div>
 </div>
 
-  <div style="flex-grow: 1;">
+  <div style="flex-grow: 1;" class="prop_input">
   <h6 style="margin: 0;">Value</h6>
   <div style="display: flex;">
     <input style="width: 0; flex-grow: 1;">
   </div>
 </div>
 
-  <button style="width: var(--32dp); height: var(--32dp); display: flex; align-items: center; justify-content: center;" class="base_button" onclick="removeElement(this)">
+  <button class="button" style="width: var(--32dp); height: var(--32dp); display: flex; align-items: center; justify-content: center;" onclick="removeElement(this)">
   
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus"><path d="M5 12h14"></path></svg>
 
@@ -76,27 +77,27 @@
 
 
     <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
-        <div style="width: 100vw; height: var(--48dp); display: flex;">
+        <div style="width: 100vw; height: var(--48dp); display: flex;" class="menu_bar">
     <div style="width: var(--240dp); height: 100%; display: flex; align-items: center;">
-        <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button">
+        <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);">
   
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
 
         
 </button>
 
-        <button style="width: 100%; display: flex; height: 100%; align-items: center; padding: var(--12dp);" class="base_button">
+        <button class="button" style="width: 100%; display: flex; height: 100%; align-items: center; padding: var(--8dp);">
   
             <h3 style="flex-grow: 1; text-align: start;" data-translate="project_name">Projet Name</h3>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
 
         
 </button>
 
     </div>
     <div style="height: 100%; display: flex; flex-grow: 1;">
-        <div>
-    <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button" expanded="" is_open="false" onclick="toggleIsOpen(this)">
+        <div class="button">
+    <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" expanded="" is_open="false" onclick="toggleIsOpen(this)">
   
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-frame"><line x1="22" x2="2" y1="6" y2="6"></line><line x1="22" x2="2" y1="18" y2="18"></line><line x1="6" x2="6" y1="2" y2="22"></line><line x1="18" x2="18" y1="2" y2="22"></line></svg>
 
@@ -105,8 +106,8 @@
     
 </button>
 
-    <div style="position: fixed;" class="content">
-        <button style="width: var(--224dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--12dp);" class="base_button">
+    <div style="position: fixed;" class="content multiselection">
+        <button class="item_multiselection button" style="width: var(--224dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--12dp);">
   
     
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-frame"><line x1="22" x2="2" y1="6" y2="6"></line><line x1="22" x2="2" y1="18" y2="18"></line><line x1="6" x2="6" y1="2" y2="22"></line><line x1="18" x2="18" y1="2" y2="22"></line></svg>
@@ -118,7 +119,7 @@
 </button>
 
  
-        <button style="width: var(--224dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--12dp);" class="base_button">
+        <button class="item_multiselection button" style="width: var(--224dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--12dp);">
   
     
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square"><rect width="18" height="18" x="3" y="3" rx="2"></rect></svg>
@@ -130,7 +131,7 @@
 </button>
 
  
-        <button style="width: var(--224dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--12dp);" class="base_button">
+        <button class="item_multiselection button" style="width: var(--224dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--12dp);">
   
     
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle"><circle cx="12" cy="12" r="10"></circle></svg>
@@ -142,7 +143,7 @@
 </button>
 
  
-        <button style="width: var(--224dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--12dp);" class="base_button">
+        <button class="item_multiselection button" style="width: var(--224dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--12dp);">
   
     
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
@@ -157,21 +158,21 @@
     </div>
 </div>
 
-        <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button">
+        <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);">
   
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move"><path d="M12 2v20"></path><path d="m15 19-3 3-3-3"></path><path d="m19 9 3 3-3 3"></path><path d="M2 12h20"></path><path d="m5 9-3 3 3 3"></path><path d="m9 5 3-3 3 3"></path></svg>
 
         
 </button>
 
-        <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button">
+        <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);">
   
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zoom-in"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line><line x1="11" x2="11" y1="8" y2="14"></line><line x1="8" x2="14" y1="11" y2="11"></line></svg>
 
         
 </button>
 
-        <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button">
+        <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);">
   
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-blocks"><rect width="7" height="7" x="14" y="3" rx="1"></rect><path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"></path></svg>
 
@@ -186,28 +187,28 @@
 <hr style="width: 100%; margin: 0;">
 
         <div style="width: 100vw; flex-grow:1; display: flex;">
-            <div style="display: flex; flex-direction: row-reverse;">
-    <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleIsOpen(this)">
+            <div style="display: flex; flex-direction: row-reverse;" class="side_bar">
+    <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleIsOpen(this)" class="side_bar_border">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-left" chevrons_left=""><path d="m11 17-5-5 5-5"></path><path d="m18 17-5-5 5-5"></path></svg>
 
     </div>
     <div class="content">
-        <div style="display: flex; flex-direction: column; width: var(--240dp); height: var(--48dp);">
+        <div style="display: flex; flex-direction: column; width: var(--240dp);">
   
-            <div style="display: flex;">
-                <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button" data-translate="html">
+            <div style="display: flex;" class="menu_bar">
+                <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" data-translate="html">
   Html
 </button>
 
-                <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button" data-translate="css">
+                <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" data-translate="css">
   Css
 </button>
 
-                <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button" data-translate="javascript">
+                <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" data-translate="javascript">
   Js
 </button>
 
-                <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button" data-translate="assets">
+                <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" data-translate="assets">
   Assets
 </button>
 
@@ -249,20 +250,20 @@
 
             <div style="flex-grow: 1; flex-grow:1;">
             </div>
-            <div style="display: flex; flex-direction: row;">
-    <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleIsOpen(this)">
+            <div style="display: flex; flex-direction: row;" class="side_bar">
+    <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleIsOpen(this)" class="side_bar_border">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-right" chevrons_right=""><path d="m6 17 5-5-5-5"></path><path d="m13 17 5-5-5-5"></path></svg>
 
     </div>
     <div class="content">
-        <div style="display: flex; flex-direction: column; width: var(--240dp); height: var(--48dp);">
+        <div style="display: flex; flex-direction: column; width: var(--240dp);">
   
-            <div style="display: flex;">
-                <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button" data-translate="design">
+            <div style="display: flex;" class="menu_bar">
+                <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" data-translate="design">
   Design
 </button>
 
-                <button style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" class="base_button" data-translate="prototype">
+                <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" data-translate="prototype">
   Prototype
 </button>
 
@@ -276,7 +277,7 @@
     <h5 style="flex-grow: 1; margin: var(--12dp);">
       Html
     </h5>
-    <button style="width: var(--40dp); height: var(--40dp); display: flex; align-items: center; justify-content: center;" class="base_button" onclick="addPropertieHTML()">
+    <button class="button" style="width: var(--40dp); height: var(--40dp); display: flex; align-items: center; justify-content: center;" onclick="addPropertieHTML()">
   
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
 
@@ -284,7 +285,7 @@
 </button>
 
   </div>
-  <div id="list_props_html" style="display: flex; flex-direction: column;">
+  <div id="list_props_html" style="display: flex; flex-direction: column;" class="prop_list">
     
   </div>
 </div>
@@ -295,7 +296,7 @@
     <h5 style="flex-grow: 1; margin: var(--12dp);">
       Css
     </h5>
-    <button style="width: var(--40dp); height: var(--40dp); display: flex; align-items: center; justify-content: center;" class="base_button" onclick="addPropertieCSS()">
+    <button class="button" style="width: var(--40dp); height: var(--40dp); display: flex; align-items: center; justify-content: center;" onclick="addPropertieCSS()">
   
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
 
@@ -303,7 +304,7 @@
 </button>
 
   </div>
-  <div id="list_props_css" style="display: flex; flex-direction: column;">
+  <div id="list_props_css" style="display: flex; flex-direction: column;" class="prop_list">
     
   </div>
 </div>

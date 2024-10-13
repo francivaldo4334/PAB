@@ -1,14 +1,17 @@
-<div style="display: flex; flex-direction: row;">
+<div 
+    style="display: flex; flex-direction: row;"
+    class="side_bar">
     <div 
         style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" 
         expanded 
         is_open="true" 
-        onclick="toggleIsOpen(this)">
+        onclick="toggleIsOpen(this)"
+        class="side_bar_border">
         <comp src="./ui/components/icons/chevrons_right.html" chevrons_right></comp>
     </div>
     <div class="content">
         <comp src="./ui/components/side_bar.html">
-            <div style="display: flex;">
+            <div style="display: flex;" class="menu_bar">
                 <comp src="./ui/components/button.html"data-translate="design">Design</comp>
                 <comp src="./ui/components/button.html" data-translate="prototype">Prototype</comp>
             </div>
