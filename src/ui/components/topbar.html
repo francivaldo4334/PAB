@@ -1,22 +1,40 @@
 <div style="width: 100vw; height: var(--48dp); display: flex;" class="menu_bar">
     <div style="width: var(--240dp); height: 100%; display: flex; align-items: center;">
-        <comp src="./ui/components/button.html">
+        <comp 
+            src="./ui/components/button.html"
+            onclick="openMenuFile()"
+        >
             <comp src="./ui/components/icons/menu.html"></comp>
         </comp>
-        <comp src="./ui/components/button.html" style="width: 100%; display: flex; height: 100%; align-items: center; padding: var(--8dp);">
+        <comp 
+            src="./ui/components/button.html" 
+            style="width: 100%; display: flex; height: 100%; align-items: center; padding: var(--8dp);"
+            onclick="openRecentProjects()"
+        >
             <h3 style="flex-grow: 1; text-align: start;" data-translate="project_name">Projet Name</h3>
             <comp src="./ui/components/icons/arrow_down_16.html"></comp>
         </comp>
     </div>
     <div style="height: 100%; display: flex; flex-grow: 1;">
-        <comp src="./ui/components/button_with_dropdown.html"></comp>
-        <comp src="./ui/components/button.html">
+        <comp 
+            src="./ui/components/button_with_dropdown.html"
+        ></comp>
+        <comp 
+            src="./ui/components/button.html"
+            onclick="setMoveMode()"
+        >
             <comp src="./ui/components/icons/move.html"></comp>
         </comp>
-        <comp src="./ui/components/button.html">
+        <comp 
+            src="./ui/components/button.html"
+            onclick="setZoomMode()"
+        >
             <comp src="./ui/components/icons/zoom_in.html"></comp>
         </comp>
-        <comp src="./ui/components/button.html">
+        <comp 
+            src="./ui/components/button.html"
+            onclick="openMenuPlugins()"
+        >
             <comp src="./ui/components/icons/plugins.html"></comp>
         </comp>
     </div>
@@ -24,4 +42,4 @@
         <h3 style="margin: 0; padding: 0 var(--12dp);" data-translate="user_name">Username</h3>
     </div>
 </div>
-<hr style="width: 100%; margin: 0;">
+<hr style="margin: 0; padding: 0;">

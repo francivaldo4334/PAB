@@ -1,12 +1,12 @@
 <div 
   class="item" 
-  style="display: flex; justify-content: space-between; padding: 0 var(--8dp) 0 var(--12dp); gap: var(--8dp); align-items: end;">
+  style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;">
   <comp src="./ui/components/prop_input.html" title="Name"></comp>
   <comp src="./ui/components/prop_input.html" title="Value"></comp>
   <comp 
     src="./ui/components/button.html" 
     style="width: var(--32dp); height: var(--32dp); display: flex; align-items: center; justify-content: center;"
-    onclick="removeElement(this)"
+    onclick="removeElement(this);removeProp(this.getAttribute('id'))"
     >
     <comp src="./ui/components/icons/minus.html"></comp>
   </comp>

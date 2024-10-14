@@ -1,35 +1,51 @@
 <div class="button">
-    <comp src="./ui/components/button.html" expanded is_open="false" onclick="toggleIsOpen(this)">
+    <comp 
+        src="./ui/components/button.html" 
+        expanded 
+        is_open="false" 
+        onclick="toggleIsOpen(this);openMenuNewElement();"
+    >
         <comp src="./ui/components/icons/frame.html"></comp>
-        <comp src="./ui/components/icons/arrow_down_16.html" arrow_down_16></comp>
+        <comp 
+            src="./ui/components/icons/arrow_down_16.html" 
+            arrow_down_16
+        ></comp>
     </comp>
     <div style="position: fixed;" class="content multiselection">
         <comp 
             src="./ui/components/drop_down_item.html" 
-            title="Teste" 
+            title="Frame" 
             keybind="F" 
-            class="item_multiselection button">
+            class="item_multiselection button"
+            onclick="addNewElement('FRAME')"
+        >
             <comp src="./ui/components/icons/frame.html"></comp>
         </comp> 
         <comp 
             src="./ui/components/drop_down_item.html" 
             title="Rectangle" 
             keybind="R" 
-            class="item_multiselection button">
+            class="item_multiselection button"
+            onclick="addNewElement('RECT')"
+        >
             <comp src="./ui/components/icons/rect.html"></comp>
         </comp> 
         <comp 
             src="./ui/components/drop_down_item.html" 
             title="Oval" 
             keybind="O" 
-            class="item_multiselection button">
+            class="item_multiselection button"
+            onclick="addNewElement('OVAL')"
+        >
             <comp src="./ui/components/icons/oval.html"></comp>
         </comp> 
         <comp 
             src="./ui/components/drop_down_item.html" 
             title="Image" 
             keybind="I"
-            class="item_multiselection button">
+            class="item_multiselection button"
+            onclick="addNewElement('IMAGE')"
+        >
             <comp src="./ui/components/icons/image.html"></comp>
         </comp> 
     </div>

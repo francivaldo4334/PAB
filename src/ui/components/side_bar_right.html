@@ -12,13 +12,21 @@
     <div class="content">
         <comp src="./ui/components/side_bar.html">
             <div style="display: flex;" class="menu_bar">
-                <comp src="./ui/components/button.html"data-translate="design">Design</comp>
-                <comp src="./ui/components/button.html" data-translate="prototype">Prototype</comp>
+                <comp 
+                    src="./ui/components/button.html"
+                    data-translate="design"
+                    onclick="setEditMode('DESIGN')"
+                >Design</comp>
+                <comp 
+                    src="./ui/components/button.html" 
+                    data-translate="prototype"
+                    onclick="setEditMode('PROTOTYPE')"
+                >Prototype</comp>
             </div>
-            <hr style="width: 100%; margin: 0;">
+            <hr style="margin: 0; padding: 0;">
         </comp>
         <comp src="./ui/components/prop_list_html.html"></comp>
-        <hr style="width: 100%;">
+        <hr style="margin: 0; padding: 0;">
         <comp src="./ui/components/prop_list_css.html"></comp>
     </div>
 </div>
