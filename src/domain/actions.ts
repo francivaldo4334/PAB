@@ -77,6 +77,7 @@ function addNewProp(type) {
   }
 }
 
-function removeProp(prop_id) {
-  console.log("TODO");
+function removePropretie(prop_id) {
+  const prop = document.getElementById(prop_id)
+  removeUiPropretie(prop)
 }
