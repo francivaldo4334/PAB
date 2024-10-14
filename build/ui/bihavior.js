@@ -36,3 +36,9 @@ function removeElement(element) {
         item.remove();
     }
 }
+document.addEventListener('click', function (e) {
+    var element = document.querySelector(".popover");
+    if (element && !element.contains(e.target)) {
+        element.setAttribute("is_open", "false");
+    }
+});
