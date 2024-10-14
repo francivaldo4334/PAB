@@ -1,4 +1,4 @@
-# Projeto PAD
+# Projeto PAD (Plan And Build).
 
 ### Descrição
 O **Projeto PAD** tem como objetivo estudar frameworks e criar uma plataforma simplificada para construção de sites. A plataforma visa proporcionar uma experiência intuitiva para desenvolvedores, facilitando a criação e o gerenciamento de sites através de uma estrutura modular e reutilizável.
