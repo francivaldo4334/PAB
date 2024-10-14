@@ -9,11 +9,11 @@ function openRecentProjects() {
 function openMenuNewElement() {
   const menuNewElement = document.getElementById("menu_new_element");
   toggleIsOpen(menuNewElement);
-  console.log("TODO");
 }
 
 function closeMenuNewElement() {
-  console.log("TODO");
+  const menuNewElement = document.getElementById("menu_new_element");
+  toggleIsOpen(menuNewElement);
 }
 
 function addNewElement(type) {
@@ -33,6 +33,7 @@ function addNewElement(type) {
     default:
       break;
   }
+  closeMenuNewElement();
 }
 
 function setMoveMode() {

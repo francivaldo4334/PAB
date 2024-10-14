@@ -1,29 +1,37 @@
 "use strict";
+var currentKeybind = [];
 var keymaps = {
-    Control: {
-        n: {
-            f: {
+    Insert: {
+        mode: true,
+        f: {
+            action: function () {
+                addNewElement("FRAME");
+            }
+        },
+        action: function () {
+            openMenuNewElement();
+        },
+        s: {
+            mode: true,
+            c: {
                 action: function () {
-                    addNewElement("FRAME");
+                    addNewElement("OVAL");
                 }
             },
-            s: {
-                o: {
-                    action: function () {
-                        addNewElement("OVAL");
-                    }
-                },
-                r: {
-                    action: function () {
-                        addNewElement("RECT");
-                    }
+            r: {
+                action: function () {
+                    addNewElement("RECT");
+                }
+            },
+            i: {
+                action: function () {
+                    addNewElement("IMAGE");
                 }
             }
         }
-    }
+    },
 };
 var keydown = {};
-var currentKeybind = {};
 window.addEventListener("keydown", function (e) {
     keydown[e.key] = true;
 });
@@ -32,10 +40,11 @@ window.addEventListener("keyup", function (e) {
 });
 function checkKeybind(map, event) {
     for (var key in map) {
-        console.log(key);
         if (keydown[key]) {
-            console.log(typeof map[key]);
-            if ("action" in map[key]) {
+            if (map[key].mode) {
+                currentKeybind.push(key);
+            }
+            if (map[key].action) {
                 map[key].action();
                 event.preventDefault();
             }
@@ -45,6 +54,27 @@ function checkKeybind(map, event) {
         }
     }
 }
+function keyMode(map, index, key) {
+    if (map[key] && map[key].mode) {
+        currentKeybind.push(key);
+    }
+    if (map[key] && map[key].action) {
+        map[key].action();
+    }
+    if (index < currentKeybind.length) {
+        var keyMap = currentKeybind[index];
+        keyMode(map[keyMap], index + 1, key);
+        return;
+    }
+    if (map[key] && map[key].action) {
+        currentKeybind = [];
+    }
+}
 window.addEventListener("keydown", function (e) {
-    checkKeybind(keymaps, e);
+    if (currentKeybind.length > 0) {
+        keyMode(keymaps, 0, e.key);
+    }
+    else {
+        checkKeybind(keymaps, e);
+    }
 });

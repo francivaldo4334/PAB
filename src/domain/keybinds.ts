@@ -1,29 +1,37 @@
+let currentKeybind = []
 const keymaps = {
-  Control:{
-    n:{
-      f: {
+  Insert: {
+    mode: true,
+    f: {
+      action: () => {
+        addNewElement("FRAME");
+      }
+    },
+    action: () => {
+      openMenuNewElement();
+    },
+    s: {
+      mode: true,
+      c: {
         action: () => {
-          addNewElement("FRAME");
+          addNewElement("OVAL"):
         }
       },
-      s: {
-        o: {
-          action: () => {
-            addNewElement("OVAL"):
-          }
-        },
-        r: {
-          action: () => {
-            addNewElement("RECT");
-          }
+      r: {
+        action: () => {
+          addNewElement("RECT");
+        }
+      },
+      i: {
+        action: () => {
+          addNewElement("IMAGE");
         }
       }
     }
-  }
+  },
 }
 const keydown = {}
-const currentKeybind = {}
-window.addEventListener("keydown", (e) => { 
+window.addEventListener("keydown", (e) => {
   keydown[e.key] = true;
 }); 
 window.addEventListener("keyup", (e) => { 
@@ -32,10 +40,11 @@ window.addEventListener("keyup", (e) => {
 
 function checkKeybind(map, event) {
   for (let key in map) {
-    console.log(key)
     if (keydown[key]){
-      console.log(typeof map[key])
-      if ("action" in map[key]) {
+      if (map[key].mode) {
+        currentKeybind.push(key); 
+      }
+      if (map[key].action) {
         map[key].action();
         event.preventDefault();
 
@@ -46,6 +55,28 @@ function checkKeybind(map, event) {
     }
   }
 }
+
+function keyMode(map, index, key) {
+  if (map[key] && map[key].mode) {
+    currentKeybind.push(key)
+  }
+  if (map[key] && map[key].action) {
+    map[key].action();
+  }
+  if (index < currentKeybind.length) {
+    const keyMap = currentKeybind[index];
+    keyMode(map[keyMap], index + 1, key);
+    return;
+  }
+  if (map[key] && map[key].action) {
+    currentKeybind = [];
+  }
+}
 window.addEventListener("keydown", (e) => {
-  checkKeybind(keymaps, e)
+  if (currentKeybind.length > 0) {
+    keyMode(keymaps, 0, e.key)
+  }
+  else {
+    checkKeybind(keymaps, e)
+  }
 })

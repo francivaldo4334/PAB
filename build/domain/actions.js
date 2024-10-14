@@ -8,10 +8,10 @@ function openRecentProjects() {
 function openMenuNewElement() {
     var menuNewElement = document.getElementById("menu_new_element");
     toggleIsOpen(menuNewElement);
-    console.log("TODO");
 }
 function closeMenuNewElement() {
-    console.log("TODO");
+    var menuNewElement = document.getElementById("menu_new_element");
+    toggleIsOpen(menuNewElement);
 }
 function addNewElement(type) {
     switch (type) {
@@ -30,6 +30,7 @@ function addNewElement(type) {
         default:
             break;
     }
+    closeMenuNewElement();
 }
 function setMoveMode() {
     console.log("TODO");
