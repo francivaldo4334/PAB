@@ -80,3 +80,9 @@ window.addEventListener("keydown", (e) => {
     checkKeybind(keymaps, e)
   }
 })
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closePopovers();
+    currentKeybind = [];
+  }
+})

@@ -39,9 +39,16 @@ function removeUiPropretie(element) {
   }
 }
 
+function closePopovers(e){
+  const element = document.querySelector(".popover");
+  if (element) {
+    element.setAttribute("is_open", "false");
+  }
+}
+
 document.addEventListener('click', (e) => {
   const element = document.querySelector(".popover");
   if (element && !element.contains(e.target)) {
-    element.setAttribute("is_open", "false");
+    closePopovers();
   }
 });
