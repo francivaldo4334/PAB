@@ -6,6 +6,8 @@ function openRecentProjects() {
     console.log("TODO");
 }
 function openMenuNewElement() {
+    var menuNewElement = document.getElementById("menu_new_element");
+    toggleIsOpen(menuNewElement);
     console.log("TODO");
 }
 function closeMenuNewElement() {
@@ -56,10 +58,10 @@ function setEditMode(mode) {
 function addNewProp(type) {
     switch (type) {
         case "HTML":
-            console.log("TODO");
+            addPropertieHTML();
             break;
         case "CSS":
-            console.log("TODO");
+            addPropertieCSS();
             break;
         default:
             break;

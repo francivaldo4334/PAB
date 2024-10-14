@@ -1,9 +1,23 @@
 "use strict";
 var keymaps = {
     Control: {
-        p: {
-            action: function () {
-                console.log("PRESS");
+        n: {
+            f: {
+                action: function () {
+                    addNewElement("FRAME");
+                }
+            },
+            s: {
+                o: {
+                    action: function () {
+                        addNewElement("OVAL");
+                    }
+                },
+                r: {
+                    action: function () {
+                        addNewElement("RECT");
+                    }
+                }
             }
         }
     }

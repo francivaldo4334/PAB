@@ -1,8 +1,22 @@
 const keymaps = {
   Control:{
-    p:{
-      action:  function () {
-        console.log("PRESS")
+    n:{
+      f: {
+        action: () => {
+          addNewElement("FRAME");
+        }
+      },
+      s: {
+        o: {
+          action: () => {
+            addNewElement("OVAL"):
+          }
+        },
+        r: {
+          action: () => {
+            addNewElement("RECT");
+          }
+        }
       }
     }
   }
