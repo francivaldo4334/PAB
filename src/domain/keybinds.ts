@@ -38,7 +38,7 @@ window.addEventListener("keyup", (e) => {
   keydown[e.key] = false;
 });
 
-function checkKeybind(map, event) {
+function checkKeybind(map) {
   for (let key in map) {
     if (keydown[key]){
       if (map[key].mode) {
@@ -46,11 +46,9 @@ function checkKeybind(map, event) {
       }
       if (map[key].action) {
         map[key].action();
-        event.preventDefault();
-
       }
       else {
-        checkKeybind(map[key], event)
+        checkKeybind(map[key])
       }
     }
   }
@@ -77,7 +75,7 @@ window.addEventListener("keydown", (e) => {
     keyMode(keymaps, 0, e.key)
   }
   else {
-    checkKeybind(keymaps, e)
+    checkKeybind(keymaps)
   }
 })
 window.addEventListener("keydown", (e) => {
@@ -86,3 +84,9 @@ window.addEventListener("keydown", (e) => {
     currentKeybind = [];
   }
 })
+window.addEventListener("keydown", (e) => { 
+  e.preventDefault();
+});
+window.addEventListener("keyup", (e) => { 
+  e.preventDefault();
+});
