@@ -28,6 +28,10 @@ hr {
   color: var(--white);
 }
 
+[selected="true"] {
+  background: var(--p-800);
+}
+
 .button:hover {
   background: var(--p-800);
 }

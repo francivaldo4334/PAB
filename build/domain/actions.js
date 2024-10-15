@@ -1,4 +1,5 @@
 "use strict";
+var EDIT_MODE = "SELECTION";
 function openMenuFile() {
     console.log("TODO");
 }
@@ -7,10 +8,12 @@ function openRecentProjects() {
 }
 function openMenuNewElement() {
     var menuNewElement = document.getElementById("menu_new_element");
+    selectElement(menuNewElement);
     toggleIsOpen(menuNewElement);
 }
 function closeMenuNewElement() {
     var menuNewElement = document.getElementById("menu_new_element");
+    decelElement(menuNewElement);
     toggleIsOpen(menuNewElement);
 }
 function addNewElement(type) {
@@ -32,14 +35,24 @@ function addNewElement(type) {
     }
     closeMenuNewElement();
 }
+function setSelectionMode() {
+    var btnMode = document.getElementById("btn_selection_mode");
+    selectElement(btnMode);
+    EDIT_MODE = "SELECTION";
+}
 function setMoveMode() {
-    console.log("TODO");
+    var btnMode = document.getElementById("btn_move_mode");
+    selectElement(btnMode);
+    EDIT_MODE = "MOVE";
 }
 function setZoomMode() {
-    console.log("TODO");
+    var btnMode = document.getElementById("btn_zoom_mode");
+    selectElement(btnMode);
+    EDIT_MODE = "ZOOM";
 }
 function openMenuPlugins() {
-    console.log("TODO");
+    var btnMode = document.getElementById("btn_plugin");
+    selectElement(btnMode);
 }
 function openFolder(path) {
     console.log("TODO");

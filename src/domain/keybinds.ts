@@ -80,6 +80,7 @@ window.addEventListener("keydown", (e) => {
 })
 window.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
+    closeMenuNewElement();
     closePopovers();
     currentKeybind = [];
   }

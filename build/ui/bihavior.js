@@ -16,6 +16,14 @@ function toggleIsOpen(element) {
         element.setAttribute(attributeName, "true");
     }
 }
+function selectElement(element) {
+    var elementsSelections = document.querySelectorAll(".selection");
+    elementsSelections.forEach(function (it) { return decelElement(it); });
+    element.setAttribute("selected", "true");
+}
+function decelElement(element) {
+    element.setAttribute("selected", "false");
+}
 function addPropertieHTML() {
     var listProps = document.getElementById("list_props_html");
     var template = document.getElementById("item_prop_template").cloneNode(true);
@@ -44,6 +52,7 @@ function closePopovers(e) {
 document.addEventListener('click', function (e) {
     var element = document.querySelector(".popover");
     if (element && !element.contains(e.target)) {
+        closeMenuNewElement();
         closePopovers();
     }
 });

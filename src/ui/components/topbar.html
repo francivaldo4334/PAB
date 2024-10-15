@@ -21,18 +21,33 @@
         ></comp>
         <comp 
             src="./ui/components/button.html"
+            id="btn_selection_mode"
+            class="selection button"
+            selected="true"
+            onclick="setSelectionMode()"
+        >
+            <comp src="./ui/components/icons/mouse_pointer.html"></comp>
+        </comp>
+        <comp 
+            src="./ui/components/button.html"
+            id="btn_move_mode"
+            class="selection button"
             onclick="setMoveMode()"
         >
             <comp src="./ui/components/icons/move.html"></comp>
         </comp>
         <comp 
             src="./ui/components/button.html"
+            id="btn_zoom_mode"
+            class="selection button"
             onclick="setZoomMode()"
         >
             <comp src="./ui/components/icons/zoom_in.html"></comp>
         </comp>
         <comp 
             src="./ui/components/button.html"
+            id="btn_plugin"
+            class="selection button"
             onclick="openMenuPlugins()"
         >
             <comp src="./ui/components/icons/plugins.html"></comp>

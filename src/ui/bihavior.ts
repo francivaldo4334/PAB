@@ -17,6 +17,16 @@ function toggleIsOpen(element) {
   }
 }
 
+function selectElement(element){
+  const elementsSelections = document.querySelectorAll(".selection");
+  elementsSelections.forEach(it => decelElement(it));
+  element.setAttribute("selected", "true");
+}
+
+function decelElement(element){
+  element.setAttribute("selected", "false");
+}
+
 function addPropertieHTML() {
   const listProps = document.getElementById("list_props_html")
   const template = document.getElementById("item_prop_template").cloneNode(true);
@@ -49,6 +59,7 @@ function closePopovers(e){
 document.addEventListener('click', (e) => {
   const element = document.querySelector(".popover");
   if (element && !element.contains(e.target)) {
+    closeMenuNewElement();
     closePopovers();
   }
 });
