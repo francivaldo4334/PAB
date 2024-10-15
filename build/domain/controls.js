@@ -125,7 +125,7 @@ window.addEventListener("mouseup", function (e) {
     }
     switch (EDIT_MODE) {
         case "MOVE":
-            setPositionProject(current_project.position.x += M_DELTA_X, current_project.position.y += M_DELTA_Y);
+            setPositionProject(current_project.position.x + M_DELTA_X, current_project.position.y + M_DELTA_Y);
             break;
         default:
             break;
