@@ -46,7 +46,12 @@ window.addEventListener("mousemove", function (e) {
     M_Y = e.clientY;
     M_DELTA_X = M_X - M_INIT_X;
     M_DELTA_Y = M_Y - M_INIT_Y;
-    if (EDIT_MODE === "MOVE" && M_BUTTON_LEFT) {
+    var rect = document.getElementById("project_draw_rect").getBoundingClientRect();
+    var isInside = (e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom);
+    if (EDIT_MODE === "MOVE" && M_BUTTON_LEFT && isInside) {
         setPositionDraw(current_project.position.x + M_DELTA_X, current_project.position.y + M_DELTA_Y);
     }
 });
