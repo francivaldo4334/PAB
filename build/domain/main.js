@@ -18,6 +18,13 @@ function buildProject() {
     builded_project += buildTag(current_project);
     return builded_project;
 }
-//
-initNewProject();
-console.log(buildProject());
+function exportProject() {
+    initNewProject();
+    var blob = new Blob([buildProject()], { type: "text/html" });
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "my_project.html";
+    link.click();
+    URL.revokeObjectURL(link.href);
+    console.log();
+}
