@@ -136,7 +136,7 @@
               "props": [],
               "content": ["My Site"]
             }
-          ]
+          ] 
         },
         {
           "name": "",
@@ -144,7 +144,20 @@
           "tag": "body",
           "template": "",
           "props": [],
-          "content": []
+          "content": [
+            {
+              "name": "",
+              "is_view": true,
+              "tag": "h1",
+              "template": "",
+              "props": [{
+                "name": "style", 
+                "value": "color: red;"}],
+              "content": [
+                "Teste"
+              ]
+            }
+          ]
         }
       ]
     }
@@ -323,7 +336,7 @@
     </div>
 </div>
 
-            <div style="flex-grow: 1; flex-grow:1;">
+            <div style="flex-grow: 1; flex-grow:1;" id="project_draw">
             </div>
             <div style="display: flex; flex-direction: row;" class="side_bar">
     <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleIsOpen(this)" class="side_bar_border">
@@ -392,7 +405,6 @@
     <script src="./ui/bihavior.js"></script>
     <script src="./domain/actions.js"></script>
     <script src="./ui/translations.js"></script>
-    <script src="./domain/keybinds.js"></script>
     <script src="./domain/editor_manager.js"></script>
     <script src="./domain/main.js"></script>
 

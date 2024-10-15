@@ -2,11 +2,13 @@
 function initNewProject() {
     current_project = base_json_template;
 }
-function buildTag(component_json) {
+function buildTag(component_json, mode_prod) {
+    if (mode_prod === void 0) { mode_prod = false; }
     if (typeof component_json === "string")
         return component_json;
-    var tag_name = component_json.tag;
-    var tag_props = (component_json.props) ? component_json.props.map(function (it) { return "".concat(it.name, "=").concat(it.value); }).join(" ") : "";
+    var is_tag_body = mode_prod && component_json.tag === "body";
+    var tag_name = (is_tag_body) ? "div" : component_json.tag;
+    var tag_props = (component_json.props) ? component_json.props.map(function (it) { return "".concat(it.name, "=\"").concat(it.value, "\""); }).join(" ") : "";
     var tag_content = (component_json.content) ?
         (!Array.isArray(component_json.content)) ? component_json.content
             : component_json.content.map(function (it) { return buildTag(it); }).join("")
@@ -28,3 +30,6 @@ function exportProject() {
     URL.revokeObjectURL(link.href);
     console.log();
 }
+initNewProject();
+var my_body = document.getElementById("project_draw");
+my_body.innerHTML = buildTag(current_project.content[1], true);
