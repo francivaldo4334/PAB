@@ -17,9 +17,12 @@ function toggleIsOpen(element) {
     }
 }
 function selectElement(element) {
+    decelAllElement();
+    element.setAttribute("selected", "true");
+}
+function decelAllElement() {
     var elementsSelections = document.querySelectorAll(".selection");
     elementsSelections.forEach(function (it) { return decelElement(it); });
-    element.setAttribute("selected", "true");
 }
 function decelElement(element) {
     element.setAttribute("selected", "false");

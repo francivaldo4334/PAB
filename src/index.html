@@ -54,6 +54,7 @@
 </head>
 <body style="margin:0;">
     <comp src="./ui/components/templates/templates.html" style="display: none;"></comp>
+    <div id="selection_box" style="position: absolute; border: 2px dashed #00f; background-color: rgba(0,0,255,0.2); display: none; z-index: 3;"></div>
     <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
         <comp src="./ui/components/topbar.html"></comp>
         <div style="width: 100vw; flex-grow:1; display: flex;">
@@ -69,7 +70,7 @@
     <script src="./ui/bihavior.js"></script>
     <script src="./domain/actions.js"></script>
     <script src="./ui/translations.js"></script>
-    <!-- <script src="./domain/keybinds.js"></script> -->
+    <script src="./domain/keybinds.js"></script>
     <script src="./domain/editor_manager.js"></script>
     <script src="./domain/main.js"></script>
     <script src="./domain/controls.js"></script>

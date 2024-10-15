@@ -1,5 +1,6 @@
 const W_WIDTH = window.innerWidth;
 const W_HEIGHT = window.innerHeight;
+const JUMP_SCROLL_MOVE = 50;
 let M_X = 0;
 let M_Y = 0;
 let M_INIT_X = 0;
@@ -10,36 +11,65 @@ let M_BUTTON_LEFT = false;
 let M_BUTTON_MIDDLE = false;
 let M_BUTTON_RIGHT = false;
 let SCROLL_STATE = "STOP";
-let SHIFT = false;
 
+let isSelecting = false;
+const selectionBox = document.getElementById("selection_box");
+const drawPosition = document.getElementById("project_draw_position");
+const draw = document.getElementById("project_draw");
 let isScrolling;
 function setPositionDraw(x,y) {
-  const draw = document.getElementById("project_draw_position");
-  draw.style.transform = `translate(${x}px, ${y}px)`;
+  drawPosition.style.transform = `translate(${x}px, ${y}px)`;
 }
 function setPositionProject(x,y) {
   current_project.position.x = x;
   current_project.position.y = y;
 }
 function setScaleDraw(scale) {
-  const draw = document.getElementById("project_draw");
-  draw.style.scale = scale;
+  if (scale < 3.0 && scale > 0.1) {
+    draw.style.scale = scale;
+  }
 }
 function setScaleProject(scale) {
-  current_project.zoom = scale;
+  if (scale < 3.0 && scale > 0.1) {
+    current_project.zoom = scale;
+  }
 }
 function getScale() {
   return current_project.zoom;
 }
+function initSelectionBox() {
+  isSelecting = true;
+  selectionBox.style.left = `${M_INIT_X}`;
+  selectionBox.style.top = `${M_INIT_Y}`;
+  selectionBox.style.width = "0px";
+  selectionBox.style.height = "0px";
+  selectionBox.style.display = "block";
+}
+function updateSelectionBox() {
+  const width = Math.abs(M_DELTA_X);
+  const height = Math.abs(M_DELTA_Y);
+  selectionBox.style.left = `${Math.min(M_X, M_INIT_X)}px`;
+  selectionBox.style.top = `${Math.min(M_Y, M_INIT_Y)}px`;
+  selectionBox.style.width = `${width}px`;
+  selectionBox.style.height = `${height}px`;
+}
+function finishSelectionBox() {
+  selectionBox.style.display = "none";
+  isSelecting = false;
+}
 window.addEventListener("keydown", (e) => {
-  if(e.key == "Shift") {
-    SHIFT = true;
+  switch (e.key) {
+    case " ": 
+      setMoveMode();
+      break;
+    default:
+      break;
   }
 });
 window.addEventListener("keyup", (e) => {
-  if(e.key == "Shift") {
-    SHIFT = false;
-  }
+  decelAllElement();
+  setSelectionMode();
+  e.preventDefault()
 });
 window.addEventListener("mousemove", (e) => {
   M_X = e.clientX;
@@ -59,8 +89,15 @@ window.addEventListener("mousemove", (e) => {
       current_project.position.y + M_DELTA_Y
     );
   }
+  if (isSelecting) {
+    updateSelectionBox();
+  }
 });
 window.addEventListener("wheel", (e) => {
+  if (e.ctrlKey) {
+      setZoomMode();
+      e.preventDefault();
+  }
   if (e.deltaY < 0) {
     SCROLL_STATE = "UP"
   }
@@ -73,26 +110,25 @@ window.addEventListener("wheel", (e) => {
   }, 300);
   switch (EDIT_MODE) {
     case "SELECTION":
-      const space = 20;
       switch (SCROLL_STATE) {
         case "UP":
-          if (SHIFT) {
-            setPositionDraw(current_project.position.x + space,current_project.position.y);
-            setPositionProject(current_project.position.x + space,current_project.position.y);
+          if (e.shiftKey) {
+            setPositionDraw(current_project.position.x + JUMP_SCROLL_MOVE,current_project.position.y);
+            setPositionProject(current_project.position.x + JUMP_SCROLL_MOVE,current_project.position.y);
           }
           else {
-            setPositionDraw(current_project.position.x,current_project.position.y + space);
-            setPositionProject(current_project.position.x,current_project.position.y + space);
+            setPositionDraw(current_project.position.x,current_project.position.y + JUMP_SCROLL_MOVE);
+            setPositionProject(current_project.position.x,current_project.position.y + JUMP_SCROLL_MOVE);
           }
           break;
         case "DOWN":
-          if (SHIFT) {
-            setPositionDraw(current_project.position.x - space,current_project.position.y);
-            setPositionProject(current_project.position.x - space,current_project.position.y);
+          if (e.shiftKey) {
+            setPositionDraw(current_project.position.x - JUMP_SCROLL_MOVE,current_project.position.y);
+            setPositionProject(current_project.position.x - JUMP_SCROLL_MOVE,current_project.position.y);
           }
           else {
-            setPositionDraw(current_project.position.x,current_project.position.y - space);
-            setPositionProject(current_project.position.x,current_project.position.y - space);
+            setPositionDraw(current_project.position.x,current_project.position.y - JUMP_SCROLL_MOVE);
+            setPositionProject(current_project.position.x,current_project.position.y - JUMP_SCROLL_MOVE);
           }
           break;
         default:
@@ -117,7 +153,7 @@ window.addEventListener("wheel", (e) => {
     default:
       break;
   }
-});
+}, {passive: false});
 window.addEventListener("mouseup", (e) => {
   if (e.button === 0) {
     M_BUTTON_LEFT = false;
@@ -139,6 +175,9 @@ window.addEventListener("mouseup", (e) => {
     default:
       break;
   }
+  if (isSelecting) {
+    finishSelectionBox();
+  }
   M_INIT_X = 0;
   M_INIT_Y = 0;
   M_DELTA_Y = 0;
@@ -156,4 +195,13 @@ window.addEventListener("mousedown", (e) => {
   }
   M_INIT_X = e.clientX;
   M_INIT_Y = e.clientY;
+  switch (EDIT_MODE) {
+    case "SELECTION":
+      initSelectionBox();
+      e.preventDefault();
+      break;
+
+    default:
+      break;
+  }
 });

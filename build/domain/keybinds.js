@@ -43,7 +43,7 @@ window.addEventListener("keydown", function (e) {
 window.addEventListener("keyup", function (e) {
     keydown[e.key] = false;
 });
-function checkKeybind(map) {
+function checkKeybind(map, event) {
     for (var key in map) {
         if (keydown[key]) {
             if (map[key].mode) {
@@ -51,6 +51,7 @@ function checkKeybind(map) {
             }
             if (map[key].action) {
                 map[key].action();
+                event.preventDefault();
             }
             else {
                 checkKeybind(map[key]);
@@ -75,11 +76,14 @@ function keyMode(map, index, key) {
     }
 }
 window.addEventListener("keydown", function (e) {
+    if (e.key === "F5") {
+        window.location.reload(e.ctrlKey);
+    }
     if (currentKeybind.length > 0) {
         keyMode(keymaps, 0, e.key);
     }
     else {
-        checkKeybind(keymaps);
+        checkKeybind(keymaps, e);
     }
 });
 window.addEventListener("keydown", function (e) {
@@ -88,10 +92,4 @@ window.addEventListener("keydown", function (e) {
         closePopovers();
         currentKeybind = [];
     }
-});
-window.addEventListener("keydown", function (e) {
-    e.preventDefault();
-});
-window.addEventListener("keyup", function (e) {
-    e.preventDefault();
 });

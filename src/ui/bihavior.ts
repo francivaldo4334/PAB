@@ -18,9 +18,13 @@ function toggleIsOpen(element) {
 }
 
 function selectElement(element){
+  decelAllElement();
+  element.setAttribute("selected", "true");
+}
+
+function decelAllElement() {
   const elementsSelections = document.querySelectorAll(".selection");
   elementsSelections.forEach(it => decelElement(it));
-  element.setAttribute("selected", "true");
 }
 
 function decelElement(element){
