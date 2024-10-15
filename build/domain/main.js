@@ -13,6 +13,16 @@ var __assign = (this && this.__assign) || function () {
 function initNewProject() {
     current_project = base_json_template;
 }
+function updateCssProp(cssStr, prop, value) {
+    var regex = new RegExp("".concat(prop, ":\\s*[^;]+;"));
+    var newProp = "".concat(prop, ": ").concat(value, ";");
+    if (cssStr.math(regex)) {
+        return cssStr.replace(regex, newProp);
+    }
+    else {
+        return "".concat(cssStr, " ").concat(newProp);
+    }
+}
 function buildTag(component_json, mode_prod) {
     if (mode_prod === void 0) { mode_prod = false; }
     if (typeof component_json === "string")

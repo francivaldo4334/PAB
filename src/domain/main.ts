@@ -2,6 +2,17 @@ function initNewProject() {
   current_project = base_json_template 
 }
 
+function updateCssProp(cssStr, prop, value) {
+  const regex = new RegExp(`${prop}:\\s*[^;]+;`);
+  const newProp = `${prop}: ${value};`;
+  if (cssStr.math(regex)) {
+    return cssStr.replace(regex, newProp);
+  }
+  else {
+    return `${cssStr} ${newProp}`;
+  }
+}
+
 function buildTag(component_json, mode_prod=false) {
   if (typeof component_json === "string")
     return component_json;
@@ -9,7 +20,6 @@ function buildTag(component_json, mode_prod=false) {
   const is_tag_comp = mode_prod && component_json.tag === "body";
   if (is_tag_comp){
     const prop_style = comp.props.find(it => it.name === "style");
-
     comp.props = (component_json.props && component_json.props.length > 0) ? component_json.props.map(it => {
       if (it.name === "style") {
         return {"name": "style","value": prop_style.value + it.value}
