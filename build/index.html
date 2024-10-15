@@ -89,6 +89,66 @@
   </div>
 </div>
 
+  <script>
+    const base_json_template = {
+      "name": "",
+      "is_view": false,
+      "tag": "html",
+      "template": "",
+      "position": {"x": 0, "y": 0},
+      "props": [
+        {"name": "lang", "value": "pt-BR"}
+      ],
+      "content": [
+        {
+          "name": "",
+          "is_view": false,
+          "tag": "head",
+          "template": "",
+          "props": [],
+          "content": [
+            {
+              "name": "",
+              "is_view": false,
+              "tag": "meta",
+              "template": "",
+              "props": [
+                {"name": "charset", "value": "UTF-8"}
+              ],
+              "content": []
+            },
+            {
+              "name": "",
+              "is_view": false,
+              "tag": "meta",
+              "template": "",
+              "props": [
+                {"name": "name", "value": "viewport"},
+                {"name": "content", "value": "width=device-width, initial-scale=1.0"}
+              ],
+              "content": []
+            },
+            {
+              "name": "",
+              "is_view": false,
+              "tag": "title",
+              "template": "",
+              "props": [],
+              "content": ["My Site"]
+            }
+          ]
+        },
+        {
+          "name": "",
+          "is_view": true,
+          "tag": "body",
+          "template": "",
+          "props": [],
+          "content": []
+        }
+      ]
+    }
+  </script>
 </div>
 
     <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
@@ -332,7 +392,8 @@
     <script src="./ui/bihavior.js"></script>
     <script src="./domain/actions.js"></script>
     <script src="./ui/translations.js"></script>
-    <script src="./domain/keybinds.js"></script>
+    <script src="./domain/editor_manager.js"></script>
+    <script src="./domain/main.js"></script>
 
 
 
