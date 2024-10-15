@@ -96,6 +96,7 @@
       "tag": "html",
       "template": "",
       "position": {"x": 0, "y": 0},
+      "size": {"width": 500, "height": 500},
       "props": [
         {"name": "lang", "value": "pt-BR"}
       ],
@@ -160,6 +161,19 @@
           ]
         }
       ]
+    }
+    const base_view_body = {
+        "name": "body",
+        "is_view": true,
+        "tag": "div",
+        "template": "",
+        "props": [
+          {
+            "name": "style", 
+            "value": "width: 500px; height: 500px; background: #fff; position: absolute; left: 0; top: 0; scale: 1;"
+          }
+        ],
+        "content": []
     }
   </script>
 </div>
@@ -336,7 +350,7 @@
     </div>
 </div>
 
-            <div style="flex-grow: 1; flex-grow:1;" id="project_draw">
+            <div style="flex-grow:1; position: relative; overflow: hidden;" id="project_draw">
             </div>
             <div style="display: flex; flex-direction: row;" class="side_bar">
     <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleIsOpen(this)" class="side_bar_border">
