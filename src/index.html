@@ -59,7 +59,7 @@
         <div style="width: 100vw; flex-grow:1; display: flex;">
             <comp src="./ui/components/side_bar_left.html"></comp>
             <div 
-                style="flex-grow:1; position: relative; overflow: hidden;" 
+                style="z-index: 0;flex-grow:1; position: relative; overflow: hidden;" 
                 id="project_draw"
             >
             </div>
@@ -69,6 +69,7 @@
     <script src="./ui/bihavior.js"></script>
     <script src="./domain/actions.js"></script>
     <script src="./ui/translations.js"></script>
+    <script src="./domain/keybinds.js"></script>
     <script src="./domain/editor_manager.js"></script>
     <script src="./domain/main.js"></script>
 </body>

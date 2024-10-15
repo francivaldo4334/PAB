@@ -208,7 +208,7 @@
     
 </button>
 
-    <div style="position: fixed;" class="content multiselection">
+    <div style="position: fixed; z-index: 1;" class="content multiselection">
         <button class="item_multiselection button" style="width: var(--224dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--12dp);" onclick="addNewElement('FRAME')">
   
     
@@ -350,7 +350,7 @@
     </div>
 </div>
 
-            <div style="flex-grow:1; position: relative; overflow: hidden;" id="project_draw">
+            <div style="z-index: 0;flex-grow:1; position: relative; overflow: hidden;" id="project_draw">
             </div>
             <div style="display: flex; flex-direction: row;" class="side_bar">
     <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleIsOpen(this)" class="side_bar_border">
@@ -419,6 +419,7 @@
     <script src="./ui/bihavior.js"></script>
     <script src="./domain/actions.js"></script>
     <script src="./ui/translations.js"></script>
+    <script src="./domain/keybinds.js"></script>
     <script src="./domain/editor_manager.js"></script>
     <script src="./domain/main.js"></script>
 
