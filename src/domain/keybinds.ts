@@ -1,5 +1,10 @@
 let currentKeybind = []
 const keymaps = {
+  Control: {
+    action: () => {
+      setMoveMode()
+    }
+  }
   Insert: {
     mode: true,
     f: {

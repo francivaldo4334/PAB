@@ -1,6 +1,11 @@
 "use strict";
 var currentKeybind = [];
 var keymaps = {
+    Control: {
+        action: function () {
+            setMoveMode();
+        }
+    },
     Insert: {
         mode: true,
         f: {
