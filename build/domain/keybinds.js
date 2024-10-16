@@ -15,7 +15,7 @@ var newElement = {
     f: {
         action: function () {
             addNewElement("FRAME");
-        }
+        },
     },
     action: function () {
         openMenuNewElement();
@@ -23,22 +23,22 @@ var newElement = {
     c: {
         action: function () {
             addNewElement("OVAL");
-        }
+        },
     },
     r: {
         action: function () {
             addNewElement("RECT");
-        }
+        },
     },
     i: {
         action: function () {
             addNewElement("IMAGE");
-        }
-    }
+        },
+    },
 };
 var keymaps = {
     Control: {
-        n: __assign({ mode: true }, newElement)
+        n: __assign({ mode: true }, newElement),
     },
     Insert: __assign({ mode: true }, newElement),
 };
@@ -60,16 +60,16 @@ function checkKeybind(map, event) {
                 event.preventDefault();
             }
             else {
-                checkKeybind(map[key]);
+                checkKeybind(map[key], event);
             }
         }
     }
 }
 function keyMode(map, index, key) {
-    if (map[key] && map[key].mode) {
+    if (key && map[key].mode) {
         currentKeybind.push(key);
     }
-    if (map[key] && map[key].action) {
+    if (key && map[key].action) {
         map[key].action();
     }
     if (index < currentKeybind.length) {
@@ -77,7 +77,7 @@ function keyMode(map, index, key) {
         keyMode(map[keyMap], index + 1, key);
         return;
     }
-    if (map[key] && map[key].action) {
+    if (key && map[key].action) {
         currentKeybind = [];
     }
 }

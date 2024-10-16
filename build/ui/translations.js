@@ -8,7 +8,7 @@ var translations = {
         javascript: "javascript",
         assets: "Assets",
         design: "Design",
-        prototype: "Prototype"
+        prototype: "Prototype",
     },
     pt_br: {
         project_name: "Nome do Projeto",
@@ -18,13 +18,19 @@ var translations = {
         javascript: "javascript",
         assets: "Assets",
         design: "Design",
-        prototype: "Prototipo"
-    }
+        prototype: "Prototipo",
+    },
 };
-function setLanguate(lang) {
-    document.querySelectorAll("[data-translate]").forEach(function (element) {
-        var key = element.getAttribute("data-translate");
-        element.textContent = translations[lang][key];
-    });
+function setLanguage(lang) {
+    var dataElements = Array.from(document.querySelectorAll("[data-translate]"));
+    if (dataElements) {
+        for (var _i = 0, dataElements_1 = dataElements; _i < dataElements_1.length; _i++) {
+            var element = dataElements_1[_i];
+            var key = element.getAttribute("data-translate");
+            if (key && translations[lang][key]) {
+                element.textContent = translations[lang][key];
+            }
+        }
+    }
 }
-setLanguate("pt_br");
+setLanguage("pt_br");

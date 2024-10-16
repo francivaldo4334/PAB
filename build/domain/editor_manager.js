@@ -1,6 +1,6 @@
 "use strict";
 var past = [];
-var current_project = {};
+var current_project = null;
 var future = [];
 function updateText(newText) {
     past.push(current_project);

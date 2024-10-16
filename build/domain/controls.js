@@ -12,6 +12,7 @@ var M_BUTTON_LEFT = false;
 var M_BUTTON_MIDDLE = false;
 var M_BUTTON_RIGHT = false;
 var SCROLL_STATE = "STOP";
+var SCALE_JUMP = 0.1;
 var isSelecting = false;
 var selectionBox = document.getElementById("selection_box");
 var drawPosition = document.getElementById("project_draw_position");
@@ -89,11 +90,13 @@ window.addEventListener("mousemove", function (e) {
     M_Y = e.clientY;
     M_DELTA_X = M_X - M_INIT_X;
     M_DELTA_Y = M_Y - M_INIT_Y;
-    var rect = document.getElementById("project_draw_rect").getBoundingClientRect();
-    var isInside = (e.clientX >= rect.left &&
+    var rect = document
+        .getElementById("project_draw_rect")
+        .getBoundingClientRect();
+    var isInside = e.clientX >= rect.left &&
         e.clientX <= rect.right &&
         e.clientY >= rect.top &&
-        e.clientY <= rect.bottom);
+        e.clientY <= rect.bottom;
     if (EDIT_MODE === "MOVE" && M_BUTTON_LEFT && isInside) {
         setPositionDraw(current_project.position.x + M_DELTA_X, current_project.position.y + M_DELTA_Y);
     }
@@ -144,15 +147,14 @@ window.addEventListener("wheel", function (e) {
             }
             break;
         case "ZOOM":
-            var scale_space = 0.1;
             switch (SCROLL_STATE) {
                 case "UP":
-                    setScaleDraw(current_project.zoom + scale_space);
-                    setScaleProject(current_project.zoom + scale_space);
+                    setScaleDraw(current_project.zoom + SCALE_JUMP);
+                    setScaleProject(current_project.zoom + SCALE_JUMP);
                     break;
                 case "DOWN":
-                    setScaleDraw(current_project.zoom - scale_space);
-                    setScaleProject(current_project.zoom - scale_space);
+                    setScaleDraw(current_project.zoom - SCALE_JUMP);
+                    setScaleProject(current_project.zoom - SCALE_JUMP);
                     break;
                 default:
                     break;
