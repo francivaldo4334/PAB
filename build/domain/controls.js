@@ -37,10 +37,22 @@ function setScaleProject(scale) {
 function getScale() {
     return current_project.zoom;
 }
+function calcPositionCursorX(x) {
+    var projectDrawPosition = document.getElementById("project_draw_position");
+    var rect = projectDrawPosition.getBoundingClientRect();
+    return x - rect.x;
+}
+function calcPositionCursorY(y) {
+    var projectDrawPosition = document.getElementById("project_draw_position");
+    var rect = projectDrawPosition.getBoundingClientRect();
+    return y - rect.y;
+}
 function initSelectionBox() {
     isSelecting = true;
-    selectionBox.style.left = "".concat(M_INIT_X);
-    selectionBox.style.top = "".concat(M_INIT_Y);
+    var x = calcPositionCursorX(M_INIT_X);
+    var y = calcPositionCursorY(M_INIT_Y);
+    selectionBox.style.left = "".concat(x);
+    selectionBox.style.top = "".concat(y);
     selectionBox.style.width = "0px";
     selectionBox.style.height = "0px";
     selectionBox.style.display = "block";
@@ -48,8 +60,8 @@ function initSelectionBox() {
 function updateSelectionBox() {
     var width = Math.abs(M_DELTA_X);
     var height = Math.abs(M_DELTA_Y);
-    selectionBox.style.left = "".concat(Math.min(M_X, M_INIT_X), "px");
-    selectionBox.style.top = "".concat(Math.min(M_Y, M_INIT_Y), "px");
+    selectionBox.style.left = "".concat(Math.min(calcPositionCursorX(M_X), calcPositionCursorX(M_INIT_X)), "px");
+    selectionBox.style.top = "".concat(Math.min(calcPositionCursorY(M_Y), calcPositionCursorY(M_INIT_Y)), "px");
     selectionBox.style.width = "".concat(width, "px");
     selectionBox.style.height = "".concat(height, "px");
 }
@@ -60,6 +72,7 @@ function finishSelectionBox() {
 window.addEventListener("keydown", function (e) {
     switch (e.key) {
         case " ":
+        case e.ctrlKey:
             setMoveMode();
             break;
         default:
@@ -147,6 +160,9 @@ window.addEventListener("wheel", function (e) {
             break;
         default:
             break;
+    }
+    if (isSelecting) {
+        updateSelectionBox();
     }
 }, { passive: false });
 window.addEventListener("mouseup", function (e) {

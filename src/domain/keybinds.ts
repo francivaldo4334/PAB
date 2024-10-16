@@ -1,38 +1,39 @@
 let currentKeybind = []
-const keymaps = {
-  Control: {
+const newElement = {
+  f: {
     action: () => {
-      setMoveMode()
+      addNewElement("FRAME");
+    }
+  },
+  action: () => {
+    openMenuNewElement();
+  },
+  c: {
+    action: () => {
+      addNewElement("OVAL"):
+    }
+  },
+  r: {
+    action: () => {
+      addNewElement("RECT");
+    }
+  },
+  i: {
+    action: () => {
+      addNewElement("IMAGE");
     }
   }
+}
+const keymaps = {
+  Control: {
+    n: {
+      mode: true,
+      ...newElement
+    }
+  },
   Insert: {
     mode: true,
-    f: {
-      action: () => {
-        addNewElement("FRAME");
-      }
-    },
-    action: () => {
-      openMenuNewElement();
-    },
-    s: {
-      mode: true,
-      c: {
-        action: () => {
-          addNewElement("OVAL"):
-        }
-      },
-      r: {
-        action: () => {
-          addNewElement("RECT");
-        }
-      },
-      i: {
-        action: () => {
-          addNewElement("IMAGE");
-        }
-      }
-    }
+    ...newElement
   },
 }
 const keydown = {}

@@ -54,14 +54,15 @@
 </head>
 <body style="margin:0;">
     <comp src="./ui/components/templates/templates.html" style="display: none;"></comp>
-    <div id="selection_box" style="position: absolute; border: 2px dashed #00f; background-color: rgba(0,0,255,0.2); display: none; z-index: 3;"></div>
     <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
         <comp src="./ui/components/topbar.html"></comp>
         <div style="width: 100vw; flex-grow:1; display: flex;">
             <comp src="./ui/components/side_bar_left.html"></comp>
-            <div style="z-index: 0; flex-grow:1; position: relative; overflow: hidden;" id="project_draw_rect">
+            <div style="z-index: 0; flex-grow:1; position: relative; overflow: hidden;" id="project_draw_rect" class="selection">
                 <div id="project_draw_position" style="position: relative;">
-                    <div id="project_draw"></div>
+                    <div id="selection_box" style="position: absolute; border: 2px dashed #00f; background-color: rgba(0,0,255,0.2); display: none; z-index: 3;"></div>
+                    <div id="project_draw">
+                    </div>
                 </div>
             </div>
             <comp src="./ui/components/side_bar_right.html"></comp>

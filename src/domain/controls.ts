@@ -37,10 +37,23 @@ function setScaleProject(scale) {
 function getScale() {
   return current_project.zoom;
 }
+
+function calcPositionCursorX(x) {
+  const projectDrawPosition = document.getElementById("project_draw_position");
+  const rect = projectDrawPosition.getBoundingClientRect();
+  return x - rect.x;
+}
+function calcPositionCursorY(y) {
+  const projectDrawPosition = document.getElementById("project_draw_position");
+  const rect = projectDrawPosition.getBoundingClientRect();
+  return y - rect.y;
+}
 function initSelectionBox() {
   isSelecting = true;
-  selectionBox.style.left = `${M_INIT_X}`;
-  selectionBox.style.top = `${M_INIT_Y}`;
+  const x = calcPositionCursorX(M_INIT_X);
+  const y = calcPositionCursorY(M_INIT_Y);
+  selectionBox.style.left = `${x}`;
+  selectionBox.style.top = `${y}`;
   selectionBox.style.width = "0px";
   selectionBox.style.height = "0px";
   selectionBox.style.display = "block";
@@ -48,8 +61,8 @@ function initSelectionBox() {
 function updateSelectionBox() {
   const width = Math.abs(M_DELTA_X);
   const height = Math.abs(M_DELTA_Y);
-  selectionBox.style.left = `${Math.min(M_X, M_INIT_X)}px`;
-  selectionBox.style.top = `${Math.min(M_Y, M_INIT_Y)}px`;
+  selectionBox.style.left = `${Math.min(calcPositionCursorX(M_X), calcPositionCursorX(M_INIT_X))}px`;
+  selectionBox.style.top = `${Math.min(calcPositionCursorY(M_Y), calcPositionCursorY(M_INIT_Y))}px`;
   selectionBox.style.width = `${width}px`;
   selectionBox.style.height = `${height}px`;
 }
@@ -60,6 +73,7 @@ function finishSelectionBox() {
 window.addEventListener("keydown", (e) => {
   switch (e.key) {
     case " ": 
+    case e.ctrlKey: 
       setMoveMode();
       break;
     default:
@@ -152,6 +166,9 @@ window.addEventListener("wheel", (e) => {
       break;
     default:
       break;
+  }
+  if (isSelecting) {
+    updateSelectionBox();
   }
 }, {passive: false});
 window.addEventListener("mouseup", (e) => {

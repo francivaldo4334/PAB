@@ -1,5 +1,6 @@
 "use strict";
 var EDIT_MODE = "SELECTION";
+var projectDrawScope = document.getElementById("project_draw_rect");
 function openMenuFile() {
     console.log("TODO");
 }
@@ -43,12 +44,14 @@ function setSelectionMode() {
 function setMoveMode() {
     var btnMode = document.getElementById("btn_move_mode");
     selectElement(btnMode);
+    projectDrawScope.setAttribute("selected", "pointer");
     EDIT_MODE = "MOVE";
 }
 function setZoomMode() {
     var btnMode = document.getElementById("btn_zoom_mode");
     selectElement(btnMode);
     EDIT_MODE = "ZOOM";
+    projectDrawScope.setAttribute("selected", "zoom");
 }
 function openMenuPlugins() {
     var btnMode = document.getElementById("btn_plugin");

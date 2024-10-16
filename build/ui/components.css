@@ -31,7 +31,12 @@ hr {
 [selected="true"] {
   background: var(--p-800);
 }
-
+#project_draw_rect[selected="pointer"] {
+  cursor: pointer;
+}
+#project_draw_rect[selected="zoom"] {
+  cursor: crosshair;
+}
 .button:hover {
   background: var(--p-800);
 }
