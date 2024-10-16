@@ -1,5 +1,10 @@
 let currentKeybind: string[] = [];
-const newElement = {
+type KeyMap<T> = Record<string, T>;
+type Keybind = {
+	action?: () => void;
+	mode?: boolean;
+};
+const newElement: Keybind = {
 	f: {
 		action: () => {
 			addNewElement("FRAME");
@@ -24,7 +29,7 @@ const newElement = {
 		},
 	},
 };
-const keymaps = {
+const keymaps: object = {
 	Control: {
 		n: {
 			mode: true,
@@ -44,7 +49,7 @@ window.addEventListener("keyup", (e) => {
 	keydown[e.key] = false;
 });
 
-function checkKeybind(map, event: KeyboardEvent) {
+function checkKeybind(map: Keybind, event: KeyboardEvent) {
 	for (const key in map) {
 		if (keydown[key]) {
 			if (map[key].mode) {
@@ -60,7 +65,7 @@ function checkKeybind(map, event: KeyboardEvent) {
 	}
 }
 
-function keyMode(map, index: number, key: string) {
+function keyMode(map: Keybind, index: number, key: string) {
 	if (key && map[key].mode) {
 		currentKeybind.push(key);
 	}
@@ -81,9 +86,9 @@ window.addEventListener("keydown", (e: KeyboardEvent) => {
 		window.location.reload(e.ctrlKey);
 	}
 	if (currentKeybind.length > 0) {
-		keyMode(keymaps, 0, e.key);
+		keyMode(keymaps as Keybind, 0, e.key);
 	} else {
-		checkKeybind(keymaps, e);
+		checkKeybind(keymaps as Keybind, e);
 	}
 });
 window.addEventListener("keydown", (e) => {
