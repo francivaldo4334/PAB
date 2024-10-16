@@ -88,11 +88,9 @@ function initNewProject() {
 function updateCssProp(cssStr: string, prop: string, value: string): string {
 	const regex = new RegExp(`${prop}:\\s*[^;]+;`);
 	const newProp = `${prop}: ${value};`;
-	if (cssStr.match(regex)) {
-		return cssStr.replace(regex, newProp);
-	} else {
-		return `${cssStr} ${newProp}`;
-	}
+	return cssStr.match(regex)
+		? cssStr.replace(regex, newProp)
+		: `${cssStr} ${newProp}`;
 }
 
 function buildTag(_component_json: object | string, mode_prod = false): string {

@@ -98,12 +98,9 @@ function initNewProject() {
 function updateCssProp(cssStr, prop, value) {
     var regex = new RegExp("".concat(prop, ":\\s*[^;]+;"));
     var newProp = "".concat(prop, ": ").concat(value, ";");
-    if (cssStr.match(regex)) {
-        return cssStr.replace(regex, newProp);
-    }
-    else {
-        return "".concat(cssStr, " ").concat(newProp);
-    }
+    return cssStr.match(regex)
+        ? cssStr.replace(regex, newProp)
+        : "".concat(cssStr, " ").concat(newProp);
 }
 function buildTag(_component_json, mode_prod) {
     if (mode_prod === void 0) { mode_prod = false; }
