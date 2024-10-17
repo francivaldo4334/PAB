@@ -104,8 +104,7 @@ function keyMode(map, index, key) {
 }
 window.addEventListener("keydown", function (e) {
     if (e.key === "F5") {
-        // window.location.reload(e.ctrlKey);
-        window.location.reload();
+        return;
     }
     if (currentKeybind.length > 0) {
         keyMode(keymaps, 0, e.key);

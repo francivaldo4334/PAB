@@ -52,7 +52,7 @@ function setMoveMode() {
     if (btnMode && projectDrawScope) {
         selectElement(btnMode);
         EDIT_MODE = "MOVE";
-        projectDrawScope.setAttribute("selected", "pointer");
+        projectDrawScope.setAttribute("selected", "move");
     }
 }
 function setZoomMode() {

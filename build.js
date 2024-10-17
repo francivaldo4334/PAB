@@ -1,123 +1,132 @@
-const fs = require('fs');
-const path = require('path');
-const { exec } = require('child_process');
-const cheerio = require('cheerio')
-const srcDir = path.join(__dirname, 'src');
-const buildDir = path.join(__dirname, 'build');
+const fs = require("fs");
+const path = require("path");
+const { exec } = require("child_process");
+const cheerio = require("cheerio");
+const srcDir = path.join(__dirname, "src");
+const buildDir = path.join(__dirname, "build");
+
+async function copyFiles(srcDir, buildDir, extension) {
+	try {
+		const files = await fs.promises.readdir(srcDir);
+		await Promise.all(
+			files.map(async (file) => {
+				const srcFilePath = path.join(srcDir, file);
+				const stat = await fs.promises.stat(srcFilePath);
+				if (stat.isDirectory()) {
+					const newBuildDir = path.join(buildDir, file);
+					await fs.promises.mkdir(newBuildDir, { recursive: true });
+					await copyFiles(srcFilePath, newBuildDir, extension); // Reuse copyFiles for nested directories
+				} else if (path.extname(file) === extension) {
+					const destFilePath = path.join(buildDir, file);
+					console.log(`Copying: ${srcFilePath} to ${destFilePath}`);
+					await fs.promises.mkdir(buildDir, { recursive: true });
+					await fs.promises.copyFile(srcFilePath, destFilePath);
+				}
+			}),
+		);
+		console.log(`All ${extension} files copied successfully!`);
+	} catch (error) {
+		console.error(`Error copying ${extension} files:`, error);
+	}
+}
 
 async function copyStyles(srcDir, buildDir) {
-   try {
-        const files = await fs.promises.readdir(srcDir);
-        await Promise.all(files.map(async (file) => {
-            const srcFilePath = path.join(srcDir, file);
-            const stat = await fs.promises.stat(srcFilePath);
-            if (stat.isDirectory()) {
-                const newBuildDir = path.join(buildDir, file);
-                await fs.promises.mkdir(newBuildDir, { recursive: true });
-                await copyStyles(srcFilePath, newBuildDir);
-            } else if (path.extname(file) === '.css') {
-                const destFilePath = path.join(buildDir, file);
-                console.log(`Copiando: ${srcFilePath} para ${destFilePath}`);
-                await fs.promises.mkdir(buildDir, { recursive: true });
-                await fs.promises.copyFile(srcFilePath, destFilePath);
-            }
-        }));
-        console.log('Todos os arquivos CSS foram copiados com sucesso!');
-    } catch (error) {
-        console.error('Erro ao copiar os arquivos CSS:', error);
-    }
+	await copyFiles(srcDir, buildDir, ".css");
+}
+
+async function copySvgs(srcDir, buildDir) {
+	await copyFiles(srcDir, buildDir, ".svg");
 }
 
 async function transpileTS() {
-    return new Promise((resolve, reject) => {
-        exec('npx tsc', (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Erro na transpilação: ${stderr}`);
-                return reject(error);
-            }
-            console.log(`Transpilação concluída:\n${stdout}`);
-            resolve();
-        });
-    });
+	return new Promise((resolve, reject) => {
+		exec("npx tsc", (error, stdout, stderr) => {
+			if (error) {
+				console.error(`Erro na transpilação: ${stderr}`);
+				return reject(error);
+			}
+			console.log(`Transpilação concluída:\n${stdout}`);
+			resolve();
+		});
+	});
 }
 
 async function replaceAttributes(element, newElement) {
-    element.each((_, el) => {
-        const attributes = el.attributes;
-        for (let attribute of attributes){
-            const subelements = newElement.find(attribute.name)
-            if (subelements.length > 0) {
-                subelements.replaceWith(attribute.value);
-            }
-            else if (attribute.name !== "src" && attribute.name !=="include") {
-                newElement.attr(attribute.name, attribute.value);
-            } 
-        };
-    });
+	element.each((_, el) => {
+		const attributes = el.attributes;
+		for (let attribute of attributes) {
+			const subelements = newElement.find(attribute.name);
+			if (subelements.length > 0) {
+				subelements.replaceWith(attribute.value);
+			} else if (attribute.name !== "src" && attribute.name !== "include") {
+				newElement.attr(attribute.name, attribute.value);
+			}
+		}
+	});
 }
 
 async function loadAttributesIncludes(element, newElement) {
-    element.each((_, el) => {
-        const attributes = el.attributes;
-        for (let attribute of attributes){
-            if (attribute.name === "include") {
-                const parentAttr = Array.from(attributes).find(attr => attr.name == attribute.value)
-                if (parentAttr){
-                    newElement.attr(parentAttr.name, parentAttr.value);
-                }
-            } 
-        };
-    });
+	element.each((_, el) => {
+		const attributes = el.attributes;
+		for (let attribute of attributes) {
+			if (attribute.name === "include") {
+				const parentAttr = Array.from(attributes).find(
+					(attr) => attr.name == attribute.value,
+				);
+				if (parentAttr) {
+					newElement.attr(parentAttr.name, parentAttr.value);
+				}
+			}
+		}
+	});
 }
 
 async function replaceElement(element, newElement, $) {
-
-    await replaceAttributes(element, newElement);
-    const contentNewElement = newElement.find("content").first();
-    if (contentNewElement.length > 0) {
-        contentNewElement.replaceWith(element.html());
-        await loadAttributesIncludes(element, contentNewElement)
-    }
-    element.replaceWith(newElement);
-};
+	await replaceAttributes(element, newElement);
+	const contentNewElement = newElement.find("content").first();
+	if (contentNewElement.length > 0) {
+		contentNewElement.replaceWith(element.html());
+		await loadAttributesIncludes(element, contentNewElement);
+	}
+	element.replaceWith(newElement);
+}
 
 async function processComponet(comp, $) {
-    const src = comp.attr('src');
-    if (src) {
-        const componentPath = path.join(srcDir, src);
-        const componentContent = await fs.promises.readFile(componentPath, 'utf8');
-        const newElement = $(componentContent);
-        await replaceElement(comp, newElement, $);
-    }
-
-};
+	const src = comp.attr("src");
+	if (src) {
+		const componentPath = path.join(srcDir, src);
+		const componentContent = await fs.promises.readFile(componentPath, "utf8");
+		const newElement = $(componentContent);
+		await replaceElement(comp, newElement, $);
+	}
+}
 
 async function processHTML() {
-    const htmlPath = path.join(srcDir, 'index.html');
-    let htmlContent = await fs.promises.readFile(htmlPath, 'utf8');
-    const $ = cheerio.load(htmlContent);
-    let components = $('comp');
-    while(components.length !== 0) {
-        for (const component of components.toArray()) {
-            const comp = $(component);
-            await processComponet(comp, $);
-        }
-        components = $('comp');
-    }
-    await fs.promises.writeFile(path.join(buildDir, 'index.html'), $.html());
+	const htmlPath = path.join(srcDir, "index.html");
+	let htmlContent = await fs.promises.readFile(htmlPath, "utf8");
+	const $ = cheerio.load(htmlContent);
+	let components = $("comp");
+	while (components.length !== 0) {
+		for (const component of components.toArray()) {
+			const comp = $(component);
+			await processComponet(comp, $);
+		}
+		components = $("comp");
+	}
+	await fs.promises.writeFile(path.join(buildDir, "index.html"), $.html());
 }
 
 async function main() {
-    try {
-        await fs.promises.rm(buildDir, { recursive: true, force: true });
-        await fs.promises.mkdir(buildDir);
-        await copyStyles(srcDir, buildDir);
-        await processHTML();
-        await transpileTS();
-    } catch (error) {
-        console.error('Erro durante o processo de build:', error);
-    }
+	try {
+		await fs.promises.rm(buildDir, { recursive: true, force: true });
+		await fs.promises.mkdir(buildDir);
+		await processHTML();
+		await transpileTS();
+		await copyStyles(srcDir, buildDir);
+		await copySvgs(srcDir, buildDir);
+	} catch (error) {
+		console.error("Erro durante o processo de build:", error);
+	}
 }
 
 main();
-

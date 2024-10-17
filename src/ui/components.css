@@ -3,6 +3,9 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+* {
+  cursor: url("./components/cursors/cursor.svg"), auto;
+}
 :root {
   --p-50: #FCFCFC; 
   --p-600: #818181; 
@@ -28,14 +31,18 @@ hr {
   color: var(--white);
 }
 
+.button:hover,
+.button:hover *{
+  cursor: url("./components/cursors/pointer.svg"), auto;
+}
 [selected="true"] {
   background: var(--p-800);
 }
-#project_draw_rect[selected="pointer"] {
-  cursor: pointer;
+#project_draw_rect[selected="move"] {
+  cursor: url("./components/cursors/move.svg"), auto;
 }
 #project_draw_rect[selected="zoom"] {
-  cursor: crosshair;
+  cursor: url("./components/cursors/zoom.svg"), auto;
 }
 .button:hover {
   background: var(--p-800);
