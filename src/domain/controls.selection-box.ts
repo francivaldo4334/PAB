@@ -3,9 +3,8 @@ class SelectionBox {
     selectionBoxX = 0;
     selectionBoxY = 0;
     selectionBox = document.getElementById("selection_box");
-    constructor() {
-    
-    }
+    drawPosition = document.getElementById("project_draw_position");
+
     actionsSelectionModeMouseDown(event: MouseEvent){
         this.initSelectionBox();
 	    event.preventDefault();
@@ -25,11 +24,19 @@ class SelectionBox {
 			this.updateSelectionBox();
 		}
     }
+    calcPositionCursorX(x: number) {
+        const rect = this.drawPosition?.getBoundingClientRect();
+        return x - (rect ? rect.left : 0);
+    }
+    calcPositionCursorY(y: number) {
+        const rect = this.drawPosition?.getBoundingClientRect();
+        return y - (rect ? rect.top : 0);
+    }
     initSelectionBox() {
         if (this.selectionBox) {
             this.isSelecting = true;
-            this.selectionBoxX = calcPositionCursorX(M_INIT_X);
-            this.selectionBoxY = calcPositionCursorY(M_INIT_Y);
+            this.selectionBoxX = this.calcPositionCursorX(M_INIT_X);
+            this.selectionBoxY = this.calcPositionCursorY(M_INIT_Y);
             this.selectionBox.style.left = `${this.selectionBoxX}`;
             this.selectionBox.style.top = `${this.selectionBoxY}`;
             this.selectionBox.style.width = "0px";
@@ -39,8 +46,8 @@ class SelectionBox {
     }
     updateSelectionBox() {
         if (this.selectionBox) {
-            const currentX = calcPositionCursorX(M_X);
-            const currentY = calcPositionCursorY(M_Y);
+            const currentX = this.calcPositionCursorX(M_X);
+            const currentY = this.calcPositionCursorY(M_Y);
             const width = Math.abs(currentX - this.selectionBoxX);
             const height = Math.abs(currentY - this.selectionBoxY);
             const x = Math.min(currentX, this.selectionBoxX);
