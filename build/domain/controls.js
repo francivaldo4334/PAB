@@ -35,9 +35,19 @@ function setPositionProject(x, y) {
         }
     }
 }
+function calcPositionCursorX(x) {
+    var rect = drawPosition === null || drawPosition === void 0 ? void 0 : drawPosition.getBoundingClientRect();
+    return x - (rect ? rect.left : 0);
+}
+function calcPositionCursorY(y) {
+    var rect = drawPosition === null || drawPosition === void 0 ? void 0 : drawPosition.getBoundingClientRect();
+    return y - (rect ? rect.top : 0);
+}
 function setScaleDraw(scale) {
-    if (draw && scale < 3.0 && scale > 0.1) {
-        draw.style.scale = String(scale);
+    if (draw) {
+        if (scale < 3.0 && scale > 0.1) {
+            draw.style.scale = String(scale);
+        }
     }
 }
 function setScaleProject(scale) {
@@ -47,19 +57,11 @@ function setScaleProject(scale) {
 }
 function getScale() {
     if (current_project) {
-        return current_project.zoom;
+        if (current_project.zoom) {
+            return current_project.zoom;
+        }
     }
-    return 0;
-}
-function calcPositionCursorX(x) {
-    var projectDrawPosition = document.getElementById("project_draw_position");
-    var rect = projectDrawPosition === null || projectDrawPosition === void 0 ? void 0 : projectDrawPosition.getBoundingClientRect();
-    return x - (rect ? rect.x : 0);
-}
-function calcPositionCursorY(y) {
-    var projectDrawPosition = document.getElementById("project_draw_position");
-    var rect = projectDrawPosition === null || projectDrawPosition === void 0 ? void 0 : projectDrawPosition.getBoundingClientRect();
-    return y - (rect ? rect.y : 0);
+    return 1;
 }
 function initSelectionBox() {
     if (selectionBox) {
@@ -149,6 +151,8 @@ window.addEventListener("wheel", function (e) {
     isScrolling = setTimeout(function () {
         SCROLL_STATE = "STOP";
     }, 300);
+    var scaleJump;
+    var newScle;
     switch (EDIT_MODE) {
         case "SELECTION":
             switch (SCROLL_STATE) {
@@ -185,26 +189,10 @@ window.addEventListener("wheel", function (e) {
             }
             break;
         case "ZOOM":
-            switch (SCROLL_STATE) {
-                case "UP":
-                    if (current_project) {
-                        if (current_project.zoom) {
-                            setScaleDraw(current_project.zoom + SCALE_JUMP);
-                            setScaleProject(current_project.zoom + SCALE_JUMP);
-                        }
-                    }
-                    break;
-                case "DOWN":
-                    if (current_project) {
-                        if (current_project.zoom) {
-                            setScaleDraw(current_project.zoom - SCALE_JUMP);
-                            setScaleProject(current_project.zoom - SCALE_JUMP);
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
+            scaleJump = SCROLL_STATE === "UP" ? SCALE_JUMP : -SCALE_JUMP;
+            newScle = getScale() + scaleJump;
+            setScaleDraw(newScle);
+            setScaleProject(newScle);
             break;
         default:
             break;

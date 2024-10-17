@@ -22,6 +22,7 @@ const drawRect = document.getElementById("project_draw_rect");
 const draw = document.getElementById("project_draw");
 const body = document.querySelector("body");
 let isScrolling: number;
+
 function setPositionDraw(x: number, y: number) {
 	if (drawPosition) {
 		drawPosition.style.transform = `translate(${x}px, ${y}px)`;
@@ -35,9 +36,19 @@ function setPositionProject(x: number, y: number) {
 		}
 	}
 }
+function calcPositionCursorX(x: number) {
+	const rect = drawPosition?.getBoundingClientRect();
+	return x - (rect ? rect.left : 0);
+}
+function calcPositionCursorY(y: number) {
+	const rect = drawPosition?.getBoundingClientRect();
+	return y - (rect ? rect.top : 0);
+}
 function setScaleDraw(scale: number) {
-	if (draw && scale < 3.0 && scale > 0.1) {
-		draw.style.scale = String(scale);
+	if (draw) {
+		if (scale < 3.0 && scale > 0.1) {
+			draw.style.scale = String(scale);
+		}
 	}
 }
 function setScaleProject(scale: number) {
@@ -45,23 +56,15 @@ function setScaleProject(scale: number) {
 		current_project.zoom = scale;
 	}
 }
-function getScale() {
+function getScale(): number {
 	if (current_project) {
-		return current_project.zoom;
+		if (current_project.zoom) {
+			return current_project.zoom;
+		}
 	}
-	return 0;
+	return 1;
 }
 
-function calcPositionCursorX(x: number) {
-	const projectDrawPosition = document.getElementById("project_draw_position");
-	const rect = projectDrawPosition?.getBoundingClientRect();
-	return x - (rect ? rect.x : 0);
-}
-function calcPositionCursorY(y: number) {
-	const projectDrawPosition = document.getElementById("project_draw_position");
-	const rect = projectDrawPosition?.getBoundingClientRect();
-	return y - (rect ? rect.y : 0);
-}
 function initSelectionBox() {
 	if (selectionBox) {
 		isSelecting = true;
@@ -155,6 +158,8 @@ window.addEventListener(
 		isScrolling = setTimeout(() => {
 			SCROLL_STATE = "STOP";
 		}, 300);
+		let scaleJump: number;
+		let newScle: number;
 		switch (EDIT_MODE) {
 			case "SELECTION":
 				switch (SCROLL_STATE) {
@@ -213,26 +218,10 @@ window.addEventListener(
 				}
 				break;
 			case "ZOOM":
-				switch (SCROLL_STATE) {
-					case "UP":
-						if (current_project) {
-							if (current_project.zoom) {
-								setScaleDraw(current_project.zoom + SCALE_JUMP);
-								setScaleProject(current_project.zoom + SCALE_JUMP);
-							}
-						}
-						break;
-					case "DOWN":
-						if (current_project) {
-							if (current_project.zoom) {
-								setScaleDraw(current_project.zoom - SCALE_JUMP);
-								setScaleProject(current_project.zoom - SCALE_JUMP);
-							}
-						}
-						break;
-					default:
-						break;
-				}
+				scaleJump = SCROLL_STATE === "UP" ? SCALE_JUMP : -SCALE_JUMP;
+				newScle = getScale() + scaleJump;
+				setScaleDraw(newScle);
+				setScaleProject(newScle);
 				break;
 			default:
 				break;
