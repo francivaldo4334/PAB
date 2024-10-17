@@ -12,16 +12,12 @@ let M_BUTTON_MIDDLE = false;
 let M_BUTTON_RIGHT = false;
 let SCROLL_STATE = "STOP";
 const SCALE_JUMP = 0.1;
-
-let isSelecting = false;
-const selectionBox = document.getElementById("selection_box");
-let selectionBoxX = 0;
-let selectionBoxY = 0;
 const drawPosition = document.getElementById("project_draw_position");
 const drawRect = document.getElementById("project_draw_rect");
 const draw = document.getElementById("project_draw");
 const body = document.querySelector("body");
 let isScrolling: number;
+const selectionBox  = new SelectionBox();
 
 function setPositionDraw(x: number, y: number) {
 	if (drawPosition) {
@@ -64,39 +60,6 @@ function getScale(): number {
 	}
 	return 1;
 }
-
-function initSelectionBox() {
-	if (selectionBox) {
-		isSelecting = true;
-		selectionBoxX = calcPositionCursorX(M_INIT_X);
-		selectionBoxY = calcPositionCursorY(M_INIT_Y);
-		selectionBox.style.left = `${selectionBoxX}`;
-		selectionBox.style.top = `${selectionBoxY}`;
-		selectionBox.style.width = "0px";
-		selectionBox.style.height = "0px";
-		selectionBox.style.display = "block";
-	}
-}
-function updateSelectionBox() {
-	if (selectionBox) {
-		const currentX = calcPositionCursorX(M_X);
-		const currentY = calcPositionCursorY(M_Y);
-		const width = Math.abs(currentX - selectionBoxX);
-		const height = Math.abs(currentY - selectionBoxY);
-		const x = Math.min(currentX, selectionBoxX);
-		const y = Math.min(currentY, selectionBoxY);
-		selectionBox.style.left = `${x}px`;
-		selectionBox.style.top = `${y}px`;
-		selectionBox.style.width = `${width}px`;
-		selectionBox.style.height = `${height}px`;
-	}
-}
-function finishSelectionBox() {
-	if (selectionBox) {
-		selectionBox.style.display = "none";
-		isSelecting = false;
-	}
-}
 window.addEventListener("keydown", (e: KeyboardEvent) => {
 	if (e.shiftKey && EDIT_MODE === "SELECTION" && body) {
 		body.setAttribute("selected", "move-h");
@@ -138,9 +101,7 @@ window.addEventListener("mousemove", (e) => {
 			}
 		}
 	}
-	if (isSelecting) {
-		updateSelectionBox();
-	}
+	selectionBox.actionsSelectionModeMouseMove();
 });
 window.addEventListener(
 	"wheel",
@@ -223,11 +184,11 @@ window.addEventListener(
 				setScaleDraw(newScle);
 				setScaleProject(newScle);
 				break;
+			case "SELECTION":
+				selectionBox.actionsSelectionModeWheel();
+				break;
 			default:
 				break;
-		}
-		if (isSelecting) {
-			updateSelectionBox();
 		}
 	},
 	{ passive: false },
@@ -251,12 +212,11 @@ window.addEventListener("mouseup", (e) => {
 				}
 			}
 			break;
-
+		case "SELECTION":
+			selectionBox.actionsSelectionModeMouseUp();
+			break;
 		default:
 			break;
-	}
-	if (isSelecting && !M_BUTTON_LEFT) {
-		finishSelectionBox();
 	}
 	M_INIT_X = 0;
 	M_INIT_Y = 0;
@@ -276,8 +236,7 @@ window.addEventListener("mousedown", (e) => {
 	switch (EDIT_MODE) {
 		case "SELECTION":
 			if (M_BUTTON_LEFT && e.button === 0) {
-				initSelectionBox();
-				e.preventDefault();
+				selectionBox.actionsSelectionModeMouseDown(e);
 			}
 			break;
 
