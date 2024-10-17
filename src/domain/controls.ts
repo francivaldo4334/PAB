@@ -12,34 +12,13 @@ let M_BUTTON_MIDDLE = false;
 let M_BUTTON_RIGHT = false;
 let SCROLL_STATE = "STOP";
 const SCALE_JUMP = 0.1;
-const drawPosition = document.getElementById("project_draw_position");
 const drawRect = document.getElementById("project_draw_rect");
 const draw = document.getElementById("project_draw");
 const body = document.querySelector("body");
 let isScrolling: number;
 const selectionBox  = new SelectionBox();
+const movimentation = new Movimentation();
 
-function setPositionDraw(x: number, y: number) {
-	if (drawPosition) {
-		drawPosition.style.transform = `translate(${x}px, ${y}px)`;
-	}
-}
-function setPositionProject(x: number, y: number) {
-	if (current_project) {
-		if (current_project.position) {
-			current_project.position.x = x;
-			current_project.position.y = y;
-		}
-	}
-}
-function calcPositionCursorX(x: number) {
-	const rect = drawPosition?.getBoundingClientRect();
-	return x - (rect ? rect.left : 0);
-}
-function calcPositionCursorY(y: number) {
-	const rect = drawPosition?.getBoundingClientRect();
-	return y - (rect ? rect.top : 0);
-}
 function setScaleDraw(scale: number) {
 	if (draw) {
 		if (scale < 3.0 && scale > 0.1) {
@@ -82,26 +61,16 @@ window.addEventListener("mousemove", (e) => {
 	M_Y = e.clientY;
 	M_DELTA_X = M_X - M_INIT_X;
 	M_DELTA_Y = M_Y - M_INIT_Y;
-	const rect = document
-		.getElementById("project_draw_rect")
-		?.getBoundingClientRect();
-	const isInside =
-		rect &&
-		e.clientX >= rect.left &&
-		e.clientX <= rect.right &&
-		e.clientY >= rect.top &&
-		e.clientY <= rect.bottom;
-	if (EDIT_MODE === "MOVE" && M_BUTTON_LEFT && isInside) {
-		if (current_project) {
-			if (current_project.position) {
-				setPositionDraw(
-					current_project.position.x + M_DELTA_X,
-					current_project.position.y + M_DELTA_Y,
-				);
-			}
-		}
+	switch(EDIT_MODE) {
+		case "SELECTION":
+			selectionBox.actionsSelectionModeMouseMove();
+			break;
+		case "MOVE":
+			movimentation.actionsMoveModeMouseMove(e);
+			break;
+		default:
+			break;
 	}
-	selectionBox.actionsSelectionModeMouseMove();
 });
 window.addEventListener(
 	"wheel",
@@ -123,60 +92,7 @@ window.addEventListener(
 		let newScle: number;
 		switch (EDIT_MODE) {
 			case "SELECTION":
-				switch (SCROLL_STATE) {
-					case "UP":
-						if (current_project) {
-							if (current_project.position) {
-								if (e.shiftKey) {
-									setPositionDraw(
-										current_project.position.x + JUMP_SCROLL_MOVE,
-										current_project.position.y,
-									);
-									setPositionProject(
-										current_project.position.x + JUMP_SCROLL_MOVE,
-										current_project.position.y,
-									);
-								} else {
-									setPositionDraw(
-										current_project.position.x,
-										current_project.position.y + JUMP_SCROLL_MOVE,
-									);
-									setPositionProject(
-										current_project.position.x,
-										current_project.position.y + JUMP_SCROLL_MOVE,
-									);
-								}
-							}
-						}
-						break;
-					case "DOWN":
-						if (current_project) {
-							if (current_project.position) {
-								if (e.shiftKey) {
-									setPositionDraw(
-										current_project.position.x - JUMP_SCROLL_MOVE,
-										current_project.position.y,
-									);
-									setPositionProject(
-										current_project.position.x - JUMP_SCROLL_MOVE,
-										current_project.position.y,
-									);
-								} else {
-									setPositionDraw(
-										current_project.position.x,
-										current_project.position.y - JUMP_SCROLL_MOVE,
-									);
-									setPositionProject(
-										current_project.position.x,
-										current_project.position.y - JUMP_SCROLL_MOVE,
-									);
-								}
-							}
-						}
-						break;
-					default:
-						break;
-				}
+				movimentation.actionsSelectionModeMouseWheel(e);		
 				break;
 			case "ZOOM":
 				scaleJump = SCROLL_STATE === "UP" ? SCALE_JUMP : -SCALE_JUMP;
@@ -203,14 +119,7 @@ window.addEventListener("mouseup", (e) => {
 	}
 	switch (EDIT_MODE) {
 		case "MOVE":
-			if (current_project) {
-				if (current_project.position) {
-					setPositionProject(
-						current_project.position.x + M_DELTA_X,
-						current_project.position.y + M_DELTA_Y,
-					);
-				}
-			}
+			movimentation.actionsMoveModeMouseUp()
 			break;
 		case "SELECTION":
 			selectionBox.actionsSelectionModeMouseUp();
