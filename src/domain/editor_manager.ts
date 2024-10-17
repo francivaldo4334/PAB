@@ -16,25 +16,31 @@ type Project = {
 };
 
 const past: Project[] = [];
-let current_project: Project | null = null;
-let future = [];
+let current_project: Project | undefined;
+let future: Project[] = [];
 
-function updateText(newText) {
-	past.push(current_project);
+function updateText(newText: Project) {
+	if (current_project) {
+		past.push(current_project);
+	}
 	current_project = newText;
 	future = [];
 }
 
 function undo() {
 	if (past.length > 0) {
-		future.push(current_project);
+		if (current_project) {
+			future.push(current_project);
+		}
 		current_project = past.pop();
 	}
 }
 
 function redo() {
 	if (future.length > 0) {
-		past.push(current_project);
+		if (current_project) {
+			past.push(current_project);
+		}
 		current_project = future.pop();
 	}
 }

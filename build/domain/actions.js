@@ -9,13 +9,17 @@ function openRecentProjects() {
 }
 function openMenuNewElement() {
     var menuNewElement = document.getElementById("menu_new_element");
-    selectElement(menuNewElement);
-    toggleIsOpen(menuNewElement);
+    if (menuNewElement) {
+        selectElement(menuNewElement);
+        toggleIsOpen(menuNewElement);
+    }
 }
 function closeMenuNewElement() {
     var menuNewElement = document.getElementById("menu_new_element");
-    decelElement(menuNewElement);
-    toggleIsOpen(menuNewElement);
+    if (menuNewElement) {
+        decelElement(menuNewElement);
+        toggleIsOpen(menuNewElement);
+    }
 }
 function addNewElement(type) {
     switch (type) {
@@ -38,24 +42,32 @@ function addNewElement(type) {
 }
 function setSelectionMode() {
     var btnMode = document.getElementById("btn_selection_mode");
-    selectElement(btnMode);
-    EDIT_MODE = "SELECTION";
+    if (btnMode) {
+        selectElement(btnMode);
+        EDIT_MODE = "SELECTION";
+    }
 }
 function setMoveMode() {
     var btnMode = document.getElementById("btn_move_mode");
-    selectElement(btnMode);
-    projectDrawScope.setAttribute("selected", "pointer");
-    EDIT_MODE = "MOVE";
+    if (btnMode && projectDrawScope) {
+        selectElement(btnMode);
+        EDIT_MODE = "MOVE";
+        projectDrawScope.setAttribute("selected", "pointer");
+    }
 }
 function setZoomMode() {
     var btnMode = document.getElementById("btn_zoom_mode");
-    selectElement(btnMode);
-    EDIT_MODE = "ZOOM";
-    projectDrawScope.setAttribute("selected", "zoom");
+    if (btnMode && projectDrawScope) {
+        selectElement(btnMode);
+        EDIT_MODE = "ZOOM";
+        projectDrawScope.setAttribute("selected", "zoom");
+    }
 }
 function openMenuPlugins() {
     var btnMode = document.getElementById("btn_plugin");
-    selectElement(btnMode);
+    if (btnMode) {
+        selectElement(btnMode);
+    }
 }
 function openFolder(path) {
     console.log("TODO");
@@ -86,5 +98,7 @@ function addNewProp(type) {
 }
 function removePropretie(prop_id) {
     var prop = document.getElementById(prop_id);
-    removeUiPropretie(prop);
+    if (prop) {
+        removeUiPropretie(prop);
+    }
 }

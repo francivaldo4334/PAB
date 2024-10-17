@@ -11,6 +11,17 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 var currentKeybind = [];
+function isKeybind(obj) {
+    return (typeof obj.action === "undefined" ||
+        (typeof obj.action === "function" && typeof obj.mode === "undefined") ||
+        typeof obj.mode === "boolean");
+}
+function isRecordOfObject(variable) {
+    return (typeof variable === "object" &&
+        variable !== null &&
+        !Array.isArray(variable) &&
+        Object.values(variable).every(function (value) { return typeof value === "object" && value !== null; }));
+}
 var newElement = {
     f: {
         action: function () {
@@ -50,40 +61,51 @@ window.addEventListener("keyup", function (e) {
     keydown[e.key] = false;
 });
 function checkKeybind(map, event) {
-    for (var key in map) {
-        if (keydown[key]) {
-            if (map[key].mode) {
-                currentKeybind.push(key);
+    if (isRecordOfObject(map)) {
+        for (var key in map) {
+            if (keydown[key] && isKeybind(map)) {
+                if (map.action && typeof map.action === "function") {
+                    map.action();
+                    event.preventDefault();
+                }
+                if (map.mode) {
+                    currentKeybind.push(key);
+                }
             }
-            if (map[key].action) {
-                map[key].action();
-                event.preventDefault();
-            }
-            else {
+            if (isRecordOfObject(map[key])) {
                 checkKeybind(map[key], event);
             }
         }
     }
+    else {
+        checkKeybind(map, event);
+    }
 }
 function keyMode(map, index, key) {
-    if (key && map[key].mode) {
-        currentKeybind.push(key);
-    }
-    if (key && map[key].action) {
-        map[key].action();
+    var cleanKeybind = false;
+    if (isKeybind(map)) {
+        if (map.action && typeof map.action === "function") {
+            map.action();
+            cleanKeybind = true;
+        }
+        if (map.mode) {
+            currentKeybind.push(key);
+        }
     }
     if (index < currentKeybind.length) {
         var keyMap = currentKeybind[index];
-        keyMode(map[keyMap], index + 1, key);
-        return;
+        if (isRecordOfObject(map[keyMap])) {
+            keyMode(map[keyMap], index + 1, key);
+        }
     }
-    if (key && map[key].action) {
+    if (cleanKeybind) {
         currentKeybind = [];
     }
 }
 window.addEventListener("keydown", function (e) {
     if (e.key === "F5") {
-        window.location.reload(e.ctrlKey);
+        // window.location.reload(e.ctrlKey);
+        window.location.reload();
     }
     if (currentKeybind.length > 0) {
         keyMode(keymaps, 0, e.key);

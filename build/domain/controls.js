@@ -19,62 +19,78 @@ var drawPosition = document.getElementById("project_draw_position");
 var draw = document.getElementById("project_draw");
 var isScrolling;
 function setPositionDraw(x, y) {
-    drawPosition.style.transform = "translate(".concat(x, "px, ").concat(y, "px)");
+    if (drawPosition) {
+        drawPosition.style.transform = "translate(".concat(x, "px, ").concat(y, "px)");
+    }
 }
 function setPositionProject(x, y) {
-    current_project.position.x = x;
-    current_project.position.y = y;
+    if (current_project) {
+        if (current_project.position) {
+            current_project.position.x = x;
+            current_project.position.y = y;
+        }
+    }
 }
 function setScaleDraw(scale) {
-    if (scale < 3.0 && scale > 0.1) {
-        draw.style.scale = scale;
+    if (draw && scale < 3.0 && scale > 0.1) {
+        draw.style.scale = String(scale);
     }
 }
 function setScaleProject(scale) {
-    if (scale < 3.0 && scale > 0.1) {
+    if (current_project && scale < 3.0 && scale > 0.1) {
         current_project.zoom = scale;
     }
 }
 function getScale() {
-    return current_project.zoom;
+    if (current_project) {
+        return current_project.zoom;
+    }
+    return 0;
 }
 function calcPositionCursorX(x) {
     var projectDrawPosition = document.getElementById("project_draw_position");
-    var rect = projectDrawPosition.getBoundingClientRect();
-    return x - rect.x;
+    var rect = projectDrawPosition === null || projectDrawPosition === void 0 ? void 0 : projectDrawPosition.getBoundingClientRect();
+    return x - (rect ? rect.x : 0);
 }
 function calcPositionCursorY(y) {
     var projectDrawPosition = document.getElementById("project_draw_position");
-    var rect = projectDrawPosition.getBoundingClientRect();
-    return y - rect.y;
+    var rect = projectDrawPosition === null || projectDrawPosition === void 0 ? void 0 : projectDrawPosition.getBoundingClientRect();
+    return y - (rect ? rect.y : 0);
 }
 function initSelectionBox() {
-    isSelecting = true;
-    var x = calcPositionCursorX(M_INIT_X);
-    var y = calcPositionCursorY(M_INIT_Y);
-    selectionBox.style.left = "".concat(x);
-    selectionBox.style.top = "".concat(y);
-    selectionBox.style.width = "0px";
-    selectionBox.style.height = "0px";
-    selectionBox.style.display = "block";
+    if (selectionBox) {
+        isSelecting = true;
+        var x = calcPositionCursorX(M_INIT_X);
+        var y = calcPositionCursorY(M_INIT_Y);
+        selectionBox.style.left = "".concat(x);
+        selectionBox.style.top = "".concat(y);
+        selectionBox.style.width = "0px";
+        selectionBox.style.height = "0px";
+        selectionBox.style.display = "block";
+    }
 }
 function updateSelectionBox() {
-    var width = Math.abs(M_DELTA_X);
-    var height = Math.abs(M_DELTA_Y);
-    selectionBox.style.left = "".concat(Math.min(calcPositionCursorX(M_X), calcPositionCursorX(M_INIT_X)), "px");
-    selectionBox.style.top = "".concat(Math.min(calcPositionCursorY(M_Y), calcPositionCursorY(M_INIT_Y)), "px");
-    selectionBox.style.width = "".concat(width, "px");
-    selectionBox.style.height = "".concat(height, "px");
+    if (selectionBox) {
+        var width = Math.abs(M_DELTA_X);
+        var height = Math.abs(M_DELTA_Y);
+        selectionBox.style.left = "".concat(Math.min(calcPositionCursorX(M_X), calcPositionCursorX(M_INIT_X)), "px");
+        selectionBox.style.top = "".concat(Math.min(calcPositionCursorY(M_Y), calcPositionCursorY(M_INIT_Y)), "px");
+        selectionBox.style.width = "".concat(width, "px");
+        selectionBox.style.height = "".concat(height, "px");
+    }
 }
 function finishSelectionBox() {
-    selectionBox.style.display = "none";
-    isSelecting = false;
+    if (selectionBox) {
+        selectionBox.style.display = "none";
+        isSelecting = false;
+    }
 }
 window.addEventListener("keydown", function (e) {
+    if (e.ctrlKey) {
+        setMoveMode();
+    }
     switch (e.key) {
         case " ":
-        case e.ctrlKey:
-            setMoveMode();
             break;
         default:
             break;
@@ -86,19 +102,24 @@ window.addEventListener("keyup", function (e) {
     e.preventDefault();
 });
 window.addEventListener("mousemove", function (e) {
+    var _a;
     M_X = e.clientX;
     M_Y = e.clientY;
     M_DELTA_X = M_X - M_INIT_X;
     M_DELTA_Y = M_Y - M_INIT_Y;
-    var rect = document
-        .getElementById("project_draw_rect")
-        .getBoundingClientRect();
-    var isInside = e.clientX >= rect.left &&
+    var rect = (_a = document
+        .getElementById("project_draw_rect")) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
+    var isInside = rect &&
+        e.clientX >= rect.left &&
         e.clientX <= rect.right &&
         e.clientY >= rect.top &&
         e.clientY <= rect.bottom;
     if (EDIT_MODE === "MOVE" && M_BUTTON_LEFT && isInside) {
-        setPositionDraw(current_project.position.x + M_DELTA_X, current_project.position.y + M_DELTA_Y);
+        if (current_project) {
+            if (current_project.position) {
+                setPositionDraw(current_project.position.x + M_DELTA_X, current_project.position.y + M_DELTA_Y);
+            }
+        }
     }
     if (isSelecting) {
         updateSelectionBox();
@@ -123,23 +144,31 @@ window.addEventListener("wheel", function (e) {
         case "SELECTION":
             switch (SCROLL_STATE) {
                 case "UP":
-                    if (e.shiftKey) {
-                        setPositionDraw(current_project.position.x + JUMP_SCROLL_MOVE, current_project.position.y);
-                        setPositionProject(current_project.position.x + JUMP_SCROLL_MOVE, current_project.position.y);
-                    }
-                    else {
-                        setPositionDraw(current_project.position.x, current_project.position.y + JUMP_SCROLL_MOVE);
-                        setPositionProject(current_project.position.x, current_project.position.y + JUMP_SCROLL_MOVE);
+                    if (current_project) {
+                        if (current_project.position) {
+                            if (e.shiftKey) {
+                                setPositionDraw(current_project.position.x + JUMP_SCROLL_MOVE, current_project.position.y);
+                                setPositionProject(current_project.position.x + JUMP_SCROLL_MOVE, current_project.position.y);
+                            }
+                            else {
+                                setPositionDraw(current_project.position.x, current_project.position.y + JUMP_SCROLL_MOVE);
+                                setPositionProject(current_project.position.x, current_project.position.y + JUMP_SCROLL_MOVE);
+                            }
+                        }
                     }
                     break;
                 case "DOWN":
-                    if (e.shiftKey) {
-                        setPositionDraw(current_project.position.x - JUMP_SCROLL_MOVE, current_project.position.y);
-                        setPositionProject(current_project.position.x - JUMP_SCROLL_MOVE, current_project.position.y);
-                    }
-                    else {
-                        setPositionDraw(current_project.position.x, current_project.position.y - JUMP_SCROLL_MOVE);
-                        setPositionProject(current_project.position.x, current_project.position.y - JUMP_SCROLL_MOVE);
+                    if (current_project) {
+                        if (current_project.position) {
+                            if (e.shiftKey) {
+                                setPositionDraw(current_project.position.x - JUMP_SCROLL_MOVE, current_project.position.y);
+                                setPositionProject(current_project.position.x - JUMP_SCROLL_MOVE, current_project.position.y);
+                            }
+                            else {
+                                setPositionDraw(current_project.position.x, current_project.position.y - JUMP_SCROLL_MOVE);
+                                setPositionProject(current_project.position.x, current_project.position.y - JUMP_SCROLL_MOVE);
+                            }
+                        }
                     }
                     break;
                 default:
@@ -149,12 +178,20 @@ window.addEventListener("wheel", function (e) {
         case "ZOOM":
             switch (SCROLL_STATE) {
                 case "UP":
-                    setScaleDraw(current_project.zoom + SCALE_JUMP);
-                    setScaleProject(current_project.zoom + SCALE_JUMP);
+                    if (current_project) {
+                        if (current_project.zoom) {
+                            setScaleDraw(current_project.zoom + SCALE_JUMP);
+                            setScaleProject(current_project.zoom + SCALE_JUMP);
+                        }
+                    }
                     break;
                 case "DOWN":
-                    setScaleDraw(current_project.zoom - SCALE_JUMP);
-                    setScaleProject(current_project.zoom - SCALE_JUMP);
+                    if (current_project) {
+                        if (current_project.zoom) {
+                            setScaleDraw(current_project.zoom - SCALE_JUMP);
+                            setScaleProject(current_project.zoom - SCALE_JUMP);
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -179,7 +216,11 @@ window.addEventListener("mouseup", function (e) {
     }
     switch (EDIT_MODE) {
         case "MOVE":
-            setPositionProject(current_project.position.x + M_DELTA_X, current_project.position.y + M_DELTA_Y);
+            if (current_project) {
+                if (current_project.position) {
+                    setPositionProject(current_project.position.x + M_DELTA_X, current_project.position.y + M_DELTA_Y);
+                }
+            }
             break;
         default:
             break;

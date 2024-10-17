@@ -17,65 +17,81 @@ let isSelecting = false;
 const selectionBox = document.getElementById("selection_box");
 const drawPosition = document.getElementById("project_draw_position");
 const draw = document.getElementById("project_draw");
-let isScrolling: bool;
-function setPositionDraw(x, y) {
-	drawPosition.style.transform = `translate(${x}px, ${y}px)`;
-}
-function setPositionProject(x, y) {
-	current_project.position.x = x;
-	current_project.position.y = y;
-}
-function setScaleDraw(scale) {
-	if (scale < 3.0 && scale > 0.1) {
-		draw.style.scale = scale;
+let isScrolling: number;
+function setPositionDraw(x: number, y: number) {
+	if (drawPosition) {
+		drawPosition.style.transform = `translate(${x}px, ${y}px)`;
 	}
 }
-function setScaleProject(scale) {
-	if (scale < 3.0 && scale > 0.1) {
+function setPositionProject(x: number, y: number) {
+	if (current_project) {
+		if (current_project.position) {
+			current_project.position.x = x;
+			current_project.position.y = y;
+		}
+	}
+}
+function setScaleDraw(scale: number) {
+	if (draw && scale < 3.0 && scale > 0.1) {
+		draw.style.scale = String(scale);
+	}
+}
+function setScaleProject(scale: number) {
+	if (current_project && scale < 3.0 && scale > 0.1) {
 		current_project.zoom = scale;
 	}
 }
 function getScale() {
-	return current_project.zoom;
+	if (current_project) {
+		return current_project.zoom;
+	}
+	return 0;
 }
 
-function calcPositionCursorX(x) {
+function calcPositionCursorX(x: number) {
 	const projectDrawPosition = document.getElementById("project_draw_position");
-	const rect = projectDrawPosition.getBoundingClientRect();
-	return x - rect.x;
+	const rect = projectDrawPosition?.getBoundingClientRect();
+	return x - (rect ? rect.x : 0);
 }
-function calcPositionCursorY(y) {
+function calcPositionCursorY(y: number) {
 	const projectDrawPosition = document.getElementById("project_draw_position");
-	const rect = projectDrawPosition.getBoundingClientRect();
-	return y - rect.y;
+	const rect = projectDrawPosition?.getBoundingClientRect();
+	return y - (rect ? rect.y : 0);
 }
 function initSelectionBox() {
-	isSelecting = true;
-	const x = calcPositionCursorX(M_INIT_X);
-	const y = calcPositionCursorY(M_INIT_Y);
-	selectionBox.style.left = `${x}`;
-	selectionBox.style.top = `${y}`;
-	selectionBox.style.width = "0px";
-	selectionBox.style.height = "0px";
-	selectionBox.style.display = "block";
+	if (selectionBox) {
+		isSelecting = true;
+		const x = calcPositionCursorX(M_INIT_X);
+		const y = calcPositionCursorY(M_INIT_Y);
+		selectionBox.style.left = `${x}`;
+		selectionBox.style.top = `${y}`;
+		selectionBox.style.width = "0px";
+		selectionBox.style.height = "0px";
+		selectionBox.style.display = "block";
+	}
 }
 function updateSelectionBox() {
-	const width = Math.abs(M_DELTA_X);
-	const height = Math.abs(M_DELTA_Y);
-	selectionBox.style.left = `${Math.min(calcPositionCursorX(M_X), calcPositionCursorX(M_INIT_X))}px`;
-	selectionBox.style.top = `${Math.min(calcPositionCursorY(M_Y), calcPositionCursorY(M_INIT_Y))}px`;
-	selectionBox.style.width = `${width}px`;
-	selectionBox.style.height = `${height}px`;
+	if (selectionBox) {
+		const width = Math.abs(M_DELTA_X);
+		const height = Math.abs(M_DELTA_Y);
+		selectionBox.style.left = `${Math.min(calcPositionCursorX(M_X), calcPositionCursorX(M_INIT_X))}px`;
+		selectionBox.style.top = `${Math.min(calcPositionCursorY(M_Y), calcPositionCursorY(M_INIT_Y))}px`;
+		selectionBox.style.width = `${width}px`;
+		selectionBox.style.height = `${height}px`;
+	}
 }
 function finishSelectionBox() {
-	selectionBox.style.display = "none";
-	isSelecting = false;
+	if (selectionBox) {
+		selectionBox.style.display = "none";
+		isSelecting = false;
+	}
 }
-window.addEventListener("keydown", (e) => {
+window.addEventListener("keydown", (e: KeyboardEvent) => {
+	if (e.ctrlKey) {
+		setMoveMode();
+	}
 	switch (e.key) {
 		case " ":
-		case e.ctrlKey:
-			setMoveMode();
 			break;
 		default:
 			break;
@@ -93,17 +109,22 @@ window.addEventListener("mousemove", (e) => {
 	M_DELTA_Y = M_Y - M_INIT_Y;
 	const rect = document
 		.getElementById("project_draw_rect")
-		.getBoundingClientRect();
+		?.getBoundingClientRect();
 	const isInside =
+		rect &&
 		e.clientX >= rect.left &&
 		e.clientX <= rect.right &&
 		e.clientY >= rect.top &&
 		e.clientY <= rect.bottom;
 	if (EDIT_MODE === "MOVE" && M_BUTTON_LEFT && isInside) {
-		setPositionDraw(
-			current_project.position.x + M_DELTA_X,
-			current_project.position.y + M_DELTA_Y,
-		);
+		if (current_project) {
+			if (current_project.position) {
+				setPositionDraw(
+					current_project.position.x + M_DELTA_X,
+					current_project.position.y + M_DELTA_Y,
+				);
+			}
+		}
 	}
 	if (isSelecting) {
 		updateSelectionBox();
@@ -129,45 +150,53 @@ window.addEventListener(
 			case "SELECTION":
 				switch (SCROLL_STATE) {
 					case "UP":
-						if (e.shiftKey) {
-							setPositionDraw(
-								current_project.position.x + JUMP_SCROLL_MOVE,
-								current_project.position.y,
-							);
-							setPositionProject(
-								current_project.position.x + JUMP_SCROLL_MOVE,
-								current_project.position.y,
-							);
-						} else {
-							setPositionDraw(
-								current_project.position.x,
-								current_project.position.y + JUMP_SCROLL_MOVE,
-							);
-							setPositionProject(
-								current_project.position.x,
-								current_project.position.y + JUMP_SCROLL_MOVE,
-							);
+						if (current_project) {
+							if (current_project.position) {
+								if (e.shiftKey) {
+									setPositionDraw(
+										current_project.position.x + JUMP_SCROLL_MOVE,
+										current_project.position.y,
+									);
+									setPositionProject(
+										current_project.position.x + JUMP_SCROLL_MOVE,
+										current_project.position.y,
+									);
+								} else {
+									setPositionDraw(
+										current_project.position.x,
+										current_project.position.y + JUMP_SCROLL_MOVE,
+									);
+									setPositionProject(
+										current_project.position.x,
+										current_project.position.y + JUMP_SCROLL_MOVE,
+									);
+								}
+							}
 						}
 						break;
 					case "DOWN":
-						if (e.shiftKey) {
-							setPositionDraw(
-								current_project.position.x - JUMP_SCROLL_MOVE,
-								current_project.position.y,
-							);
-							setPositionProject(
-								current_project.position.x - JUMP_SCROLL_MOVE,
-								current_project.position.y,
-							);
-						} else {
-							setPositionDraw(
-								current_project.position.x,
-								current_project.position.y - JUMP_SCROLL_MOVE,
-							);
-							setPositionProject(
-								current_project.position.x,
-								current_project.position.y - JUMP_SCROLL_MOVE,
-							);
+						if (current_project) {
+							if (current_project.position) {
+								if (e.shiftKey) {
+									setPositionDraw(
+										current_project.position.x - JUMP_SCROLL_MOVE,
+										current_project.position.y,
+									);
+									setPositionProject(
+										current_project.position.x - JUMP_SCROLL_MOVE,
+										current_project.position.y,
+									);
+								} else {
+									setPositionDraw(
+										current_project.position.x,
+										current_project.position.y - JUMP_SCROLL_MOVE,
+									);
+									setPositionProject(
+										current_project.position.x,
+										current_project.position.y - JUMP_SCROLL_MOVE,
+									);
+								}
+							}
 						}
 						break;
 					default:
@@ -177,12 +206,20 @@ window.addEventListener(
 			case "ZOOM":
 				switch (SCROLL_STATE) {
 					case "UP":
-						setScaleDraw(current_project.zoom + SCALE_JUMP);
-						setScaleProject(current_project.zoom + SCALE_JUMP);
+						if (current_project) {
+							if (current_project.zoom) {
+								setScaleDraw(current_project.zoom + SCALE_JUMP);
+								setScaleProject(current_project.zoom + SCALE_JUMP);
+							}
+						}
 						break;
 					case "DOWN":
-						setScaleDraw(current_project.zoom - SCALE_JUMP);
-						setScaleProject(current_project.zoom - SCALE_JUMP);
+						if (current_project) {
+							if (current_project.zoom) {
+								setScaleDraw(current_project.zoom - SCALE_JUMP);
+								setScaleProject(current_project.zoom - SCALE_JUMP);
+							}
+						}
 						break;
 					default:
 						break;
@@ -207,10 +244,14 @@ window.addEventListener("mouseup", (e) => {
 	}
 	switch (EDIT_MODE) {
 		case "MOVE":
-			setPositionProject(
-				current_project.position.x + M_DELTA_X,
-				current_project.position.y + M_DELTA_Y,
-			);
+			if (current_project) {
+				if (current_project.position) {
+					setPositionProject(
+						current_project.position.x + M_DELTA_X,
+						current_project.position.y + M_DELTA_Y,
+					);
+				}
+			}
 			break;
 
 		default:
