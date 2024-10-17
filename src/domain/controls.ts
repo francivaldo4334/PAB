@@ -15,8 +15,12 @@ const SCALE_JUMP = 0.1;
 
 let isSelecting = false;
 const selectionBox = document.getElementById("selection_box");
+let selectionBoxX = 0;
+let selectionBoxY = 0;
 const drawPosition = document.getElementById("project_draw_position");
+const drawRect = document.getElementById("project_draw_rect");
 const draw = document.getElementById("project_draw");
+const body = document.querySelector("body");
 let isScrolling: number;
 function setPositionDraw(x: number, y: number) {
 	if (drawPosition) {
@@ -61,10 +65,10 @@ function calcPositionCursorY(y: number) {
 function initSelectionBox() {
 	if (selectionBox) {
 		isSelecting = true;
-		const x = calcPositionCursorX(M_INIT_X);
-		const y = calcPositionCursorY(M_INIT_Y);
-		selectionBox.style.left = `${x}`;
-		selectionBox.style.top = `${y}`;
+		selectionBoxX = calcPositionCursorX(M_INIT_X);
+		selectionBoxY = calcPositionCursorY(M_INIT_Y);
+		selectionBox.style.left = `${selectionBoxX}`;
+		selectionBox.style.top = `${selectionBoxY}`;
 		selectionBox.style.width = "0px";
 		selectionBox.style.height = "0px";
 		selectionBox.style.display = "block";
@@ -72,10 +76,14 @@ function initSelectionBox() {
 }
 function updateSelectionBox() {
 	if (selectionBox) {
-		const width = Math.abs(M_DELTA_X);
-		const height = Math.abs(M_DELTA_Y);
-		selectionBox.style.left = `${Math.min(calcPositionCursorX(M_X), calcPositionCursorX(M_INIT_X))}px`;
-		selectionBox.style.top = `${Math.min(calcPositionCursorY(M_Y), calcPositionCursorY(M_INIT_Y))}px`;
+		const currentX = calcPositionCursorX(M_X);
+		const currentY = calcPositionCursorY(M_Y);
+		const width = Math.abs(currentX - selectionBoxX);
+		const height = Math.abs(currentY - selectionBoxY);
+		const x = Math.min(currentX, selectionBoxX);
+		const y = Math.min(currentY, selectionBoxY);
+		selectionBox.style.left = `${x}px`;
+		selectionBox.style.top = `${y}px`;
 		selectionBox.style.width = `${width}px`;
 		selectionBox.style.height = `${height}px`;
 	}
@@ -87,11 +95,12 @@ function finishSelectionBox() {
 	}
 }
 window.addEventListener("keydown", (e: KeyboardEvent) => {
-	if (e.ctrlKey) {
-		setMoveMode();
+	if (e.shiftKey && EDIT_MODE === "SELECTION" && body) {
+		body.setAttribute("selected", "move-h");
 	}
 	switch (e.key) {
 		case " ":
+			setMoveMode();
 			break;
 		default:
 			break;
@@ -257,7 +266,7 @@ window.addEventListener("mouseup", (e) => {
 		default:
 			break;
 	}
-	if (isSelecting) {
+	if (isSelecting && !M_BUTTON_LEFT) {
 		finishSelectionBox();
 	}
 	M_INIT_X = 0;
@@ -277,11 +286,17 @@ window.addEventListener("mousedown", (e) => {
 	M_INIT_Y = e.clientY;
 	switch (EDIT_MODE) {
 		case "SELECTION":
-			initSelectionBox();
-			e.preventDefault();
+			if (M_BUTTON_LEFT && e.button === 0) {
+				initSelectionBox();
+				e.preventDefault();
+			}
 			break;
 
 		default:
 			break;
 	}
+});
+
+window.addEventListener("contextmenu", (e) => {
+	e.preventDefault();
 });

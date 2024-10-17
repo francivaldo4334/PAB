@@ -38,10 +38,16 @@ hr {
 [selected="true"] {
   background: var(--p-800);
 }
-#project_draw_rect[selected="move"] {
+#project_draw_rect[selected="move"],
+#project_draw_rect[selected="move"] *{
   cursor: url("./components/cursors/move.svg"), auto;
 }
-#project_draw_rect[selected="zoom"] {
+body[selected="move-h"],
+body[selected="move-h"] *{
+  cursor: url("./components/cursors/move-horizontal.svg"), auto;
+}
+#project_draw_rect[selected="zoom"],
+#project_draw_rect[selected="zoom"] *{
   cursor: url("./components/cursors/zoom.svg"), auto;
 }
 .button:hover {

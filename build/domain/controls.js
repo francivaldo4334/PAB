@@ -15,8 +15,12 @@ var SCROLL_STATE = "STOP";
 var SCALE_JUMP = 0.1;
 var isSelecting = false;
 var selectionBox = document.getElementById("selection_box");
+var selectionBoxX = 0;
+var selectionBoxY = 0;
 var drawPosition = document.getElementById("project_draw_position");
+var drawRect = document.getElementById("project_draw_rect");
 var draw = document.getElementById("project_draw");
+var body = document.querySelector("body");
 var isScrolling;
 function setPositionDraw(x, y) {
     if (drawPosition) {
@@ -60,10 +64,10 @@ function calcPositionCursorY(y) {
 function initSelectionBox() {
     if (selectionBox) {
         isSelecting = true;
-        var x = calcPositionCursorX(M_INIT_X);
-        var y = calcPositionCursorY(M_INIT_Y);
-        selectionBox.style.left = "".concat(x);
-        selectionBox.style.top = "".concat(y);
+        selectionBoxX = calcPositionCursorX(M_INIT_X);
+        selectionBoxY = calcPositionCursorY(M_INIT_Y);
+        selectionBox.style.left = "".concat(selectionBoxX);
+        selectionBox.style.top = "".concat(selectionBoxY);
         selectionBox.style.width = "0px";
         selectionBox.style.height = "0px";
         selectionBox.style.display = "block";
@@ -71,10 +75,14 @@ function initSelectionBox() {
 }
 function updateSelectionBox() {
     if (selectionBox) {
-        var width = Math.abs(M_DELTA_X);
-        var height = Math.abs(M_DELTA_Y);
-        selectionBox.style.left = "".concat(Math.min(calcPositionCursorX(M_X), calcPositionCursorX(M_INIT_X)), "px");
-        selectionBox.style.top = "".concat(Math.min(calcPositionCursorY(M_Y), calcPositionCursorY(M_INIT_Y)), "px");
+        var currentX = calcPositionCursorX(M_X);
+        var currentY = calcPositionCursorY(M_Y);
+        var width = Math.abs(currentX - selectionBoxX);
+        var height = Math.abs(currentY - selectionBoxY);
+        var x = Math.min(currentX, selectionBoxX);
+        var y = Math.min(currentY, selectionBoxY);
+        selectionBox.style.left = "".concat(x, "px");
+        selectionBox.style.top = "".concat(y, "px");
         selectionBox.style.width = "".concat(width, "px");
         selectionBox.style.height = "".concat(height, "px");
     }
@@ -86,11 +94,12 @@ function finishSelectionBox() {
     }
 }
 window.addEventListener("keydown", function (e) {
-    if (e.ctrlKey) {
-        setMoveMode();
+    if (e.shiftKey && EDIT_MODE === "SELECTION" && body) {
+        body.setAttribute("selected", "move-h");
     }
     switch (e.key) {
         case " ":
+            setMoveMode();
             break;
         default:
             break;
@@ -225,7 +234,7 @@ window.addEventListener("mouseup", function (e) {
         default:
             break;
     }
-    if (isSelecting) {
+    if (isSelecting && !M_BUTTON_LEFT) {
         finishSelectionBox();
     }
     M_INIT_X = 0;
@@ -247,10 +256,15 @@ window.addEventListener("mousedown", function (e) {
     M_INIT_Y = e.clientY;
     switch (EDIT_MODE) {
         case "SELECTION":
-            initSelectionBox();
-            e.preventDefault();
+            if (M_BUTTON_LEFT && e.button === 0) {
+                initSelectionBox();
+                e.preventDefault();
+            }
             break;
         default:
             break;
     }
+});
+window.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
 });
