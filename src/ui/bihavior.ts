@@ -15,7 +15,6 @@ function toggleIsOpen(element: HTMLElement) {
 		element.setAttribute(attributeName, "true");
 	}
 }
-
 function selectElement(element: HTMLElement) {
 	decelAllElement();
 	element.setAttribute("selected", "true");
@@ -74,7 +73,7 @@ function closePopovers() {
 document.addEventListener("click", (e) => {
 	const element = document.querySelector(".popover");
 	if (element && e.target instanceof Node && !element.contains(e.target)) {
-		closeMenuNewElement();
+		main.actions.closeMenuNewElement();
 		closePopovers();
 	}
 });

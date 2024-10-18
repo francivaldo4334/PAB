@@ -1,83 +1,91 @@
 "use strict";
-var base_view_body = {
-    name: "body",
-    is_view: true,
-    tag: "div",
-    template: "",
-    props: [
-        {
-            name: "style",
-            value: "width: 1440px; height: 1024px; background: #fff; position: absolute;",
-        },
-    ],
-    content: [],
-};
-var base_json_template = {
-    name: "",
-    is_view: false,
-    tag: "html",
-    template: "",
-    position: { x: 0, y: 0 },
-    zoom: 1.0,
-    props: [{ name: "lang", value: "pt-BR" }],
-    content: [
-        {
-            name: "",
-            is_view: false,
-            tag: "head",
+var Common = /** @class */ (function () {
+    function Common() {
+        this.base_view_body = {
+            name: "body",
+            is_view: true,
+            tag: "div",
             template: "",
-            props: [],
-            content: [
+            props: [
                 {
-                    name: "",
-                    is_view: false,
-                    tag: "meta",
-                    template: "",
-                    props: [{ name: "charset", value: "UTF-8" }],
-                    content: [],
-                },
-                {
-                    name: "",
-                    is_view: false,
-                    tag: "meta",
-                    template: "",
-                    props: [
-                        { name: "name", value: "viewport" },
-                        { name: "content", value: "width=device-width, initial-scale=1.0" },
-                    ],
-                    content: [],
-                },
-                {
-                    name: "",
-                    is_view: false,
-                    tag: "title",
-                    template: "",
-                    props: [],
-                    content: ["My Site"],
+                    name: "style",
+                    value: "width: 1440px; height: 1024px; background: #fff; position: absolute;",
                 },
             ],
-        },
-        {
+            content: [],
+        };
+        this.base_json_template = {
             name: "",
-            is_view: true,
-            tag: "body",
+            is_view: false,
+            tag: "html",
             template: "",
-            props: [],
+            position: { x: 0, y: 0 },
+            zoom: 1.0,
+            props: [{ name: "lang", value: "pt-BR" }],
             content: [
+                {
+                    name: "",
+                    is_view: false,
+                    tag: "head",
+                    template: "",
+                    props: [],
+                    content: [
+                        {
+                            name: "",
+                            is_view: false,
+                            tag: "meta",
+                            template: "",
+                            props: [{ name: "charset", value: "UTF-8" }],
+                            content: [],
+                        },
+                        {
+                            name: "",
+                            is_view: false,
+                            tag: "meta",
+                            template: "",
+                            props: [
+                                { name: "name", value: "viewport" },
+                                {
+                                    name: "content",
+                                    value: "width=device-width, initial-scale=1.0",
+                                },
+                            ],
+                            content: [],
+                        },
+                        {
+                            name: "",
+                            is_view: false,
+                            tag: "title",
+                            template: "",
+                            props: [],
+                            content: ["My Site"],
+                        },
+                    ],
+                },
                 {
                     name: "",
                     is_view: true,
-                    tag: "h1",
+                    tag: "body",
                     template: "",
-                    props: [
+                    props: [],
+                    content: [
                         {
-                            name: "style",
-                            value: "color: red;",
+                            name: "",
+                            is_view: true,
+                            tag: "h1",
+                            template: "",
+                            props: [
+                                {
+                                    name: "style",
+                                    value: "color: red;",
+                                },
+                            ],
+                            content: ["Teste"],
                         },
                     ],
-                    content: ["Teste"],
                 },
             ],
-        },
-    ],
-};
+        };
+    }
+    return Common;
+}());

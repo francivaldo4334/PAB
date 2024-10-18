@@ -66,7 +66,7 @@ function closePopovers() {
 document.addEventListener("click", function (e) {
     var element = document.querySelector(".popover");
     if (element && e.target instanceof Node && !element.contains(e.target)) {
-        closeMenuNewElement();
+        main.actions.closeMenuNewElement();
         closePopovers();
     }
 });

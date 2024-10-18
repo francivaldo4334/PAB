@@ -2,14 +2,14 @@
     <div style="width: var(--240dp); height: 100%; display: flex; align-items: center;">
         <comp 
             src="./ui/components/button.html"
-            onclick="openMenuFile()"
+            onclick="actions.openMenuFile()"
         >
             <comp src="./ui/components/icons/menu.svg"></comp>
         </comp>
         <comp 
             src="./ui/components/button.html" 
             style="width: 100%; display: flex; height: 100%; align-items: center; padding: var(--8dp);"
-            onclick="openRecentProjects()"
+            onclick="actions.openRecentProjects()"
         >
             <h3 style="flex-grow: 1; text-align: start;" data-translate="project_name">Projet Name</h3>
             <comp src="./ui/components/icons/arrow_down_16.svg"></comp>
@@ -24,7 +24,7 @@
             id="btn_selection_mode"
             class="selection button"
             selected="true"
-            onclick="setSelectionMode()"
+            onclick="actions.setSelectionMode()"
         >
             <comp src="./ui/components/icons/mouse_pointer.svg"></comp>
         </comp>
@@ -32,7 +32,7 @@
             src="./ui/components/button.html"
             id="btn_move_mode"
             class="selection button"
-            onclick="setMoveMode()"
+            onclick="actions.setMoveMode()"
         >
             <comp src="./ui/components/icons/move.svg"></comp>
         </comp>
@@ -40,7 +40,7 @@
             src="./ui/components/button.html"
             id="btn_zoom_mode"
             class="selection button"
-            onclick="setZoomMode()"
+            onclick="actions.setZoomMode()"
         >
             <comp src="./ui/components/icons/zoom_in.svg"></comp>
         </comp>
@@ -48,7 +48,7 @@
             src="./ui/components/button.html"
             id="btn_plugin"
             class="selection button"
-            onclick="openMenuPlugins()"
+            onclick="actions.openMenuPlugins()"
         >
             <comp src="./ui/components/icons/plugins.svg"></comp>
         </comp>

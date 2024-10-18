@@ -1,128 +1,125 @@
-let currentKeybind: string[] = [];
 type KeyMap = Record<string, object>;
 type Keybind = {
 	action?: () => void;
 	mode?: boolean;
 };
-function isKeybind(obj: any): obj is Keybind {
-	return (
-		typeof obj.action === "undefined" ||
-		(typeof obj.action === "function" && typeof obj.mode === "undefined") ||
-		typeof obj.mode === "boolean"
-	);
-}
-
-function isRecordOfObject(variable: any): variable is Record<string, object> {
-	return (
-		typeof variable === "object" &&
-		variable !== null &&
-		!Array.isArray(variable) &&
-		Object.values(variable).every(
-			(value) => typeof value === "object" && value !== null,
-		)
-	);
-}
-const newElement: KeyMap = {
-	f: {
+class Keybinds {
+	actions: Actions;
+	currentKeybind: string[] = [];
+	newElement: KeyMap = {
 		action: () => {
-			addNewElement("FRAME");
+			this.actions.openMenuNewElement();
 		},
-	},
-	action: () => {
-		openMenuNewElement();
-	},
-	c: {
-		action: () => {
-			addNewElement("OVAL");
+		f: {
+			action: () => {
+				this.actions.addNewElement("FRAME");
+			},
 		},
-	},
-	r: {
-		action: () => {
-			addNewElement("RECT");
+		c: {
+			action: () => {
+				this.actions.addNewElement("OVAL");
+			},
 		},
-	},
-	i: {
-		action: () => {
-			addNewElement("IMAGE");
+		r: {
+			action: () => {
+				this.actions.addNewElement("RECT");
+			},
 		},
-	},
-};
-const keymaps: KeyMap = {
-	Control: {
-		n: {
+		i: {
+			action: () => {
+				this.actions.addNewElement("IMAGE");
+			},
+		},
+	};
+	keymaps: KeyMap = {
+		Control: {
+			n: {
+				mode: true,
+				...this.newElement,
+			},
+		},
+		Insert: {
 			mode: true,
-			...newElement,
+			...this.newElement,
 		},
-	},
-	Insert: {
-		mode: true,
-		...newElement,
-	},
-};
-const keydown: Record<string, boolean> = {};
-window.addEventListener("keydown", (e) => {
-	keydown[e.key] = true;
-});
-window.addEventListener("keyup", (e) => {
-	keydown[e.key] = false;
-});
-
-function checkKeybind(map: KeyMap, event: KeyboardEvent) {
-	if (isRecordOfObject(map)) {
-		for (const key in map) {
-			if (keydown[key] && isKeybind(map)) {
-				if (map.action && typeof map.action === "function") {
-					map.action();
-					event.preventDefault();
-				}
-				if (map.mode) {
-					currentKeybind.push(key);
-				}
-			}
-			if (isRecordOfObject(map[key])) {
-				checkKeybind(map[key], event);
-			}
-		}
-	} else {
-		checkKeybind(map as KeyMap, event);
+	};
+	keydown: Record<string, boolean> = {};
+	constructor(actions: Actions) {
+		this.actions = actions;
+		this.addEventListener();
 	}
-}
-
-function keyMode(map: KeyMap, index: number, key: string) {
-	let cleanKeybind = false;
-	if (isKeybind(map)) {
+	isKeybind(obj: any): obj is Keybind {
+		return (
+			typeof obj.action === "undefined" ||
+			(typeof obj.action === "function" && typeof obj.mode === "undefined") ||
+			typeof obj.mode === "boolean"
+		);
+	}
+	isRecordOfObject(variable: any): variable is Record<string, object> {
+		return (
+			typeof variable === "object" &&
+			variable !== null &&
+			!Array.isArray(variable)
+		);
+	}
+	checkKeybind(map: KeyMap, event: KeyboardEvent, thiskey = "") {
 		if (map.action && typeof map.action === "function") {
 			map.action();
-			cleanKeybind = true;
+			event.preventDefault();
 		}
 		if (map.mode) {
-			currentKeybind.push(key);
+			this.currentKeybind.push(thiskey);
+		}
+		if (this.isRecordOfObject(map)) {
+			for (const key in map) {
+				if (this.keydown[key]) {
+					this.checkKeybind(map[key] as KeyMap, event, key);
+				}
+			}
 		}
 	}
-	if (index < currentKeybind.length) {
-		const keyMap: string | undefined = currentKeybind[index];
-		if (isRecordOfObject(map[keyMap])) {
-			keyMode(map[keyMap], index + 1, key);
+	keyMode(map: KeyMap, index: number, key: string) {
+		let cleanKeybind = false;
+		if (this.isKeybind(map)) {
+			if (map.action && typeof map.action === "function") {
+				map.action();
+				cleanKeybind = true;
+			}
+			if (map.mode) {
+				this.currentKeybind.push(key);
+			}
+		}
+		if (index < this.currentKeybind.length) {
+			const keyMap: string | undefined = this.currentKeybind[index];
+			if (this.isRecordOfObject(map[keyMap])) {
+				this.keyMode(map[keyMap], index + 1, key);
+			}
+		}
+		if (cleanKeybind) {
+			this.currentKeybind = [];
 		}
 	}
-	if (cleanKeybind) {
-		currentKeybind = [];
+	addEventListener() {
+		window.addEventListener("keydown", (e) => {
+			this.keydown[e.key] = true;
+		});
+		window.addEventListener("keyup", (e) => {
+			this.keydown[e.key] = false;
+		});
+		window.addEventListener("keydown", (e: KeyboardEvent) => {
+			if (e.key === "F5") {
+				return;
+			}
+			if (this.currentKeybind.length > 0) {
+				this.keyMode(this.keymaps, 0, e.key);
+			} else {
+				this.checkKeybind(this.keymaps, e);
+			}
+			if (e.key === "Escape") {
+				this.actions.closeMenuNewElement();
+				closePopovers();
+				this.currentKeybind = [];
+			}
+		});
 	}
 }
-window.addEventListener("keydown", (e: KeyboardEvent) => {
-	if (e.key === "F5") {
-		return;
-	}
-	if (currentKeybind.length > 0) {
-		keyMode(keymaps, 0, e.key);
-	} else {
-		checkKeybind(keymaps, e);
-	}
-});
-window.addEventListener("keydown", (e) => {
-	if (e.key === "Escape") {
-		closeMenuNewElement();
-		closePopovers();
-		currentKeybind = [];
-	}
-});
