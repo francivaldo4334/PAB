@@ -28,48 +28,81 @@ var Main = /** @class */ (function () {
         this.projectHistory.updateText(this.common.base_json_template);
     };
     Main.prototype.updateCssProp = function (cssStr, prop, value) {
-        var regex = new RegExp("".concat(prop, ":\\s*[^;]+;"));
+        var regex = new RegExp("".concat(prop, ":\\s*[^;]+;"), "g");
         var newProp = "".concat(prop, ": ").concat(value, ";");
-        return cssStr.match(regex)
+        return regex.test(cssStr)
             ? cssStr.replace(regex, newProp)
             : "".concat(cssStr, " ").concat(newProp);
     };
-    Main.prototype.buildTag = function (_component_json, mode_prod) {
+    Main.prototype.getProp = function (props, name) {
+        return props.find(function (it) { return it.name === name; });
+    };
+    Main.prototype.addProp = function (props, prop) {
+        return props.map(function (it) {
+            if (it.name === prop.name) {
+                return prop;
+            }
+            return it;
+        });
+    };
+    Main.prototype.buildBodyRenderMode = function (component) {
         var _this = this;
-        if (mode_prod === void 0) { mode_prod = false; }
-        var component_json = _component_json;
-        if (typeof component_json === "string")
-            return component_json;
-        var comp = __assign({}, this.common.base_view_body);
-        var is_tag_comp = mode_prod && component_json.tag === "body";
-        if (is_tag_comp) {
-            var prop_style_1 = comp.props.find(function (it) { return it.name === "style"; });
-            comp.props =
-                component_json.props && component_json.props.length > 0
-                    ? component_json.props.map(function (it) {
-                        if (it.name === "style" && prop_style_1) {
-                            return { name: "style", value: prop_style_1.value + it.value };
-                        }
-                        return it;
-                    })
-                    : comp.props;
-            comp.content = component_json.content;
-        }
-        else {
-            comp = component_json;
-        }
-        var tag_name = comp.tag;
-        var tag_props = comp.props
-            ? comp.props
-                .map(function (it) { return "".concat(it.name, "=\"").concat(it.value, "\""); })
-                .join(" ")
+        var _a, _b;
+        var baseBodyTemplate = __assign({}, this.common.base_view_body);
+        var baseBodyTemplateStyle = this.getProp(baseBodyTemplate.props, "style");
+        var componentStyle = this.getProp(component.props, "style");
+        var newStyle = (_a = componentStyle === null || componentStyle === void 0 ? void 0 : componentStyle.value) !== null && _a !== void 0 ? _a : "";
+        newStyle += (_b = baseBodyTemplateStyle === null || baseBodyTemplateStyle === void 0 ? void 0 : baseBodyTemplateStyle.value) !== null && _b !== void 0 ? _b : "";
+        this.updateCssProp(newStyle, "");
+        comp.props =
+            component_json.props && component_json.props.length > 0
+                ? component_json.props.map(function (it) {
+                    if (it.name === "style" && prop_style) {
+                        var newStyle_1 = prop_style.value + it.value;
+                        return { name: "style", value: newStyle_1 };
+                    }
+                    return it;
+                })
+                : comp.props;
+        comp.props = comp.props.map(function (it) {
+            if (it.name === "style") {
+                var newStyle_2 = it.value;
+                if (comp.position) {
+                    newStyle_2 = _this.updateCssProp(newStyle_2, "left", String(comp.position.x));
+                    newStyle_2 = _this.updateCssProp(newStyle_2, "top", String(comp.position.y));
+                }
+                return { name: "style", value: newStyle_2 };
+            }
+            return it;
+        });
+        comp.content = component_json.content;
+    };
+    Main.prototype.propsTosString = function (props) {
+        return comp.props
+            ? comp.props.map(function (it) { return "".concat(it.name, "=\"").concat(it.value, "\""); }).join(" ")
             : "";
-        var tag_content = comp.content
-            ? !Array.isArray(comp.content)
-                ? comp.content
-                : comp.content.map(function (it) { return _this.buildTag(it); }).join("")
+    };
+    Main.prototype.generateTag = function (component) {
+        var _this = this;
+        var TAG = component.tag;
+        var PROPS = this.propsTosString(component.props);
+        var INNER = component.content
+            ? !Array.isArray(component.content)
+                ? component.content
+                : component.content.map(function (it) { return _this.buildTag(it); }).join("\n")
             : "";
         return "<".concat(tag_name, " ").concat(tag_props, ">").concat(tag_content, "</").concat(tag_name, ">");
+    };
+    Main.prototype.buildTag = function (content, renderMode) {
+        if (renderMode === void 0) { renderMode = false; }
+        if (typeof content === "string")
+            return content;
+        var component = content;
+        var is_tag_comp = mode_prod && component_json.tag === "body";
+        if (renderMode && compo) {
+            component = buildBodyRenderMode(component);
+        }
+        return this.generateTag(component);
     };
     Main.prototype.buildProject = function () {
         var builded_project = "<!DOCTYPE html>";
@@ -83,7 +116,7 @@ var Main = /** @class */ (function () {
         var blob = new Blob([this.buildProject()], { type: "text/html" });
         var link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = "my_project.html";
+        link.download = "index.html";
         link.click();
         URL.revokeObjectURL(link.href);
     };

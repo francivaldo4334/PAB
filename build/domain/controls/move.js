@@ -11,6 +11,31 @@ var Move = /** @class */ (function () {
             this.drawPosition.style.transform = "translate(".concat(x, "px, ").concat(y, "px)");
         }
     };
+    Move.prototype.setPosition = function (x, y) {
+        this.setPositionDraw(x, y);
+        this.setPositionProject(x, y);
+    };
+    Move.prototype.getPositionDrawX = function () {
+        if (this.drawPosition) {
+            var rect = this.drawPosition.getBoundingClientRect();
+            return rect ? rect.left : 0;
+        }
+        return 0;
+    };
+    Move.prototype.getPositionDrawY = function () {
+        if (this.drawPosition) {
+            var rect = this.drawPosition.getBoundingClientRect();
+            return rect ? rect.top : 0;
+        }
+        return 0;
+    };
+    Move.prototype.setPositionDrawWithCurrentPosition = function (x, y) {
+        if (this.projectHistory.current_project) {
+            if (this.projectHistory.current_project.position) {
+                this.setPositionDraw(this.projectHistory.current_project.position.x + x, this.projectHistory.current_project.position.y + y);
+            }
+        }
+    };
     Move.prototype.setPositionProject = function (x, y) {
         if (this.projectHistory.current_project) {
             if (this.projectHistory.current_project.position) {
@@ -54,15 +79,11 @@ var Move = /** @class */ (function () {
         if (this.projectHistory.current_project) {
             if (this.projectHistory.current_project.position) {
                 if (e.shiftKey) {
-                    this.setPositionDraw(this.projectHistory.current_project.position.x +
-                        updateJumpScrollMove, this.projectHistory.current_project.position.y);
-                    this.setPositionProject(this.projectHistory.current_project.position.x +
+                    this.setPosition(this.projectHistory.current_project.position.x +
                         updateJumpScrollMove, this.projectHistory.current_project.position.y);
                 }
                 else {
-                    this.setPositionDraw(this.projectHistory.current_project.position.x, this.projectHistory.current_project.position.y +
-                        updateJumpScrollMove);
-                    this.setPositionProject(this.projectHistory.current_project.position.x, this.projectHistory.current_project.position.y +
+                    this.setPosition(this.projectHistory.current_project.position.x, this.projectHistory.current_project.position.y +
                         updateJumpScrollMove);
                 }
             }

@@ -12,6 +12,34 @@ class Move {
 			this.drawPosition.style.transform = `translate(${x}px, ${y}px)`;
 		}
 	}
+	setPosition(x: number, y: number) {
+		this.setPositionDraw(x, y);
+		this.setPositionProject(x, y);
+	}
+	getPositionDrawX(): number {
+		if (this.drawPosition) {
+			const rect = this.drawPosition.getBoundingClientRect();
+			return rect ? rect.left : 0;
+		}
+		return 0;
+	}
+	getPositionDrawY(): number {
+		if (this.drawPosition) {
+			const rect = this.drawPosition.getBoundingClientRect();
+			return rect ? rect.top : 0;
+		}
+		return 0;
+	}
+	setPositionDrawWithCurrentPosition(x: number, y: number) {
+		if (this.projectHistory.current_project) {
+			if (this.projectHistory.current_project.position) {
+				this.setPositionDraw(
+					this.projectHistory.current_project.position.x + x,
+					this.projectHistory.current_project.position.y + y,
+				);
+			}
+		}
+	}
 	setPositionProject(x: number, y: number) {
 		if (this.projectHistory.current_project) {
 			if (this.projectHistory.current_project.position) {
@@ -57,23 +85,13 @@ class Move {
 		if (this.projectHistory.current_project) {
 			if (this.projectHistory.current_project.position) {
 				if (e.shiftKey) {
-					this.setPositionDraw(
-						this.projectHistory.current_project.position.x +
-							updateJumpScrollMove,
-						this.projectHistory.current_project.position.y,
-					);
-					this.setPositionProject(
+					this.setPosition(
 						this.projectHistory.current_project.position.x +
 							updateJumpScrollMove,
 						this.projectHistory.current_project.position.y,
 					);
 				} else {
-					this.setPositionDraw(
-						this.projectHistory.current_project.position.x,
-						this.projectHistory.current_project.position.y +
-							updateJumpScrollMove,
-					);
-					this.setPositionProject(
+					this.setPosition(
 						this.projectHistory.current_project.position.x,
 						this.projectHistory.current_project.position.y +
 							updateJumpScrollMove,

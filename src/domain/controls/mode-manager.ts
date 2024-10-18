@@ -2,9 +2,11 @@ class Modes {
 	body = document.querySelector("body");
 	selectionBox: SelectionBox;
 	actions: Actions;
-	constructor(selectionBox: SelectionBox, actions: Actions) {
-		this.selectionBox = selectionBox;
-		this.actions = actions;
+	zoom: Zoom;
+	constructor(controls: MainControls) {
+		this.selectionBox = controls.selectionBox;
+		this.actions = controls.actions;
+		this.zoom = controls.zoom;
 	}
 	onSelectionModeActionsKeyDown(e: KeyboardEvent) {
 		if (e.shiftKey && this.body) {
@@ -15,6 +17,7 @@ class Modes {
 		}
 		if (e.ctrlKey && !this.selectionBox.isSelecting) {
 			this.actions.setZoomMode();
+			this.zoom.initZoomMode();
 		}
 	}
 	onActionsKeyUp(e: KeyboardEvent) {

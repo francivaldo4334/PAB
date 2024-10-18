@@ -1,9 +1,10 @@
 "use strict";
 var Modes = /** @class */ (function () {
-    function Modes(selectionBox, actions) {
+    function Modes(controls) {
         this.body = document.querySelector("body");
-        this.selectionBox = selectionBox;
-        this.actions = actions;
+        this.selectionBox = controls.selectionBox;
+        this.actions = controls.actions;
+        this.zoom = controls.zoom;
     }
     Modes.prototype.onSelectionModeActionsKeyDown = function (e) {
         if (e.shiftKey && this.body) {
@@ -14,6 +15,7 @@ var Modes = /** @class */ (function () {
         }
         if (e.ctrlKey && !this.selectionBox.isSelecting) {
             this.actions.setZoomMode();
+            this.zoom.initZoomMode();
         }
     };
     Modes.prototype.onActionsKeyUp = function (e) {

@@ -1,4 +1,8 @@
-type Project = {
+type Prop = {
+	name: string;
+	value: string;
+};
+type Component = {
 	name: string;
 	is_view: boolean;
 	tag: string;
@@ -8,14 +12,11 @@ type Project = {
 		y: number;
 	};
 	zoom?: number;
-	props: {
-		name: string;
-		value: string;
-	}[];
+	props: Prop[];
 	content: object[] | string;
 };
 class Common {
-	base_view_body: Project = {
+	base_view_body: Component = {
 		name: "body",
 		is_view: true,
 		tag: "div",
@@ -29,12 +30,12 @@ class Common {
 		],
 		content: [],
 	};
-	base_json_template: Project = {
+	base_json_template: Component = {
 		name: "",
 		is_view: false,
 		tag: "html",
 		template: "",
-		position: { x: 0, y: 0 },
+		position: { x: -720, y: -512 },
 		zoom: 1.0,
 		props: [{ name: "lang", value: "pt-BR" }],
 		content: [

@@ -19,7 +19,7 @@ var Common = /** @class */ (function () {
             is_view: false,
             tag: "html",
             template: "",
-            position: { x: 0, y: 0 },
+            position: { x: -720, y: -512 },
             zoom: 1.0,
             props: [{ name: "lang", value: "pt-BR" }],
             content: [
