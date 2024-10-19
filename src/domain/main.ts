@@ -14,18 +14,39 @@ class Main {
 	keybinds: Keybinds;
 	bihavior: Bihavior;
 	translations: Translation;
-	readonly RENDER_LABEL = "PAB";
+	readonly RENDER_LABEL = "BAB_project__";
 	constructor() {
 		this.common = new Common();
 		this.bihavior = new Bihavior(this);
 		this.actions = new Actions(this.bihavior);
 		this.keybinds = new Keybinds(this.actions, this.bihavior);
 		this.projectHistory = new ProjectHistory();
-		this.controls = new MainControls(this.actions, this.projectHistory, this.bihavior);
+		this.controls = new MainControls(this);
 		this.translations = new Translation(this.common, "pt_br");
 	}
 	initNewProject() {
 		this.projectHistory.updateText(this.common.base_json_template);
+	}
+	cleanAllSelectables() {
+		const allElementsOfProject = document.querySelectorAll(`[${this.RENDER_LABEL}selectable]`);
+		if (allElementsOfProject) {
+			allElementsOfProject.forEach((el) => {
+				el.setAttribute(`${this.RENDER_LABEL}selected`, "false");
+			});
+		}
+	}
+	loadOnclickEvents() {
+		const allElementsOfProject = document.querySelectorAll(`[${this.RENDER_LABEL}selectable]`);
+		if (allElementsOfProject) {
+			allElementsOfProject.forEach((el) => {
+				(el as HTMLElement).onclick = (e) => {
+					const target = e.target as HTMLElement;
+					this.cleanAllSelectables();
+					target.setAttribute(`${this.RENDER_LABEL}selected`, "true");
+					e.stopPropagation();
+				}
+			});
+		}
 	}
 	updateCssProp(cssStr: string, prop: string, value: string): string {
 		const regex = new RegExp(`${prop}:\\s*[^;]+;`, "g");
@@ -64,6 +85,10 @@ class Main {
 				name: "style",
 				value: newStyle
 			});
+			baseBodyTemplate.props = this.addProp(component.props.concat(baseBodyTemplate.props), {
+				name: `${this.RENDER_LABEL}body`,
+				value: ""
+			});
 		}
 		baseBodyTemplate.content = component.content;
 		return baseBodyTemplate;
@@ -81,12 +106,22 @@ class Main {
 				if (it.name === "class") {
 					it.value = it.value.split(' ').map((cls) => {
 						if (!cls.startsWith(this.RENDER_LABEL))
-							return `${this.RENDER_LABEL}__${cls}`;
+							return `${this.RENDER_LABEL}${cls}`;
 						return cls;
 					}).join(" ");
 				}
 				return it;
 			});
+			props.push({
+				name: `${this.RENDER_LABEL}selectable`,
+				value: ""
+			})
+		}
+		else {
+			props = props.filter((prop) =>
+				prop.name !== `${this.RENDER_LABEL}selected` &&
+				prop.name !== `${this.RENDER_LABEL}selectable`
+			);
 		}
 		const PROPS = this.propsTosString(props);
 		const INNER = component.content
@@ -104,10 +139,19 @@ class Main {
 		}
 		return this.generateTag(component, renderMode);
 	}
-	buildProject() {
-		let builded_project = "<!DOCTYPE html>";
+	buildProject(devMode = false) {
+		let builded_project = "";
 		if (this.projectHistory.current_project) {
-			builded_project += this.buildTag(this.projectHistory.current_project);
+			if (devMode) {
+				const my_body = document.getElementById("project_draw") as HTMLElement;
+				builded_project += this.buildTag(this.projectHistory.current_project.content[1], true);
+				my_body.innerHTML = builded_project;
+				this.loadOnclickEvents();
+			}
+			else {
+				builded_project = "<!DOCTYPE html>";
+				builded_project += this.buildTag(this.projectHistory.current_project);
+			}
 		}
 		return builded_project;
 	}

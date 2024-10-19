@@ -1,5 +1,5 @@
 import Main from "./main"
-class Bihavior{
+class Bihavior {
 	constructor(main: Main) {
 		document.addEventListener("click", (e) => {
 			const element = document.querySelector(".popover");

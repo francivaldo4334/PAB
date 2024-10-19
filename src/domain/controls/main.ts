@@ -5,6 +5,7 @@ import SelectionBox from "./selection";
 import Move from "./move";
 import Modes from "./mode-manager";
 import Zoom from "./zoom";
+import Main from "../main";
 
 
 class MainControls {
@@ -29,18 +30,21 @@ class MainControls {
 	modes: Modes;
 	zoom: Zoom;
 	bihavior: Bihavior;
+	main: Main;
 
-	constructor(actions: Actions, projectHistory: ProjectHistory, bihavior: Bihavior) {
-		this.actions = actions;
-		this.move = new Move(this, projectHistory);
-		this.zoom = new Zoom(this, projectHistory);
+	constructor(main: Main) {
+		this.main = main;
+		this.actions = main.actions;
+		this.move = new Move(this, main.projectHistory);
+		this.zoom = new Zoom(this, main.projectHistory);
 		this.selectionBox = new SelectionBox(this, this.move);
-		this.bihavior = bihavior;
+		this.bihavior = main.bihavior;
 		this.modes = new Modes(this);
 		this.addEventListeners();
 	}
 
 	addEventListeners() {
+		const drawRect = document.getElementById("project_draw_rect");
 		window.addEventListener("keydown", this.handleKeyDown.bind(this));
 		window.addEventListener("keyup", this.handleKeyUp.bind(this));
 		window.addEventListener("mousemove", this.handleMouseMove.bind(this));
@@ -48,10 +52,13 @@ class MainControls {
 			passive: false,
 		});
 		window.addEventListener("mouseup", this.handleMouseUp.bind(this));
-		window.addEventListener("mousedown", this.handleMouseDown.bind(this));
+		drawRect?.addEventListener("mousedown", this.handleMouseDown.bind(this));
 		window.addEventListener("contextmenu", (e) => e.preventDefault());
+		drawRect?.addEventListener("click", this.handleClick.bind(this));
 	}
-
+	handleClick(e: MouseEvent) {
+		this.main.cleanAllSelectables();
+	}
 	handleKeyDown(e: KeyboardEvent) {
 		switch (this.actions.EDIT_MODE) {
 			case "SELECTION":
