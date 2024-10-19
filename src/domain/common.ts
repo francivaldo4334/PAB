@@ -3,6 +3,7 @@ export type Prop = {
 	value: string;
 };
 export type Component = {
+	id?: string;
 	name: string;
 	is_view: boolean;
 	tag: string;
@@ -15,8 +16,32 @@ export type Component = {
 	props: Prop[];
 	content: object[] | string;
 };
+export type Translations = Record<string, any>;
 export class Common {
+	translations: Translations = {
+		en: {
+			project_name: "Project Name",
+			user_name: "Username",
+			html: "Html",
+			css: "Css",
+			javascript: "javascript",
+			assets: "Assets",
+			design: "Design",
+			prototype: "Prototype",
+		},
+		pt_br: {
+			project_name: "Nome do Projeto",
+			user_name: "Nome de usuário",
+			html: "Html",
+			css: "Css",
+			javascript: "javascript",
+			assets: "Assets",
+			design: "Design",
+			prototype: "Prototipo",
+		},
+	}
 	base_view_body: Component = {
+		id: "body",
 		name: "body",
 		is_view: true,
 		tag: "div",
@@ -32,6 +57,7 @@ export class Common {
 		content: [],
 	};
 	base_json_template: Component = {
+		id: "html",
 		name: "",
 		is_view: false,
 		tag: "html",
@@ -41,6 +67,7 @@ export class Common {
 		props: [{ name: "lang", value: "pt-BR" }],
 		content: [
 			{
+				id: "head",
 				name: "",
 				is_view: false,
 				tag: "head",

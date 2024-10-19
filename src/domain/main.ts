@@ -4,6 +4,7 @@ import Actions from "./actions";
 import Keybinds from "./keybinds"
 import Bihavior from "./bihavior"
 import { Common, Prop, Component } from "./common";
+import Translation from "./translations";
 
 class Main {
 	projectHistory: ProjectHistory;
@@ -12,6 +13,8 @@ class Main {
 	actions: Actions;
 	keybinds: Keybinds;
 	bihavior: Bihavior;
+	translations: Translation;
+	readonly RENDER_LABEL = "PAB";
 	constructor() {
 		this.common = new Common();
 		this.bihavior = new Bihavior(this);
@@ -19,11 +22,11 @@ class Main {
 		this.keybinds = new Keybinds(this.actions, this.bihavior);
 		this.projectHistory = new ProjectHistory();
 		this.controls = new MainControls(this.actions, this.projectHistory, this.bihavior);
+		this.translations = new Translation(this.common, "pt_br");
 	}
 	initNewProject() {
 		this.projectHistory.updateText(this.common.base_json_template);
 	}
-
 	updateCssProp(cssStr: string, prop: string, value: string): string {
 		const regex = new RegExp(`${prop}:\\s*[^;]+;`, "g");
 		const newProp = `${prop}: ${value};`;
@@ -43,7 +46,7 @@ class Main {
 			}
 			return it;
 		});
-		if (!add){
+		if (!add) {
 			result.push(prop)
 		}
 		return result;
@@ -54,7 +57,7 @@ class Main {
 		const compStyle = this.getProp(component.props, "style");
 		let newStyle = (compStyle?.value ?? "") + (baseStyle?.value ?? "");
 		const position = component.position ?? baseBodyTemplate.position
-		if (position){
+		if (position) {
 			newStyle = this.updateCssProp(newStyle, "left", `${position.x}px`);
 			newStyle = this.updateCssProp(newStyle, "top", `${position.y}px`);
 			baseBodyTemplate.props = this.addProp(component.props.concat(baseBodyTemplate.props), {
@@ -70,10 +73,22 @@ class Main {
 			? props.map((it: Prop) => `${it.name}="${it.value}"`).join(" ")
 			: "";
 	}
-
 	generateTag(component: Component, renderMode: boolean): string {
 		const TAG = component.tag;
-		const PROPS = this.propsTosString(component.props);
+		let props = [...component.props];
+		if (renderMode) {
+			props = props.map((it) => {
+				if (it.name === "class") {
+					it.value = it.value.split(' ').map((cls) => {
+						if (!cls.startsWith(this.RENDER_LABEL))
+							return `${this.RENDER_LABEL}__${cls}`;
+						return cls;
+					}).join(" ");
+				}
+				return it;
+			});
+		}
+		const PROPS = this.propsTosString(props);
 		const INNER = component.content
 			? !Array.isArray(component.content)
 				? component.content
@@ -81,7 +96,6 @@ class Main {
 			: "";
 		return `<${TAG} ${PROPS}>${INNER}</${TAG}>`;
 	}
-
 	buildTag(content: Component | string | object, renderMode = false): string {
 		if (typeof content === "string") return content;
 		let component = content as Component;
@@ -90,7 +104,6 @@ class Main {
 		}
 		return this.generateTag(component, renderMode);
 	}
-
 	buildProject() {
 		let builded_project = "<!DOCTYPE html>";
 		if (this.projectHistory.current_project) {
@@ -98,7 +111,6 @@ class Main {
 		}
 		return builded_project;
 	}
-
 	exportProject() {
 		this.initNewProject();
 		const blob = new Blob([this.buildProject()], { type: "text/html" });
