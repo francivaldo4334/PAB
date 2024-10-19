@@ -1,3 +1,6 @@
+import MainControls from "./main";
+import Move from "./move";
+
 class SelectionBox {
 	isSelecting = false;
 	selectionBox = document.getElementById("selection_box");
@@ -46,3 +49,5 @@ class SelectionBox {
 		}
 	}
 }
+
+export default SelectionBox;

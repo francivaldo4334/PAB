@@ -5,6 +5,7 @@
   "main": "build.js",
   "scripts": {
     "build": "node build.js",
+    "webpack": "webpack",
     "tsc": "tsc",
     "serve": "http-server build",
     "watch": "nodemon --watch src -e html,css,ts --exec 'npm run build'"
@@ -12,7 +13,10 @@
   "devDependencies": {
     "http-server": "^14.1.1",
     "nodemon": "^3.1.7",
-    "typescript": "^5.6.3"
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.3",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "cheerio": "^1.0.0",

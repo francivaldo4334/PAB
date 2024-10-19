@@ -1,8 +1,9 @@
+import { Component } from "./common"
 class ProjectHistory {
-	past: Project[] = [];
-	current_project: Project | undefined;
-	future: Project[] = [];
-	updateText(newText: Project) {
+	past: Component[] = [];
+	current_project: Component | undefined;
+	future: Component[] = [];
+	updateText(newText: Component) {
 		if (this.current_project) {
 			this.past.push(this.current_project);
 		}
@@ -28,3 +29,5 @@ class ProjectHistory {
 		}
 	}
 }
+
+export default ProjectHistory;

@@ -1,6 +1,11 @@
+import Bihavior from "./bihavior"
 class Actions {
 	EDIT_MODE = "SELECTION";
 	projectDrawScope = document.getElementById("project_draw_rect");
+	bihavior: Bihavior;
+	constructor(bihavior: Bihavior){
+		this.bihavior = bihavior;
+	}
 	openMenuFile() {
 		console.log("TODO");
 	}
@@ -12,16 +17,16 @@ class Actions {
 	openMenuNewElement() {
 		const menuNewElement = document.getElementById("menu_new_element");
 		if (menuNewElement) {
-			selectElement(menuNewElement);
-			toggleIsOpen(menuNewElement);
+			this.bihavior.selectElement(menuNewElement);
+			this.bihavior.toggleIsOpen(menuNewElement);
 		}
 	}
 
 	closeMenuNewElement() {
 		const menuNewElement = document.getElementById("menu_new_element");
 		if (menuNewElement) {
-			decelElement(menuNewElement);
-			toggleIsOpen(menuNewElement);
+			this.bihavior.decelElement(menuNewElement);
+			this.bihavior.toggleIsOpen(menuNewElement);
 		}
 	}
 
@@ -48,7 +53,7 @@ class Actions {
 	setSelectionMode() {
 		const btnMode = document.getElementById("btn_selection_mode");
 		if (btnMode) {
-			selectElement(btnMode);
+			this.bihavior.selectElement(btnMode);
 			this.EDIT_MODE = "SELECTION";
 		}
 	}
@@ -56,7 +61,7 @@ class Actions {
 	setMoveMode() {
 		const btnMode = document.getElementById("btn_move_mode");
 		if (btnMode && this.projectDrawScope) {
-			selectElement(btnMode);
+			this.bihavior.selectElement(btnMode);
 			this.EDIT_MODE = "MOVE";
 			this.projectDrawScope.setAttribute("selected", "move");
 		}
@@ -65,7 +70,7 @@ class Actions {
 	setZoomMode() {
 		const btnMode = document.getElementById("btn_zoom_mode");
 		if (btnMode && this.projectDrawScope) {
-			selectElement(btnMode);
+			this.bihavior.selectElement(btnMode);
 			this.EDIT_MODE = "ZOOM";
 			this.projectDrawScope.setAttribute("selected", "zoom");
 		}
@@ -74,7 +79,7 @@ class Actions {
 	openMenuPlugins() {
 		const btnMode = document.getElementById("btn_plugin");
 		if (btnMode) {
-			selectElement(btnMode);
+			this.bihavior.selectElement(btnMode);
 		}
 	}
 
@@ -98,10 +103,10 @@ class Actions {
 	addNewProp(type: string) {
 		switch (type) {
 			case "HTML":
-				addPropertieHTML();
+				this.bihavior.addPropertieHTML();
 				break;
 			case "CSS":
-				addPropertieCSS();
+				this.bihavior.addPropertieCSS();
 				break;
 			default:
 				break;
@@ -111,7 +116,8 @@ class Actions {
 	removePropretie(prop_id: string) {
 		const prop = document.getElementById(prop_id);
 		if (prop) {
-			removeUiPropretie(prop);
+			this.bihavior.removeUiPropretie(prop);
 		}
 	}
 }
+export default Actions;

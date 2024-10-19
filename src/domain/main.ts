@@ -1,26 +1,24 @@
+import ProjectHistory from "./project-history-manager";
+import MainControls from "./controls/main";
+import Actions from "./actions";
+import Keybinds from "./keybinds"
+import Bihavior from "./bihavior"
+import { Common, Prop, Component } from "./common";
+
 class Main {
 	projectHistory: ProjectHistory;
 	common: Common;
 	controls: MainControls;
 	actions: Actions;
 	keybinds: Keybinds;
+	bihavior: Bihavior;
 	constructor() {
 		this.common = new Common();
-		this.actions = new Actions();
-		this.keybinds = new Keybinds(this.actions);
+		this.bihavior = new Bihavior(this);
+		this.actions = new Actions(this.bihavior);
+		this.keybinds = new Keybinds(this.actions, this.bihavior);
 		this.projectHistory = new ProjectHistory();
-		this.controls = new MainControls(this.actions, this.projectHistory);
-		this.initNewProject();
-		const my_body = document.getElementById("project_draw");
-		if (
-			this.projectHistory.current_project &&
-			this.projectHistory.current_project.content.length > 1
-		) {
-			(my_body as HTMLElement).innerHTML = this.buildTag(
-				this.projectHistory.current_project.content[1],
-				true,
-			);
-		}
+		this.controls = new MainControls(this.actions, this.projectHistory, this.bihavior);
 	}
 	initNewProject() {
 		this.projectHistory.updateText(this.common.base_json_template);
@@ -37,76 +35,60 @@ class Main {
 		return props.find((it) => it.name === name);
 	}
 	addProp(props: Prop[], prop: Prop): Prop[] {
-		return props.map((it) => {
+		let add = false
+		const result = props.map((it) => {
 			if (it.name === prop.name) {
+				add = true
 				return prop;
 			}
 			return it;
 		});
+		if (!add){
+			result.push(prop)
+		}
+		return result;
 	}
 	buildBodyRenderMode(component: Component) {
 		const baseBodyTemplate: Component = { ...this.common.base_view_body };
-		const baseBodyTemplateStyle = this.getProp(baseBodyTemplate.props, "style");
-		const componentStyle = this.getProp(component.props, "style");
-		let newStyle = componentStyle?.value ?? "";
-		newStyle += baseBodyTemplateStyle?.value ?? "";
-		this.updateCssProp(newStyle, "");
-		comp.props =
-			component_json.props && component_json.props.length > 0
-				? component_json.props.map((it) => {
-						if (it.name === "style" && prop_style) {
-							const newStyle = prop_style.value + it.value;
-							return { name: "style", value: newStyle };
-						}
-						return it;
-					})
-				: comp.props;
-		comp.props = comp.props.map((it) => {
-			if (it.name === "style") {
-				let newStyle = it.value;
-				if (comp.position) {
-					newStyle = this.updateCssProp(
-						newStyle,
-						"left",
-						String(comp.position.x),
-					);
-					newStyle = this.updateCssProp(
-						newStyle,
-						"top",
-						String(comp.position.y),
-					);
-				}
-				return { name: "style", value: newStyle };
-			}
-			return it;
-		});
-		comp.content = component_json.content;
+		const baseStyle = this.getProp(baseBodyTemplate.props, "style");
+		const compStyle = this.getProp(component.props, "style");
+		let newStyle = (compStyle?.value ?? "") + (baseStyle?.value ?? "");
+		const position = component.position ?? baseBodyTemplate.position
+		if (position){
+			newStyle = this.updateCssProp(newStyle, "left", `${position.x}px`);
+			newStyle = this.updateCssProp(newStyle, "top", `${position.y}px`);
+			baseBodyTemplate.props = this.addProp(component.props.concat(baseBodyTemplate.props), {
+				name: "style",
+				value: newStyle
+			});
+		}
+		baseBodyTemplate.content = component.content;
+		return baseBodyTemplate;
 	}
-	propsTosString(props: Props[]) {
-		return comp.props
-			? comp.props.map((it: Prop) => `${it.name}="${it.value}"`).join(" ")
+	propsTosString(props: Prop[]) {
+		return props
+			? props.map((it: Prop) => `${it.name}="${it.value}"`).join(" ")
 			: "";
 	}
 
-	generateTag(component: Component): string {
+	generateTag(component: Component, renderMode: boolean): string {
 		const TAG = component.tag;
 		const PROPS = this.propsTosString(component.props);
 		const INNER = component.content
 			? !Array.isArray(component.content)
 				? component.content
-				: component.content.map((it) => this.buildTag(it)).join("\n")
+				: component.content.map((it) => this.buildTag(it, renderMode)).join("\n")
 			: "";
-		return `<${tag_name} ${tag_props}>${tag_content}</${tag_name}>`;
+		return `<${TAG} ${PROPS}>${INNER}</${TAG}>`;
 	}
 
-	buildTag(content: Component | string, renderMode = false): string {
+	buildTag(content: Component | string | object, renderMode = false): string {
 		if (typeof content === "string") return content;
-		let component = content as Project;
-		const is_tag_comp = mode_prod && component_json.tag === "body";
-		if (renderMode && compo) {
-			component = buildBodyRenderMode(component);
+		let component = content as Component;
+		if (renderMode && component.tag === "body") {
+			component = this.buildBodyRenderMode(component);
 		}
-		return this.generateTag(component);
+		return this.generateTag(component, renderMode);
 	}
 
 	buildProject() {
@@ -127,4 +109,4 @@ class Main {
 		URL.revokeObjectURL(link.href);
 	}
 }
-const main = new Main();
+export default Main;

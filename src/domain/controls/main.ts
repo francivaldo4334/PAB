@@ -1,3 +1,12 @@
+import Actions from "../actions";
+import Bihavior from "../bihavior";
+import ProjectHistory from "../project-history-manager";
+import SelectionBox from "./selection";
+import Move from "./move";
+import Modes from "./mode-manager";
+import Zoom from "./zoom";
+
+
 class MainControls {
 	W_WIDTH = window.innerWidth;
 	W_HEIGHT = window.innerHeight;
@@ -19,14 +28,15 @@ class MainControls {
 	move: Move;
 	modes: Modes;
 	zoom: Zoom;
+	bihavior: Bihavior;
 
-	constructor(actions: Actions, projectHistory: ProjectHistory) {
+	constructor(actions: Actions, projectHistory: ProjectHistory, bihavior: Bihavior) {
 		this.actions = actions;
 		this.move = new Move(this, projectHistory);
 		this.zoom = new Zoom(this, projectHistory);
 		this.selectionBox = new SelectionBox(this, this.move);
+		this.bihavior = bihavior;
 		this.modes = new Modes(this);
-
 		this.addEventListeners();
 	}
 
@@ -147,3 +157,5 @@ class MainControls {
 		this.M_DELTA_Y = 0;
 	}
 }
+
+export default MainControls;

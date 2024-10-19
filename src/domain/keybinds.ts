@@ -1,3 +1,5 @@
+import Actions from "./actions"
+import Bihavior from "./bihavior"
 type KeyMap = Record<string, object>;
 type Keybind = {
 	action?: () => void;
@@ -5,6 +7,7 @@ type Keybind = {
 };
 class Keybinds {
 	actions: Actions;
+	bihavior: Bihavior;
 	currentKeybind: string[] = [];
 	newElement: KeyMap = {
 		action: () => {
@@ -44,8 +47,9 @@ class Keybinds {
 		},
 	};
 	keydown: Record<string, boolean> = {};
-	constructor(actions: Actions) {
+	constructor(actions: Actions, bihavior: Bihavior) {
 		this.actions = actions;
+		this.bihavior = bihavior;
 		this.addEventListener();
 	}
 	isKeybind(obj: any): obj is Keybind {
@@ -117,9 +121,11 @@ class Keybinds {
 			}
 			if (e.key === "Escape") {
 				this.actions.closeMenuNewElement();
-				closePopovers();
+				this.bihavior.closePopovers();
 				this.currentKeybind = [];
 			}
 		});
 	}
 }
+
+export default Keybinds;

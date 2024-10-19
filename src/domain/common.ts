@@ -1,8 +1,8 @@
-type Prop = {
+export type Prop = {
 	name: string;
 	value: string;
 };
-type Component = {
+export type Component = {
 	name: string;
 	is_view: boolean;
 	tag: string;
@@ -15,17 +15,18 @@ type Component = {
 	props: Prop[];
 	content: object[] | string;
 };
-class Common {
+export class Common {
 	base_view_body: Component = {
 		name: "body",
 		is_view: true,
 		tag: "div",
 		template: "",
+		position: { x: -250, y: -250 },
 		props: [
 			{
 				name: "style",
 				value:
-					"width: 1440px; height: 1024px; background: #fff; position: absolute;",
+					"width: 500px; height: 500px; background: #fff; position: absolute;",
 			},
 		],
 		content: [],
@@ -35,7 +36,7 @@ class Common {
 		is_view: false,
 		tag: "html",
 		template: "",
-		position: { x: -720, y: -512 },
+		position: { x: 0, y: 0 },
 		zoom: 1.0,
 		props: [{ name: "lang", value: "pt-BR" }],
 		content: [

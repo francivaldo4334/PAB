@@ -1,12 +1,23 @@
+import Move from "./move";
+import Zoom from "./zoom";
+import MainControls from "./main";
+import SelectionBox from "./selection";
+import Actions from "../actions"
+import Bihavior from "../bihavior"
+
 class Modes {
 	body = document.querySelector("body");
 	selectionBox: SelectionBox;
 	actions: Actions;
 	zoom: Zoom;
+	move: Move; 
+	bihavior: Bihavior;
 	constructor(controls: MainControls) {
 		this.selectionBox = controls.selectionBox;
 		this.actions = controls.actions;
 		this.zoom = controls.zoom;
+		this.move = controls.move;
+		this.bihavior = controls.bihavior;
 	}
 	onSelectionModeActionsKeyDown(e: KeyboardEvent) {
 		if (e.shiftKey && this.body) {
@@ -14,6 +25,7 @@ class Modes {
 		}
 		if (e.key === " " && !this.selectionBox.isSelecting) {
 			this.actions.setMoveMode();
+			this.move.initMove()
 		}
 		if (e.ctrlKey && !this.selectionBox.isSelecting) {
 			this.actions.setZoomMode();
@@ -21,8 +33,13 @@ class Modes {
 		}
 	}
 	onActionsKeyUp(e: KeyboardEvent) {
-		decelAllElement();
+		if (this.actions.EDIT_MODE === "ZOOM"){
+			this.zoom.finishZoomMode();
+		}
+		this.bihavior.decelAllElement();
 		this.actions.setSelectionMode();
 		e.preventDefault();
 	}
 }
+
+export default Modes;

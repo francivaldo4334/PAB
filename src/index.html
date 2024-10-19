@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projeto PAB</title>
-    <link rel="stylesheet" type="text/css" href="./ui/components.css">
+    <link rel="stylesheet" type="text/css" href="./ui/components.css" importance="high">
     <style>
         [visible="false"] {
             visibility: hidden;
@@ -51,7 +51,6 @@
             --240dp: 15rem;
         } 
     </style>
-    <script src="./domain/common.js" importance="high"></script>
 </head>
 <body style="margin:0;" class="selection">
     <comp src="./ui/components/templates/templates.html" style="display: none;"></comp>
@@ -71,18 +70,7 @@
             <comp src="./ui/components/side_bar_right.html"></comp>
         </div>
     </div>
-    <script src="./ui/bihavior.js" importance="high"></script>
-    <script src="./domain/actions.js" importance="high"></script>
-    <script src="./domain/keybinds.js" importance="high"></script>
-    <script src="./domain/controls/move.js" importance="high"></script>
-    <script src="./domain/controls/selection.js" importance="high"></script>
-    <script src="./domain/controls/mode-manager.js" importance="high"></script>
-    <script src="./domain/controls/zoom.js" importance="high"></script>
-    <script src="./domain/controls/main.js" importance="high"></script>
-    <script src="./domain/project-history-manager.js" importance="high"></script>
-    <script src="./domain/common.js" importance="high"></script>
-    <script src="./domain/main.js" importance="high"></script>
-    <script src="./ui/translations.js"></script>
+    <script src="./script.js" importance="high" type="module"></script>
 </body>
 </html>
 

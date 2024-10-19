@@ -40,7 +40,7 @@ async function copySvgs(srcDir, buildDir) {
 
 async function transpileTS() {
 	return new Promise((resolve, reject) => {
-		exec("npx tsc", (error, stdout, stderr) => {
+		exec("npm run webpack", (error, stdout, stderr) => {
 			if (error) {
 				console.error(`Erro na transpilação: ${stderr}`);
 				return reject(error);
