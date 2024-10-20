@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "ES6",
         "module": "ESNext",
-        "outDir": "./build",
+        "outDir": "./docs",
         "strict": true,
         "esModuleInterop": true,
         "lib": ["es2023", "dom"],

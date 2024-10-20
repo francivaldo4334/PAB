@@ -7,7 +7,7 @@
     "build": "node build.js",
     "webpack": "webpack",
     "tsc": "tsc",
-    "serve": "http-server build",
+    "serve": "http-server docs",
     "watch": "nodemon --watch src -e html,css,ts --exec 'npm run build'"
   },
   "devDependencies": {

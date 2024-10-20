@@ -3,7 +3,7 @@ const path = require("path");
 const { exec } = require("child_process");
 const cheerio = require("cheerio");
 const srcDir = path.join(__dirname, "src");
-const buildDir = path.join(__dirname, "build");
+const buildDir = path.join(__dirname, "docs");
 
 async function copyFiles(srcDir, buildDir, extension) {
 	try {
