@@ -40,17 +40,65 @@ class Main {
 		}
 		return undefined
 	}
-	getBrotherComponent(component: Component): Component | undefined {
-		if (!component.id) return;
+	getNextBrotherComponent(component: Component): Component | undefined {
+		if (!component.id) return undefined;
 		const prevComponent = this.getPreviousComponent(component.id);
-		console.log(prevComponent)
-		if (!prevComponent) return;
+		if (!prevComponent) return undefined;
 		if (!Array.isArray(prevComponent.content)) return;
 		const compIndex = (prevComponent.content as Component[]).findIndex(it => it.id === component.id)
 		if (compIndex >= 0 && compIndex + 1 < prevComponent.content.length) {
-			return prevComponent.content[compIndex + 1] as Component
+			const result = prevComponent.content[compIndex + 1] as Component
+			return result
 		}
-		return;
+		return undefined;
+	}
+	getPrevBrotherComponent(component: Component): Component | undefined {
+		if (!component.id) return undefined;
+		const prevComponent = this.getPreviousComponent(component.id);
+		if (!prevComponent) return undefined;
+		if (!Array.isArray(prevComponent.content)) return;
+		const compIndex = (prevComponent.content as Component[]).findIndex(it => it.id === component.id)
+		if (compIndex > 0 && compIndex < prevComponent.content.length) {
+			const result = prevComponent.content[compIndex - 1] as Component
+			return result
+		}
+		return undefined;
+	}
+	toPrevComponent(currentComponent: Element | null = this.getComponentSelected()) {
+		if (!currentComponent) return;
+		const currentComponentProject = this.getComponentProjectById(this.getComponentId(currentComponent));
+		if (!currentComponentProject || !currentComponentProject.id) return;
+		const prevBrotherComponent = this.getPrevBrotherComponent(currentComponentProject);
+		if (prevBrotherComponent && prevBrotherComponent.id) {
+			const prevComponent = this.getElementByComponentId(prevBrotherComponent.id)
+			if (prevComponent) {
+				this.onSelectComponente(prevComponent as HTMLElement);
+			}
+			return;
+		}
+		const prevComponentProject = this.getPreviousComponent(currentComponentProject.id)
+		if (prevComponentProject && prevComponentProject.id) {
+			const prevComponent = this.getElementByComponentId(prevComponentProject.id)
+			if (prevComponent) {
+				this.onSelectComponente(prevComponent as HTMLElement);
+			}
+			return;
+		}
+	}
+	toInnerComponent(currentComponent: Element | null = this.getComponentSelected()) {
+		if (!currentComponent) return;
+		const currentComponentProject = this.getComponentProjectById(this.getComponentId(currentComponent));
+		if (!currentComponentProject) return;
+		if (Array.isArray(currentComponentProject.content) && currentComponentProject.content.length > 0) {
+			const nextComponentProject = currentComponentProject.content[0] as Component;
+			if (nextComponentProject && nextComponentProject.id) {
+				const nextComponent = this.getElementByComponentId(nextComponentProject.id)
+				if (nextComponent) {
+					this.onSelectComponente(nextComponent as HTMLElement);
+				}
+				return;
+			}
+		}
 	}
 	toNextComponent(currentComponent: Element | null = this.getComponentSelected()) {
 		if (!currentComponent) {
@@ -63,7 +111,7 @@ class Main {
 		}
 		const currentComponentProject = this.getComponentProjectById(this.getComponentId(currentComponent));
 		if (!currentComponentProject) return;
-		const brotherComponent = this.getBrotherComponent(currentComponentProject);
+		const brotherComponent = this.getNextBrotherComponent(currentComponentProject);
 		if (brotherComponent && brotherComponent.id) {
 			const brotherComponentEl = this.getElementByComponentId(brotherComponent.id)
 			if (brotherComponentEl) {
@@ -75,7 +123,9 @@ class Main {
 			const nextComponentProject = currentComponentProject.content[0] as Component;
 			if (nextComponentProject && nextComponentProject.id) {
 				const nextComponent = this.getElementByComponentId(nextComponentProject.id)
-				this.onSelectComponente(nextComponent as HTMLElement);
+				if (nextComponent) {
+					this.onSelectComponente(nextComponent as HTMLElement);
+				}
 				return;
 			}
 		}
@@ -106,9 +156,10 @@ class Main {
 		const selectedComponentProject = this.getComponentProjectById(this.getComponentId(selectedComponent));
 		if (!selectedComponentProject) return;
 		if (Array.isArray(selectedComponentProject.content)) {
-			const newComponent = { ...componentTemplate }
+			const newComponent = JSON.parse(JSON.stringify(componentTemplate))
 			newComponent.id = this.bihavior.generateSlug();
 			selectedComponentProject.content.push(newComponent);
+			return;
 		}
 	}
 	setComponentProjectById(

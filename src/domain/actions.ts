@@ -27,11 +27,17 @@ class Actions {
 		const menuNewElement = document.getElementById("menu_new_element");
 		if (menuNewElement) {
 			this.bihavior.decelElement(menuNewElement);
-			this.bihavior.toggleIsOpen(menuNewElement);
+			menuNewElement.setAttribute('is_open', "false");
 		}
+	}
+	toPrevComponent() {
+		this.bihavior.main.toPrevComponent();
 	}
 	toNextComponent() {
 		this.bihavior.main.toNextComponent();
+	}
+	toInnerComponent() {
+		this.bihavior.main.toInnerComponent();
 	}
 	addNewElement(type: string) {
 		switch (type) {

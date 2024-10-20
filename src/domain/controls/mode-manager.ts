@@ -10,7 +10,7 @@ class Modes {
 	selectionBox: SelectionBox;
 	actions: Actions;
 	zoom: Zoom;
-	move: Move; 
+	move: Move;
 	bihavior: Bihavior;
 	constructor(controls: MainControls) {
 		this.selectionBox = controls.selectionBox;
@@ -31,9 +31,21 @@ class Modes {
 			this.actions.setZoomMode();
 			this.zoom.initZoomMode();
 		}
+		if (e.key === "Tab") {
+			if (e.shiftKey) {
+				this.actions.toPrevComponent();
+			}
+			else {
+				this.actions.toNextComponent();
+			}
+			e.preventDefault();
+		}
+		if (e.key === "Enter") {
+			this.actions.toInnerComponent();
+		}
 	}
 	onActionsKeyUp(e: KeyboardEvent) {
-		if (this.actions.EDIT_MODE === "ZOOM"){
+		if (this.actions.EDIT_MODE === "ZOOM") {
 			this.zoom.finishZoomMode();
 		}
 		this.bihavior.decelAllElement();

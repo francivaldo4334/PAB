@@ -13,12 +13,7 @@ class Keybinds {
 		action: () => {
 			this.actions.openMenuNewElement();
 		},
-		f: {
-			action: () => {
-				this.actions.addNewElement("FRAME");
-			},
-		},
-		c: {
+		o: {
 			action: () => {
 				this.actions.addNewElement("OVAL");
 			},
@@ -28,18 +23,13 @@ class Keybinds {
 				this.actions.addNewElement("RECT");
 			},
 		},
-		i: {
+		t: {
 			action: () => {
-				this.actions.addNewElement("IMAGE");
+				this.actions.addNewElement("TEXT");
 			},
 		},
 	};
 	keymaps: KeyMap = {
-		Tab: {
-			action: () => {
-				this.actions.toNextComponent();
-			}
-		},
 		Control: {
 			n: {
 				mode: true,

@@ -12,12 +12,19 @@ class Bihavior {
 			}
 		});
 	}
-	generateSlug() {
-		return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+	tryGenerateSlug() {
+		return "pab__id__xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, (c) => {
 			const r = (Math.random() * 16) | 0;
 			const v = c === "x" ? r : (r & 0x3) | 0x8;
 			return v.toString(16);
 		});
+	}
+	generateSlug() {
+		let id = this.tryGenerateSlug();
+		while (this.main.getElementByComponentId(id)) {
+			id = this.tryGenerateSlug()
+		}
+		return id;
 	}
 	toggleIsOpen(element: HTMLElement) {
 		const attributeName = "is_open";

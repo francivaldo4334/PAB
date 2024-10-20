@@ -191,7 +191,7 @@ export class Common {
 		content: []
 	}
 	oval_json_template: Component = {
-		name: "rect",
+		name: "oval",
 		is_view: true,
 		tag: "div",
 		template: "",
