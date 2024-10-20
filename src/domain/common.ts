@@ -1,6 +1,7 @@
 export type Prop = {
 	name: string;
 	value: string;
+	id?: string;
 };
 export type Component = {
 	id?: string;
@@ -14,6 +15,7 @@ export type Component = {
 	};
 	zoom?: number;
 	props: Prop[];
+	styles: Prop[];
 	content: object[] | string;
 };
 export type Translations = Record<string, any>;
@@ -48,11 +50,24 @@ export class Common {
 		template: "",
 		position: { x: -250, y: -250 },
 		props: [
+		],
+		styles: [
 			{
-				name: "style",
-				value:
-					"width: 500px; height: 500px; background: #fff; position: absolute;",
+				name: "width",
+				value: "500px"
 			},
+			{
+				name: "height",
+				value: "500px"
+			},
+			{
+				name: "background",
+				value: "#fff"
+			},
+			{
+				name: "position",
+				value: "absolute"
+			}
 		],
 		content: [],
 	};
@@ -65,6 +80,7 @@ export class Common {
 		position: { x: 0, y: 0 },
 		zoom: 1.0,
 		props: [{ name: "lang", value: "pt-BR" }],
+		styles: [],
 		content: [
 			{
 				id: "head",
@@ -73,6 +89,7 @@ export class Common {
 				tag: "head",
 				template: "",
 				props: [],
+				styles: [],
 				content: [
 					{
 						name: "",
@@ -80,6 +97,7 @@ export class Common {
 						tag: "meta",
 						template: "",
 						props: [{ name: "charset", value: "UTF-8" }],
+						styles: [],
 						content: [],
 					},
 					{
@@ -94,6 +112,7 @@ export class Common {
 								value: "width=device-width, initial-scale=1.0",
 							},
 						],
+						styles: [],
 						content: [],
 					},
 					{
@@ -102,6 +121,7 @@ export class Common {
 						tag: "title",
 						template: "",
 						props: [],
+						styles: [],
 						content: ["My Site"],
 					},
 				],
@@ -110,19 +130,23 @@ export class Common {
 				name: "",
 				is_view: true,
 				tag: "body",
+				id: "body",
 				template: "",
 				props: [],
+				styles: [],
 				content: [
 					{
 						name: "",
 						is_view: true,
+						id: "teste_h1",
 						tag: "h1",
 						template: "",
-						props: [
+						props: [],
+						styles: [
 							{
-								name: "style",
-								value: "color: red;",
-							},
+								name: "color",
+								value: "red"
+							}
 						],
 						content: ["Teste"],
 					},

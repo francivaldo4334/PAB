@@ -14,6 +14,8 @@ class Main {
 	keybinds: Keybinds;
 	bihavior: Bihavior;
 	translations: Translation;
+	propListHtml = document.getElementById("list_props_html");
+	propListCSS = document.getElementById("list_props_css");
 	readonly RENDER_LABEL = "BAB_project__";
 	constructor() {
 		this.common = new Common();
@@ -23,6 +25,100 @@ class Main {
 		this.projectHistory = new ProjectHistory();
 		this.controls = new MainControls(this);
 		this.translations = new Translation(this.common, "pt_br");
+	}
+	getComponentProjectById(id: string, component?: Component): Component | undefined {
+		if (component) {
+			if (component.id === id) {
+				return component
+			}
+			if (Array.isArray(component.content)) {
+				for (const item of component.content) {
+					const res = this.getComponentProjectById(id, item as Component);
+					if (res) {
+						return res
+					}
+				}
+			}
+			return undefined
+		}
+		return this.getComponentProjectById(id, this.projectHistory.current_project)
+	}
+	setComponentProjectById(
+		id: string,
+		component: Component,
+		localComponent: Component | undefined = this.projectHistory.current_project,
+		add: (it: Component) => void = (it) => {
+			this.projectHistory.updateText(it)
+		}
+	) {
+		if (!localComponent) return
+		if (localComponent.id === id) {
+			add(component);
+		}
+		if (Array.isArray(localComponent.content)) {
+			for (let i = 0; i < localComponent.content.length; i++) {
+				this.setComponentProjectById(id, component, localComponent.content[i] as Component, (it) => {
+					if (Array.isArray(localComponent.content))
+						localComponent.content[i] = it
+				});
+			}
+		}
+	}
+	removeProprety(propId: string) {
+		const selectedComponent = this.getComponentSelected();
+		if (!selectedComponent) return;
+		const selectedComponentProject = this.getComponentProjectById(selectedComponent.getAttribute(`${this.RENDER_LABEL}id`) ?? "");
+		if (!selectedComponentProject) return;
+		selectedComponentProject.props = selectedComponentProject.props.filter((prop) => prop.id !== propId)
+		selectedComponentProject.styles = selectedComponentProject.styles.filter((prop) => prop.id !== propId)
+	}
+	cssSanitize(cssString: string): string {
+		const tempElement = document.createElement('div');
+		const styles = cssString.split(';').filter(style => style.trim() !== '');
+		const sanitizedStyles: string[] = [];
+		for (let style of styles) {
+			const [property, value] = style.split(':').map(part => part.trim());
+			if (property && value) {
+				const originalValue = tempElement.style.getPropertyValue(property);
+				tempElement.style.setProperty(property, value ?? "none");
+				if (tempElement.style.getPropertyValue(property) !== '') {
+					sanitizedStyles.push(`${property}: ${value}`);
+				}
+				tempElement.style.setProperty(property, originalValue);
+			}
+		}
+		return sanitizedStyles.join('; ');
+	}
+	setPropertyInSelectedComponent(id: string, fieldName: string, newValue: string, listProp: string) {
+		const selectedComponent = this.getComponentSelected();
+		if (!selectedComponent) return;
+		const selectedComponentProject = this.getComponentProjectById(selectedComponent.getAttribute(`${this.RENDER_LABEL}id`) ?? "");
+		if (!selectedComponentProject) return;
+		const props = selectedComponentProject.props;
+		if (listProp === "HTML") {
+			let prop = props.find(it => it.id === id) || { name: "", value: "", id: id };
+			if (fieldName === "name") { if (prop.name) { selectedComponent.removeAttribute(prop.name); } prop.name = newValue; }
+			if (fieldName === "value") { prop.value = newValue; }
+			if (!props.includes(prop)) { props.push(prop); }
+			selectedComponent.setAttribute(prop.name, prop.value);
+		}
+		if (listProp === "CSS") {
+			const propStyle = this.getProp(props, "style");
+			const listStyle = this.stringToProps(propStyle?.value ?? "");
+			const styles = selectedComponentProject.styles;
+			for (const it of listStyle) {
+				styles.push(it);
+			}
+			let prop = styles.find(it => it.id === id) || { name: "", value: "none", id: id };
+			if (fieldName === "name") { prop.name = newValue; }
+			if (fieldName === "value") { prop.value = newValue; }
+			if (!styles.includes(prop)) {
+				styles.push(prop);
+			}
+			let css: string | undefined = this.propsTosStringCss(styles)
+			css = this.cssSanitize(css);
+			selectedComponent.setAttribute("style", css);
+		}
 	}
 	initNewProject() {
 		this.projectHistory.updateText(this.common.base_json_template);
@@ -34,6 +130,29 @@ class Main {
 				el.setAttribute(`${this.RENDER_LABEL}selected`, "false");
 			});
 		}
+		if (this.propListHtml)
+			this.propListHtml.innerHTML = "";
+		if (this.propListCSS)
+			this.propListCSS.innerHTML = "";
+	}
+	onSelectComponente(component: HTMLElement) {
+		if (this.actions.EDIT_MODE !== "SELECTION") {
+			return;
+		}
+		this.cleanAllSelectables();
+		component.setAttribute(`${this.RENDER_LABEL}selected`, "true");
+		const componentProject = this.getComponentProjectById(component.getAttribute(`${this.RENDER_LABEL}id`) ?? "")
+		console.log(componentProject)
+		if (componentProject) {
+			for (const attr of componentProject.props) {
+				if (!attr.name.toLowerCase().startsWith(this.RENDER_LABEL.toLowerCase()) && attr.name !== "style") {
+					this.actions.addNewProp("HTML", attr)
+				}
+			}
+			for (const attr of componentProject.styles) {
+				this.actions.addNewProp("CSS", attr)
+			}
+		}
 	}
 	loadOnclickEvents() {
 		const allElementsOfProject = document.querySelectorAll(`[${this.RENDER_LABEL}selectable]`);
@@ -41,8 +160,7 @@ class Main {
 			allElementsOfProject.forEach((el) => {
 				(el as HTMLElement).onclick = (e) => {
 					const target = e.target as HTMLElement;
-					this.cleanAllSelectables();
-					target.setAttribute(`${this.RENDER_LABEL}selected`, "true");
+					this.onSelectComponente(target)
 					e.stopPropagation();
 				}
 			});
@@ -55,11 +173,23 @@ class Main {
 			? cssStr.replace(regex, newProp)
 			: `${cssStr} ${newProp}`;
 	}
+	stringToProps(style: string): Prop[] {
+		return style.split(";").map(it => it.trim()).filter(it => it).map(
+			it => {
+				const [name, value] = it.split(":").map(i => i.trim());
+				return {
+					name: name,
+					value: value
+				}
+			}
+		)
+	}
 	getProp(props: Prop[], name: string): Prop | undefined {
 		return props.find((it) => it.name === name);
 	}
-	addProp(props: Prop[], prop: Prop): Prop[] {
+	addProp(props: Prop[], _prop: Prop): Prop[] {
 		let add = false
+		const prop = { ..._prop, id: _prop.id ?? this.bihavior.generateSlug() }
 		const result = props.map((it) => {
 			if (it.name === prop.name) {
 				add = true
@@ -72,31 +202,27 @@ class Main {
 		}
 		return result;
 	}
-	buildBodyRenderMode(component: Component) {
-		const baseBodyTemplate: Component = { ...this.common.base_view_body };
-		const baseStyle = this.getProp(baseBodyTemplate.props, "style");
-		const compStyle = this.getProp(component.props, "style");
-		let newStyle = (compStyle?.value ?? "") + (baseStyle?.value ?? "");
-		const position = component.position ?? baseBodyTemplate.position
-		if (position) {
-			newStyle = this.updateCssProp(newStyle, "left", `${position.x}px`);
-			newStyle = this.updateCssProp(newStyle, "top", `${position.y}px`);
-			baseBodyTemplate.props = this.addProp(component.props.concat(baseBodyTemplate.props), {
-				name: "style",
-				value: newStyle
-			});
-			baseBodyTemplate.props = this.addProp(component.props.concat(baseBodyTemplate.props), {
-				name: `${this.RENDER_LABEL}body`,
-				value: ""
-			});
-		}
-		baseBodyTemplate.content = component.content;
-		return baseBodyTemplate;
+	getComponentSelected() {
+		return document.querySelector(`[${this.RENDER_LABEL}selected="true"]`)
 	}
-	propsTosString(props: Prop[]) {
-		return props
-			? props.map((it: Prop) => `${it.name}="${it.value}"`).join(" ")
-			: "";
+	buildBodyRenderMode(component: Component) {
+		const TEMPLATE: Component = { ...this.common.base_view_body };
+		const position = component.position ?? TEMPLATE.position
+		if (position) {
+			TEMPLATE.styles.push({ name: "left", value: `${position.x}px`, id: this.bihavior.generateSlug() });
+			TEMPLATE.styles.push({ name: "top", value: `${position.y}px`, id: this.bihavior.generateSlug() });
+		}
+		TEMPLATE.props = component.props.concat(TEMPLATE.props);
+		TEMPLATE.props.push({ name: `${this.RENDER_LABEL}body`, value: "", id: this.bihavior.generateSlug() });
+		TEMPLATE.styles = component.props.concat(TEMPLATE.styles);
+		TEMPLATE.content = component.content;
+		return TEMPLATE;
+	}
+	propsTosString(props: Prop[]): string {
+		return props.map((it: Prop) => `${it.name}="${it.value}"`).join(" ")
+	}
+	propsTosStringCss(props: Prop[]): string {
+		return props.map(it => `${it.name}: ${it.value};`).join(" ");
 	}
 	generateTag(component: Component, renderMode: boolean): string {
 		const TAG = component.tag;
@@ -105,9 +231,7 @@ class Main {
 			props = props.map((it) => {
 				if (it.name === "class") {
 					it.value = it.value.split(' ').map((cls) => {
-						if (!cls.startsWith(this.RENDER_LABEL))
-							return `${this.RENDER_LABEL}${cls}`;
-						return cls;
+						return (!cls.startsWith(this.RENDER_LABEL)) ? `${this.RENDER_LABEL}${cls}` : cls;
 					}).join(" ");
 				}
 				return it;
@@ -116,13 +240,20 @@ class Main {
 				name: `${this.RENDER_LABEL}selectable`,
 				value: ""
 			})
+			props.push({
+				name: `${this.RENDER_LABEL}id`,
+				value: component.id ?? ""
+			})
 		}
 		else {
-			props = props.filter((prop) =>
-				prop.name !== `${this.RENDER_LABEL}selected` &&
-				prop.name !== `${this.RENDER_LABEL}selectable`
-			);
+			props = props.filter((prop) => !prop.name.startsWith(this.RENDER_LABEL));
 		}
+		component.styles = component.styles.map(it => {
+			if (!it.id)
+				it.id = this.bihavior.generateSlug()
+			return it
+		})
+		props.push({ name: "style", value: this.propsTosStringCss(component.styles), id: this.bihavior.generateSlug() })
 		const PROPS = this.propsTosString(props);
 		const INNER = component.content
 			? !Array.isArray(component.content)
@@ -136,6 +267,7 @@ class Main {
 		let component = content as Component;
 		if (renderMode && component.tag === "body") {
 			component = this.buildBodyRenderMode(component);
+			if (component.id) this.setComponentProjectById(component.id, component)
 		}
 		return this.generateTag(component, renderMode);
 	}
@@ -144,6 +276,7 @@ class Main {
 		if (this.projectHistory.current_project) {
 			if (devMode) {
 				const my_body = document.getElementById("project_draw") as HTMLElement;
+
 				builded_project += this.buildTag(this.projectHistory.current_project.content[1], true);
 				my_body.innerHTML = builded_project;
 				this.loadOnclickEvents();

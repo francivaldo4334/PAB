@@ -90,7 +90,9 @@ body[selected="move-h"] *{
 [BAB_project__selected="false"]{
   z-index: 2;
 }
-[BAB_project__selected="true"] {
-    border: 4px solid #0cf;
+[BAB_project__selected="true"]{
+    outline: 4px solid #0cf;
     z-index: 1;
+    box-sizing: border-box;
 }
+

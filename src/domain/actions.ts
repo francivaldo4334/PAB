@@ -1,9 +1,10 @@
 import Bihavior from "./bihavior"
+import { Prop } from "./common";
 class Actions {
 	EDIT_MODE = "SELECTION";
 	projectDrawScope = document.getElementById("project_draw_rect");
 	bihavior: Bihavior;
-	constructor(bihavior: Bihavior){
+	constructor(bihavior: Bihavior) {
 		this.bihavior = bihavior;
 	}
 	openMenuFile() {
@@ -100,13 +101,13 @@ class Actions {
 		}
 	}
 
-	addNewProp(type: string) {
+	addNewProp(type: string, prop?: Prop) {
 		switch (type) {
 			case "HTML":
-				this.bihavior.addPropertieHTML();
+				this.bihavior.addPropertieHTML(prop);
 				break;
 			case "CSS":
-				this.bihavior.addPropertieCSS();
+				this.bihavior.addPropertieCSS(prop);
 				break;
 			default:
 				break;

@@ -1,6 +1,9 @@
+import { Prop } from "./common";
 import Main from "./main"
 class Bihavior {
+	main: Main;
 	constructor(main: Main) {
+		this.main = main;
 		document.addEventListener("click", (e) => {
 			const element = document.querySelector(".popover");
 			if (element && e.target instanceof Node && !element.contains(e.target)) {
@@ -40,31 +43,59 @@ class Bihavior {
 	decelElement(element: HTMLElement) {
 		element.setAttribute("selected", "false");
 	}
-	addPropertieHTML() {
-		const listProps = document.getElementById("list_props_html");
+	newPropertie(prop?: Prop): HTMLElement | undefined {
 		const template = document
 			.getElementById("item_prop_template")
 			?.cloneNode(true);
-		if (template && listProps) {
+		if (template) {
 			(template as HTMLElement).removeAttribute("visible");
-			(template as HTMLElement).setAttribute("id", this.generateSlug());
-			(listProps as HTMLElement).appendChild(template);
+			(template as HTMLElement).setAttribute("id", prop?.id ?? this.generateSlug());
+		}
+		return template as HTMLElement
+	}
+	loadPropertieInput(input: HTMLElement, listProps: string, prop?: Prop) {
+		const inputName = input.querySelector(`.prop_input_name input`) as HTMLInputElement;
+		const inputValue = input.querySelector(`.prop_input_value input`) as HTMLInputElement;
+		inputName?.addEventListener("input", (e) => {
+			const target = e.target as HTMLInputElement
+			this.main.setPropertyInSelectedComponent(prop?.id ?? input.id, "name", target.value, listProps)
+		})
+		inputValue?.addEventListener("input", (e) => {
+			const target = e.target as HTMLInputElement
+			this.main.setPropertyInSelectedComponent(prop?.id ?? input.id, "value", target.value, listProps)
+		})
+		if (prop) {
+			inputName.value = prop.name;
+			inputValue.value = prop.value;
 		}
 	}
-	addPropertieCSS() {
-		const listProps = document.getElementById("list_props_css");
-		const template = document
-			.getElementById("item_prop_template")
-			?.cloneNode(true);
-		if (template && listProps) {
-			(template as HTMLElement).removeAttribute("visible");
-			(template as HTMLElement).setAttribute("id", this.generateSlug());
-			(listProps as HTMLElement).appendChild(template);
+	addPropertieHTML(_prop?: Prop) {
+		const prop: Prop | undefined = _prop ? { ..._prop, id: _prop.id ?? this.generateSlug() } : undefined
+		const listProps = document.getElementById("list_props_html");
+		const newPropertie = this.newPropertie(prop);
+		if (newPropertie) {
+			listProps?.appendChild(newPropertie);
+			this.loadPropertieInput(newPropertie, "HTML", prop);
 		}
+	}
+	addPropertieCSS(_prop?: Prop) {
+		const prop: Prop | undefined = _prop ? { ..._prop, id: _prop.id ?? this.generateSlug() } : undefined
+		const listProps = document.getElementById("list_props_css");
+		const newPropertie = this.newPropertie(prop);
+		if (newPropertie) {
+			listProps?.appendChild(newPropertie);
+			this.loadPropertieInput(newPropertie, "CSS", prop);
+		}
+	}
+
+	removeProprety(propId: string) {
+		this.main.removeProprety(propId)
 	}
 	removeUiPropretie(element: HTMLElement) {
 		if (element) {
+			this.removeProprety(element.id)
 			element.remove();
+			this.main.buildProject(true)
 		}
 	}
 	closePopovers() {
