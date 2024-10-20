@@ -26,6 +26,60 @@ class Main {
 		this.controls = new MainControls(this);
 		this.translations = new Translation(this.common, "pt_br");
 	}
+	getElementByComponentId(id: string): Element | null {
+		return document.querySelector(`[${this.RENDER_LABEL}id=${id}]`);
+	}
+	getPreviousComponent(id: string, component: Component | undefined = undefined): Component | undefined {
+		if (!component) return this.getPreviousComponent(id, this.projectHistory.current_project)
+		if (Array.isArray(component.content)) {
+			for (const item of component.content as Component[]) {
+				if (item.id === id) return component
+				const res = this.getPreviousComponent(id, item)
+				if (res) return res
+			}
+		}
+		return undefined
+	}
+	getBrotherComponent(component: Component): Component | undefined {
+		if (!component.id) return;
+		const prevComponent = this.getPreviousComponent(component.id);
+		console.log(prevComponent)
+		if (!prevComponent) return;
+		if (!Array.isArray(prevComponent.content)) return;
+		const compIndex = (prevComponent.content as Component[]).findIndex(it => it.id === component.id)
+		if (compIndex >= 0 && compIndex + 1 < prevComponent.content.length) {
+			return prevComponent.content[compIndex + 1] as Component
+		}
+		return;
+	}
+	toNextComponent(currentComponent: Element | null = this.getComponentSelected()) {
+		if (!currentComponent) {
+			const mainComponenProject = this.getComponentProjectById("body");
+			if (!mainComponenProject || !mainComponenProject.id) return;
+			const mainComponent = this.getElementByComponentId(mainComponenProject.id)
+			if (!mainComponent) return;
+			this.onSelectComponente(mainComponent as HTMLElement);
+			return;
+		}
+		const currentComponentProject = this.getComponentProjectById(this.getComponentId(currentComponent));
+		if (!currentComponentProject) return;
+		const brotherComponent = this.getBrotherComponent(currentComponentProject);
+		if (brotherComponent && brotherComponent.id) {
+			const brotherComponentEl = this.getElementByComponentId(brotherComponent.id)
+			if (brotherComponentEl) {
+				this.onSelectComponente(brotherComponentEl as HTMLElement);
+				return;
+			}
+		}
+		if (Array.isArray(currentComponentProject.content) && currentComponentProject.content.length > 0) {
+			const nextComponentProject = currentComponentProject.content[0] as Component;
+			if (nextComponentProject && nextComponentProject.id) {
+				const nextComponent = this.getElementByComponentId(nextComponentProject.id)
+				this.onSelectComponente(nextComponent as HTMLElement);
+				return;
+			}
+		}
+	}
 	getComponentProjectById(id: string, component?: Component): Component | undefined {
 		if (component) {
 			if (component.id === id) {
@@ -42,6 +96,20 @@ class Main {
 			return undefined
 		}
 		return this.getComponentProjectById(id, this.projectHistory.current_project)
+	}
+	getComponentId(el: Element): string {
+		return el.getAttribute(`${this.RENDER_LABEL}id`) ?? "";
+	}
+	setComponentProjectInSelectedComponent(componentTemplate: Component) {
+		const selectedComponent = this.getComponentSelected();
+		if (!selectedComponent) return;
+		const selectedComponentProject = this.getComponentProjectById(this.getComponentId(selectedComponent));
+		if (!selectedComponentProject) return;
+		if (Array.isArray(selectedComponentProject.content)) {
+			const newComponent = { ...componentTemplate }
+			newComponent.id = this.bihavior.generateSlug();
+			selectedComponentProject.content.push(newComponent);
+		}
 	}
 	setComponentProjectById(
 		id: string,
@@ -92,7 +160,7 @@ class Main {
 	setPropertyInSelectedComponent(id: string, fieldName: string, newValue: string, listProp: string) {
 		const selectedComponent = this.getComponentSelected();
 		if (!selectedComponent) return;
-		const selectedComponentProject = this.getComponentProjectById(selectedComponent.getAttribute(`${this.RENDER_LABEL}id`) ?? "");
+		const selectedComponentProject = this.getComponentProjectById(this.getComponentId(selectedComponent));
 		if (!selectedComponentProject) return;
 		const props = selectedComponentProject.props;
 		if (listProp === "HTML") {
@@ -142,7 +210,6 @@ class Main {
 		this.cleanAllSelectables();
 		component.setAttribute(`${this.RENDER_LABEL}selected`, "true");
 		const componentProject = this.getComponentProjectById(component.getAttribute(`${this.RENDER_LABEL}id`) ?? "")
-		console.log(componentProject)
 		if (componentProject) {
 			for (const attr of componentProject.props) {
 				if (!attr.name.toLowerCase().startsWith(this.RENDER_LABEL.toLowerCase()) && attr.name !== "style") {

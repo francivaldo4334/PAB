@@ -122,7 +122,7 @@ export class Common {
 						template: "",
 						props: [],
 						styles: [],
-						content: ["My Site"],
+						content: "My Site",
 					},
 				],
 			},
@@ -148,10 +148,73 @@ export class Common {
 								value: "red"
 							}
 						],
-						content: ["Teste"],
+						content: "Teste",
 					},
 				],
 			},
 		],
 	};
+	text_json_template: Component = {
+		name: "text",
+		is_view: true,
+		tag: "h4",
+		template: "",
+		props: [],
+		styles: [
+			{
+				name: "color",
+				value: "black"
+			}
+		],
+		content: "Text"
+	};
+	rect_json_template: Component = {
+		name: "rect",
+		is_view: true,
+		tag: "div",
+		template: "",
+		props: [],
+		styles: [
+			{
+				name: "width",
+				value: "100px"
+			},
+			{
+				name: "height",
+				value: "100px"
+			},
+			{
+				name: "background",
+				value: "white"
+			}
+		],
+		content: []
+	}
+	oval_json_template: Component = {
+		name: "rect",
+		is_view: true,
+		tag: "div",
+		template: "",
+		props: [],
+		styles: [
+			{
+				name: "width",
+				value: "100px"
+			},
+			{
+				name: "height",
+				value: "100px"
+			},
+			{
+				name: "border-radius",
+				value: "50%"
+			},
+			{
+				name: "background",
+				value: "white"
+			}
+		],
+		content: []
+
+	}
 }

@@ -30,14 +30,28 @@ class Actions {
 			this.bihavior.toggleIsOpen(menuNewElement);
 		}
 	}
-
+	toNextComponent() {
+		this.bihavior.main.toNextComponent();
+	}
 	addNewElement(type: string) {
 		switch (type) {
 			case "OVAL":
-				console.log("TODO");
+				this.bihavior.main.setComponentProjectInSelectedComponent(
+					this.bihavior.main.common.oval_json_template
+				)
+				this.bihavior.main.buildProject(true)
 				break;
 			case "RECT":
-				console.log("TODO");
+				this.bihavior.main.setComponentProjectInSelectedComponent(
+					this.bihavior.main.common.rect_json_template
+				)
+				this.bihavior.main.buildProject(true)
+				break;
+			case "TEXT":
+				this.bihavior.main.setComponentProjectInSelectedComponent(
+					this.bihavior.main.common.text_json_template
+				)
+				this.bihavior.main.buildProject(true)
 				break;
 			case "FRAME":
 				console.log("TODO");

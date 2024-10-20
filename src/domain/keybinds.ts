@@ -35,6 +35,11 @@ class Keybinds {
 		},
 	};
 	keymaps: KeyMap = {
+		Tab: {
+			action: () => {
+				this.actions.toNextComponent();
+			}
+		},
 		Control: {
 			n: {
 				mode: true,
