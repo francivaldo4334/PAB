@@ -199,7 +199,7 @@ class Main {
 			const [property, value] = style.split(':').map(part => part.trim());
 			if (property && value) {
 				const originalValue = tempElement.style.getPropertyValue(property);
-				tempElement.style.setProperty(property, value ?? "none");
+				tempElement.style.setProperty(property, value ?? "auto");
 				if (tempElement.style.getPropertyValue(property) !== '') {
 					sanitizedStyles.push(`${property}: ${value}`);
 				}
@@ -228,7 +228,7 @@ class Main {
 			for (const it of listStyle) {
 				styles.push(it);
 			}
-			let prop = styles.find(it => it.id === id) || { name: "", value: "none", id: id };
+			let prop = styles.find(it => it.id === id) || { name: "", value: "auto", id: id };
 			if (fieldName === "name") { prop.name = newValue; }
 			if (fieldName === "value") { prop.value = newValue; }
 			if (!styles.includes(prop)) {
@@ -389,6 +389,34 @@ class Main {
 		}
 		return this.generateTag(component, renderMode);
 	}
+	buildItemTheeWithComponent(component: Component, templateItemThee: HTMLElement): HTMLElement {
+		const newItemThee = templateItemThee.cloneNode() as HTMLElement
+		newItemThee.removeAttribute("id");
+		newItemThee.setAttribute("visible", "true");
+		if (Array.isArray(component.content) && component.content.length > 0) {
+			for (const item of component.content as Component[]) {
+				const contentItemThee = newItemThee.querySelector(".content");
+				if (contentItemThee) {
+					contentItemThee.appendChild(this.buildItemTheeWithComponent(item, templateItemThee))
+				}
+			}
+		}
+		return newItemThee;
+	}
+	loadThee(templateItemThee?: HTMLElement, localThee?: HTMLElement) {
+		if (!localThee || !templateItemThee) {
+			const _templateItemThee = document.getElementById("item_thee_template");
+			const _localThee = document.getElementById("components_three");
+			if (!_localThee || !_templateItemThee) return;
+			this.loadThee(_templateItemThee, _localThee);
+			return
+		}
+		const body = this.getComponentProjectById("body");
+		if (body) {
+			const newItemThee = this.buildItemTheeWithComponent(body, templateItemThee);
+			localThee.appendChild(newItemThee)
+		}
+	}
 	buildProject(devMode = false) {
 		let builded_project = "";
 		if (this.projectHistory.current_project) {
@@ -404,6 +432,7 @@ class Main {
 				builded_project += this.buildTag(this.projectHistory.current_project);
 			}
 		}
+		this.loadThee()
 		return builded_project;
 	}
 	exportProject() {

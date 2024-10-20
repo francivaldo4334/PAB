@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-body {
+#body {
   font-family: 'Roboto', sans-serif;
 }
 * {
@@ -16,12 +16,12 @@ body {
   --black: #000; 
   --white: #fff; 
 }
-body {
+#body {
   background: var(--background);
   color: var(--white);
 }
 
-hr {
+#hr {
   background: var(--p-700);
 }
 
@@ -42,8 +42,8 @@ hr {
 #project_draw_rect[selected="move"] *{
   cursor: url("./components/cursors/move.svg"), auto;
 }
-body[selected="move-h"],
-body[selected="move-h"] *{
+#body[selected="move-h"],
+#body[selected="move-h"] *{
   cursor: url("./components/cursors/move-horizontal.svg"), auto;
 }
 #project_draw_rect[selected="zoom"],

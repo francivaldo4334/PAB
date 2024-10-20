@@ -5,7 +5,7 @@
         style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" 
         expanded 
         is_open="true" 
-        onclick="toggleIsOpen(this)"
+        onclick="mian.bihavior.toggleIsOpen(this)"
         class="side_bar_border">
         <comp src="./ui/components/icons/chevrons_left.svg" chevrons_left></comp>
     </div>
@@ -17,11 +17,9 @@
                 <comp src="./ui/components/button.html" data-translate="javascript">Js</comp>
                 <comp src="./ui/components/button.html" data-translate="assets">Assets</comp>
             </div>
-            <hr style="margin: 0; padding: 0;">
-            <comp src="./ui/components/item_folder.html" text="teste">
-                <comp src="./ui/components/item_folder.html" text="teste">
-                </comp>
-            </comp>
+            <hr style="margin: 0; padding: 0;" id="hr">
+            <div id="components_three">
+            </div>
         </comp>
     </div>
 </div>
