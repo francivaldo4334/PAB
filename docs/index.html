@@ -55,13 +55,13 @@
   <div class="item" style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;" visible="false" id="item_prop_template">
   <div style="flex-grow: 1;" title="Name" class="prop_input_name prop_input">
   <div style="display: flex;">
-    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled" placeholder="$label">
+    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled">
   </div>
 </div>
 
   <div style="flex-grow: 1;" title="Value" class="prop_input_value prop_input">
   <div style="display: flex;">
-    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled" placeholder="$label">
+    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled">
   </div>
 </div>
 
@@ -221,7 +221,7 @@
 
     </div>
     <div class="content">
-        <div style="display: flex; flex-direction: column; min-width: var(--240dp); max-height: 100vh; overflow: hidden;">
+        <div style="display: flex; flex-direction: column; min-width: var(--240dp); max-height: 100vh; overflow: scroll;">
   
             <div style="display: flex; margin-top: var(--48dp);" class="menu_bar">
                 <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" data-translate="html">
@@ -265,7 +265,7 @@
 
     </div>
     <div class="content">
-        <div style="display: flex; flex-direction: column; min-width: var(--240dp); max-height: 100vh; overflow: hidden;">
+        <div style="display: flex; flex-direction: column; min-width: var(--240dp); max-height: 100vh; overflow: scroll;">
   
             <div style="display: flex;margin-top: var(--48dp);" class="menu_bar">
                 <button class="button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" data-translate="design" onclick="actions.setEditMode('DESIGN')">
@@ -278,16 +278,27 @@
 
             </div>
             <hr style="margin: 0; padding: 0;" id="hr">
-            <div class="item" style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;">
-  <div style="flex-grow: 0.2;">name</div>
-  <div style="flex-grow: 1;" title="Value" class="prop_input_value prop_input" label="teste">
+            <div class="item" style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;" id="comp_name">
+  <div style="width: var(--48dp);">name</div>
+  <div style="flex-grow: 1;" title="Value" class="prop_input_value prop_input">
   <div style="display: flex;">
-    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled" placeholder="$label">
+    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled">
   </div>
 </div>
 
 </div>
 
+            <div class="item" style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;" id="comp_tag">
+  <div style="width: var(--48dp);">tag</div>
+  <div style="flex-grow: 1;" title="Value" class="prop_input_value prop_input">
+  <div style="display: flex;">
+    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled">
+  </div>
+</div>
+
+</div>
+
+            <hr style="margin: 0; padding: 0;" id="hr">
             <div>
   <div style="display: flex;">
     <h5 style="flex-grow: 1; margin: var(--12dp);">

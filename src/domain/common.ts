@@ -5,6 +5,7 @@ export type Prop = {
 };
 export type Component = {
 	id?: string;
+	selected?: boolean;
 	name: string;
 	is_view: boolean;
 	tag: string;

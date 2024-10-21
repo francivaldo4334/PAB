@@ -25,6 +25,7 @@ class Main {
 		this.projectHistory = new ProjectHistory();
 		this.controls = new MainControls(this);
 		this.translations = new Translation(this.common, "pt_br");
+		this.updateNameAndTagOfSelectedComponent();
 	}
 	getElementByComponentId(id: string): Element | null {
 		return document.querySelector(`[${this.RENDER_LABEL}id=${id}]`);
@@ -40,6 +41,32 @@ class Main {
 		}
 		return undefined
 	}
+	updateNameAndTagOfSelectedComponent() {
+		const nameField = this.getComponentNameInput();
+		const tagField = this.getComponentTagInput();
+		nameField.addEventListener("input", (e) => {
+			const component = this.getComponentSelected()
+			const target = e.target as HTMLInputElement
+			if (component) {
+				const componentProject = this.getComponentProjectById(component.getAttribute(`${this.RENDER_LABEL}id`) ?? "")
+				if (componentProject) {
+					componentProject.name = target.value
+					this.buildProject(true);
+				}
+			}
+		})
+		tagField.addEventListener("input", (e) => {
+			const component = this.getComponentSelected()
+			const target = e.target as HTMLInputElement
+			if (component) {
+				const componentProject = this.getComponentProjectById(component.getAttribute(`${this.RENDER_LABEL}id`) ?? "")
+				if (componentProject) {
+					componentProject.tag = target.value
+					this.buildProject(true);
+				}
+			}
+		})
+	}
 	getNextBrotherComponent(component: Component): Component | undefined {
 		if (!component.id) return undefined;
 		const prevComponent = this.getPreviousComponent(component.id);
@@ -51,6 +78,12 @@ class Main {
 			return result
 		}
 		return undefined;
+	}
+	getComponentNameInput(): HTMLInputElement {
+		return document.querySelector("#comp_name input")!!;
+	}
+	getComponentTagInput(): HTMLInputElement {
+		return document.querySelector("#comp_tag input")!!;
 	}
 	getPrevBrotherComponent(component: Component): Component | undefined {
 		if (!component.id) return undefined;
@@ -247,12 +280,20 @@ class Main {
 		if (allElementsOfProject) {
 			allElementsOfProject.forEach((el) => {
 				el.setAttribute(`${this.RENDER_LABEL}selected`, "false");
+				const component = this.getComponentProjectById(this.getComponentId(el));
+				if (component) {
+					component.selected = false;
+				}
 			});
 		}
 		if (this.propListHtml)
 			this.propListHtml.innerHTML = "";
 		if (this.propListCSS)
 			this.propListCSS.innerHTML = "";
+		const nameField = this.getComponentNameInput();
+		const tagField = this.getComponentTagInput();
+		nameField.value = "";
+		tagField.value = "";
 	}
 	onSelectComponente(component: HTMLElement) {
 		if (this.actions.EDIT_MODE !== "SELECTION") {
@@ -260,8 +301,13 @@ class Main {
 		}
 		this.cleanAllSelectables();
 		component.setAttribute(`${this.RENDER_LABEL}selected`, "true");
+		const nameField = this.getComponentNameInput();
+		const tagField = this.getComponentTagInput();
 		const componentProject = this.getComponentProjectById(component.getAttribute(`${this.RENDER_LABEL}id`) ?? "")
 		if (componentProject) {
+			componentProject.selected = true;
+			nameField.value = componentProject.name
+			tagField.value = componentProject.tag
 			for (const attr of componentProject.props) {
 				if (!attr.name.toLowerCase().startsWith(this.RENDER_LABEL.toLowerCase()) && attr.name !== "style") {
 					this.actions.addNewProp("HTML", attr)
@@ -357,6 +403,10 @@ class Main {
 			props.push({
 				name: `${this.RENDER_LABEL}selectable`,
 				value: ""
+			})
+			props.push({
+				name: `${this.RENDER_LABEL}selected`,
+				value: String(component.selected)
 			})
 			props.push({
 				name: `${this.RENDER_LABEL}id`,
