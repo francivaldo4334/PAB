@@ -60,7 +60,7 @@ class Main {
 			const target = e.target as HTMLInputElement
 			if (component) {
 				const componentProject = this.getComponentProjectById(component.getAttribute(`${this.RENDER_LABEL}id`) ?? "")
-				if (componentProject) {
+				if (componentProject && target.value.length > 0) {
 					componentProject.tag = target.value
 					this.buildProject(true);
 				}
