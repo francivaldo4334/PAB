@@ -7,6 +7,14 @@ class Actions {
 	constructor(bihavior: Bihavior) {
 		this.bihavior = bihavior;
 	}
+	toggleWithDrawAndPropsFocus() {
+		if (this.bihavior.main.controls.FOCUS === "DRAW") {
+			this.bihavior.main.controls.FOCUS = "PROPS";
+		}
+		else {
+			this.bihavior.main.controls.FOCUS = "DRAW";
+		}
+	}
 	openMenuFile() {
 		console.log("TODO");
 	}

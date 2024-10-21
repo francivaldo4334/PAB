@@ -83,6 +83,9 @@
   border: none;
   background: var(--background);
 }
+.prop_input input[disbled]{
+  background: var(--p-900);
+}
 
 .prop_list {
   gap: var(--8dp);

@@ -1,6 +1,5 @@
 import Actions from "../actions";
 import Bihavior from "../bihavior";
-import ProjectHistory from "../project-history-manager";
 import SelectionBox from "./selection";
 import Move from "./move";
 import Modes from "./mode-manager";
@@ -21,6 +20,7 @@ class MainControls {
 	M_BUTTON_LEFT = false;
 	M_BUTTON_MIDDLE = false;
 	M_BUTTON_RIGHT = false;
+	FOCUS = "DRAW";
 	SCROLL_STATE = "STOP";
 	SCALE_JUMP = 0.1;
 	isScrolling: any = 0;
@@ -31,6 +31,7 @@ class MainControls {
 	zoom: Zoom;
 	bihavior: Bihavior;
 	main: Main;
+	drawRect = document.getElementById("project_draw_rect");
 
 	constructor(main: Main) {
 		this.main = main;
@@ -44,7 +45,6 @@ class MainControls {
 	}
 
 	addEventListeners() {
-		const drawRect = document.getElementById("project_draw_rect");
 		window.addEventListener("keydown", this.handleKeyDown.bind(this));
 		window.addEventListener("keyup", this.handleKeyUp.bind(this));
 		window.addEventListener("mousemove", this.handleMouseMove.bind(this));
@@ -52,17 +52,26 @@ class MainControls {
 			passive: false,
 		});
 		window.addEventListener("mouseup", this.handleMouseUp.bind(this));
-		drawRect?.addEventListener("mousedown", this.handleMouseDown.bind(this));
+		this.drawRect?.addEventListener("mousedown", this.handleMouseDown.bind(this));
 		window.addEventListener("contextmenu", (e) => e.preventDefault());
-		drawRect?.addEventListener("click", this.handleClick.bind(this));
+		this.drawRect?.addEventListener("click", this.handleClick.bind(this));
 	}
 	handleClick(e: MouseEvent) {
 		this.main.cleanAllSelectables();
 	}
 	handleKeyDown(e: KeyboardEvent) {
+		if (e.altKey && e.key === "1") {
+			this.actions.toggleWithDrawAndPropsFocus()
+			e.preventDefault();
+		}
 		switch (this.actions.EDIT_MODE) {
 			case "SELECTION":
-				this.modes.onSelectionModeActionsKeyDown(e);
+				if (this.FOCUS === "PROPS") {
+					//TODO: Props actions
+				}
+				else if (this.FOCUS === "DRAW") {
+					this.modes.onSelectionModeActionsKeyDown(e);
+				}
 				break;
 			default:
 				break;

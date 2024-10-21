@@ -53,17 +53,15 @@
 <body style="margin:0;" class="selection" id="body">
     <div style="display: none;">
   <div class="item" style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;" visible="false" id="item_prop_template">
-  <div style="flex-grow: 1;" class="prop_input_name prop_input">
-  <h6 style="margin: 0;">Name</h6>
+  <div style="flex-grow: 1;" title="Name" class="prop_input_name prop_input">
   <div style="display: flex;">
-    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);">
+    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled" placeholder="$label">
   </div>
 </div>
 
-  <div style="flex-grow: 1;" class="prop_input_value prop_input">
-  <h6 style="margin: 0;">Value</h6>
+  <div style="flex-grow: 1;" title="Value" class="prop_input_value prop_input">
   <div style="display: flex;">
-    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);">
+    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled" placeholder="$label">
   </div>
 </div>
 
@@ -280,6 +278,16 @@
 
             </div>
             <hr style="margin: 0; padding: 0;" id="hr">
+            <div class="item" style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;">
+  <div style="flex-grow: 0.2;">name</div>
+  <div style="flex-grow: 1;" title="Value" class="prop_input_value prop_input" label="teste">
+  <div style="display: flex;">
+    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled" placeholder="$label">
+  </div>
+</div>
+
+</div>
+
             <div>
   <div style="display: flex;">
     <h5 style="flex-grow: 1; margin: var(--12dp);">
