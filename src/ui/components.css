@@ -102,23 +102,22 @@
 [focus="true"]::before {
   content: "Focus";
   position: absolute;
-  bottom: 0;
-  left: 0;
   z-index: 11;
   width: auto;
   height: auto;
-  padding: var(--4dp);
+  clip-path: polygon(0 0, 75% 0, 100% 35%, 100% 100%,  0 100%);
 }
 [focus="true"]::after {
-  bottom: var(--2dp);
-  left: var(--2dp);
+  bottom: var(--4dp);
+  left: var(--4dp);
+  padding: var(--4dp);
   background: var(--p-800);
-  clip-path: polygon(0 0, 75% 0, 100% 35%, 100% 100%,  0 100%);
-  padding: calc(0 - var(--2dp));
 }
 [focus="true"]::before {
+  bottom: 0;
+  left: 0;
+  padding: var(--8dp);
   background: var(--p-700);
-  clip-path: polygon(0 0, 75% 0, 100% 35%, 100% 100%,  0 100%);
 }
 [focus="true"],
 [tip] {
