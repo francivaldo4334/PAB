@@ -98,6 +98,7 @@
     z-index: 1;
     box-sizing: border-box;
 }
+[focus="true"]::after,
 [focus="true"]::before {
   content: "Focus";
   position: absolute;
@@ -107,9 +108,14 @@
   width: auto;
   height: auto;
   padding: var(--4dp);
+}
+[focus="true"]::after {
   background: var(--p-800);
-  border: var(--2dp) solid var(--p-700);
-  border-radius: 0 var(--8dp) 0 0;
+  clip-path: polygon( 4% 4%, 71% 4%, 94% 29%, 94% 94%,  4% 94%);
+}
+[focus="true"]::before {
+  background: var(--p-700);
+  clip-path: polygon(0 0, 75% 0, 100% 35%, 100% 100%,  0 100%);
 }
 [focus="true"],
 [tip] {
