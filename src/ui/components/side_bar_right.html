@@ -1,15 +1,16 @@
 <div 
     style="display: flex; flex-direction: row;"
-    class="side_bar">
+    class="side_bar"
+>
     <div 
         style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" 
         expanded 
         is_open="true" 
-        onclick="toggleIsOpen(this)"
+        onclick="main.bihavior.toggleIsOpen(this)"
         class="side_bar_border">
         <comp src="./ui/components/icons/chevrons_right.svg" chevrons_right></comp>
     </div>
-    <div class="content">
+    <div class="content" id="side_bar_right">
         <comp src="./ui/components/side_bar.html">
             <div style="display: flex;margin-top: var(--48dp);" class="menu_bar">
                 <comp 

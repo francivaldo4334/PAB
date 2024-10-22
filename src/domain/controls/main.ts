@@ -32,6 +32,8 @@ class MainControls {
 	bihavior: Bihavior;
 	main: Main;
 	drawRect = document.getElementById("project_draw_rect");
+	sideBars = document.getElementsByClassName("side_bar_border");
+	sideBarLeft = document.getElementById("side_bar_right")?.parentElement?.querySelector("[is_open]");
 
 	constructor(main: Main) {
 		this.main = main;
@@ -64,18 +66,31 @@ class MainControls {
 			this.actions.toggleWithDrawAndPropsFocus()
 			e.preventDefault();
 		}
-		switch (this.actions.EDIT_MODE) {
-			case "SELECTION":
-				if (this.FOCUS === "PROPS") {
-					//TODO: Props actions
-				}
-				else if (this.FOCUS === "DRAW") {
-					this.modes.onSelectionModeActionsKeyDown(e);
-				}
-				break;
-			default:
-				break;
-		}
+		if (e.ctrlKey && e.key == "\\") {
+			if (this.sideBars && this.sideBars.length > 0) {
+				const isCloneAllSideBars = this.sideBarLeft?.getAttribute("is_open")
+				Array.from(this.sideBars).forEach(bar => {
+					if (isCloneAllSideBars === "false") {
+						bar.setAttribute("is_open", "true");
+					}
+					else {
+						bar.setAttribute("is_open", "false");
+					}
+				})
+			}
+		} else
+			switch (this.actions.EDIT_MODE) {
+				case "SELECTION":
+					if (this.FOCUS === "PROPS") {
+						//TODO: Props actions
+					}
+					else if (this.FOCUS === "DRAW") {
+						this.modes.onSelectionModeActionsKeyDown(e);
+					}
+					break;
+				default:
+					break;
+			}
 	}
 
 	handleKeyUp(e: KeyboardEvent) {

@@ -4,15 +4,22 @@ class Actions {
 	EDIT_MODE = "SELECTION";
 	projectDrawScope = document.getElementById("project_draw_rect");
 	bihavior: Bihavior;
+	drawRect = document.getElementById("project_draw_rect");
+	sideRight = document.getElementById("side_bar_right");
 	constructor(bihavior: Bihavior) {
 		this.bihavior = bihavior;
 	}
 	toggleWithDrawAndPropsFocus() {
 		if (this.bihavior.main.controls.FOCUS === "DRAW") {
 			this.bihavior.main.controls.FOCUS = "PROPS";
+			this.drawRect?.setAttribute("focus", "false")
+			this.sideRight?.setAttribute("focus", "true")
+			this.sideRight?.parentElement?.querySelector("[is_open]")?.setAttribute("is_open", "true")
 		}
 		else {
 			this.bihavior.main.controls.FOCUS = "DRAW";
+			this.drawRect?.setAttribute("focus", "true")
+			this.sideRight?.setAttribute("focus", "false")
 		}
 	}
 	openMenuFile() {

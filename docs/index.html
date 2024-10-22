@@ -37,6 +37,7 @@
     </style>
     <style>
         :root {
+            --2dp: 0.25rem;
             --4dp: 0.25rem;
             --8dp: 0.5rem;
             --12dp: 0.75rem;
@@ -178,21 +179,21 @@
     </div>
 </div>
 
-            <button class="selection button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" id="btn_selection_mode" selected="true" onclick="main.actions.setSelectionMode()">
+            <button class="selection button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" id="btn_selection_mode" selected="true" onclick="main.actions.setSelectionMode()" tip="Ctrl">
   
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mouse-pointer-2"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"></path></svg>
 
             
 </button>
 
-            <button class="selection button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" id="btn_move_mode" onclick="main.actions.setMoveMode()">
+            <button class="selection button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" id="btn_move_mode" onclick="main.actions.setMoveMode()" tip="Space + Click">
   
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move"><path d="M12 2v20"></path><path d="m15 19-3 3-3-3"></path><path d="m19 9 3 3-3 3"></path><path d="M2 12h20"></path><path d="m5 9-3 3 3 3"></path><path d="m9 5 3-3 3 3"></path></svg>
 
             
 </button>
 
-            <button class="selection button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" id="btn_zoom_mode" onclick="main.actions.setZoomMode()">
+            <button class="selection button" style="min-width: var(--48dp); height: var(--48dp); display: flex; align-items: center; justify-content: center; padding: var(--8dp);" id="btn_zoom_mode" onclick="main.actions.setZoomMode()" tip="Ctrl + Scroll">
   
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zoom-in"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line><line x1="11" x2="11" y1="8" y2="14"></line><line x1="8" x2="14" y1="11" y2="11"></line></svg>
 
@@ -216,7 +217,7 @@
 
         <div style="width: 100vw; height: 100vh; flex-grow:1; display: flex;">
             <div style="display: flex; flex-direction: row-reverse;" class="side_bar">
-    <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="mian.bihavior.toggleIsOpen(this)" class="side_bar_border">
+    <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="main.bihavior.toggleIsOpen(this)" class="side_bar_border">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-left" chevrons_left=""><path d="m11 17-5-5 5-5"></path><path d="m18 17-5-5 5-5"></path></svg>
 
     </div>
@@ -250,7 +251,7 @@
     </div>
 </div>
 
-            <div style="z-index: 0; flex-grow:1; position: relative; overflow: hidden;" id="project_draw_rect" class="selection">
+            <div style="z-index: 0; flex-grow:1; position: relative; overflow: hidden;" id="project_draw_rect" class="selection" focus="true">
                 <div style="position: relative; top: 50%; left: 50%;">
                 <div id="project_draw_position" style="position: relative; width: 0; height: 0;">
                     <div id="selection_box" style="position: absolute; border: 2px dashed #00f; background-color: rgba(0,0,255,0.2); display: none; z-index: 3;"></div>
@@ -260,11 +261,11 @@
                 </div>
             </div>
             <div style="display: flex; flex-direction: row;" class="side_bar">
-    <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="toggleIsOpen(this)" class="side_bar_border">
+    <div style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" expanded="" is_open="true" onclick="main.bihavior.toggleIsOpen(this)" class="side_bar_border">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-right" chevrons_right=""><path d="m6 17 5-5-5-5"></path><path d="m13 17 5-5-5-5"></path></svg>
 
     </div>
-    <div class="content">
+    <div class="content" id="side_bar_right">
         <div style="display: flex; flex-direction: column; width: var(--240dp); max-height: 100vh; overflow-y: auto; overflow-x: hidden;">
   
             <div style="display: flex;margin-top: var(--48dp);" class="menu_bar">

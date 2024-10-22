@@ -98,4 +98,46 @@
     z-index: 1;
     box-sizing: border-box;
 }
+[focus="true"]::before {
+  content: "Focus";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 11;
+  width: auto;
+  height: auto;
+  padding: var(--4dp);
+  background: var(--p-800);
+  border: var(--2dp) solid var(--p-700);
+  border-radius: 0 var(--8dp) 0 0;
+}
+[focus="true"],
+[tip] {
+    position: relative;
+}
+[tip]{
+  overflow: visible;
+}
 
+[tip]::before {
+    content: attr(tip);
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    transform: translateY(var(--4dp));
+    z-index: 9999;
+    width: auto; 
+    height: auto;
+    padding: var(--4dp);
+    background: var(--p-800);
+    border-radius: var(--4dp);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+[tip]:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
