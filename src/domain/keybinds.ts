@@ -77,12 +77,13 @@ class Keybinds {
 			}
 		}
 	}
-	keyMode(map: KeyMap, index: number, key: string) {
+	keyMode(map: KeyMap, index: number, key: string, event: KeyboardEvent) {
 		let cleanKeybind = false;
 		if (this.isKeybind(map)) {
 			if (map.action && typeof map.action === "function") {
 				map.action();
 				cleanKeybind = true;
+				event.preventDefault();
 			}
 			if (map.mode) {
 				this.currentKeybind.push(key);
@@ -91,7 +92,7 @@ class Keybinds {
 		if (index < this.currentKeybind.length) {
 			const keyMap: string | undefined = this.currentKeybind[index];
 			if (this.isRecordOfObject(map[keyMap])) {
-				this.keyMode(map[keyMap], index + 1, key);
+				this.keyMode(map[keyMap], index + 1, key, event);
 			}
 		}
 		if (cleanKeybind) {
@@ -99,18 +100,16 @@ class Keybinds {
 		}
 	}
 	addEventListener() {
-		window.addEventListener("keydown", (e) => {
-			this.keydown[e.key] = true;
-		});
 		window.addEventListener("keyup", (e) => {
 			this.keydown[e.key] = false;
 		});
 		window.addEventListener("keydown", (e: KeyboardEvent) => {
+			this.keydown[e.key] = true;
 			if (e.key === "F5") {
 				return;
 			}
 			if (this.currentKeybind.length > 0) {
-				this.keyMode(this.keymaps, 0, e.key);
+				this.keyMode(this.keymaps, 0, e.key, e);
 			} else {
 				this.checkKeybind(this.keymaps, e);
 			}

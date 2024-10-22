@@ -135,6 +135,7 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease, visibility 0.2s ease;
+    color: var(--white);
 }
 
 [tip]:hover::before {

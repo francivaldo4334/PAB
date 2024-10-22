@@ -197,20 +197,26 @@ class Main {
 		const selectedComponent = this.getComponentSelected();
 		if (!selectedComponent) return;
 		const selectedComponentProject = this.getComponentProjectById(this.getComponentId(selectedComponent));
-		if (!selectedComponentProject) return;
-		if (Array.isArray(selectedComponentProject.content)) {
-			const newComponent = JSON.parse(JSON.stringify(componentTemplate))
-			newComponent.id = this.bihavior.generateSlug();
-			selectedComponentProject.content.push(newComponent);
-			return;
+		if (!selectedComponentProject || !selectedComponentProject.id) return;
+		if (!Array.isArray(selectedComponentProject.content)) {
+			selectedComponentProject.content = []
 		}
+		const newComponent = JSON.parse(JSON.stringify(componentTemplate))
+		newComponent.id = this.bihavior.generateSlug();
+		selectedComponentProject.content.push(newComponent);
+		this.setComponentProjectById(selectedComponentProject.id, selectedComponentProject)
+		this.buildProject(true)
 	}
 	setComponentProjectById(
 		id: string,
 		component: Component,
 		setUndo = true,
 		localComponent: Component | undefined = this.projectHistory.current_project,
-		add: (it: Component) => void = () => { },
+		add: (it: Component) => void = (cmp) => {
+			if (localComponent) {
+				this.projectHistory.updateText(cmp)
+			}
+		},
 		isMain = true,
 	) {
 		if (!localComponent) return
@@ -258,14 +264,13 @@ class Main {
 		const selectedComponent = this.getComponentSelected();
 		if (!selectedComponent) return;
 		const selectedComponentProject = this.getComponentProjectById(this.getComponentId(selectedComponent));
-		if (!selectedComponentProject) return;
+		if (!selectedComponentProject || !selectedComponentProject.id) return;
 		const props = selectedComponentProject.props;
 		if (listProp === "HTML") {
 			let prop = props.find(it => it.id === id) || { name: "", value: "", id: id };
 			if (fieldName === "name") { if (prop.name) { selectedComponent.removeAttribute(prop.name); } prop.name = newValue; }
 			if (fieldName === "value") { prop.value = newValue; }
 			if (!props.includes(prop)) { props.push(prop); }
-			selectedComponent.setAttribute(prop.name, prop.value);
 		}
 		if (listProp === "CSS") {
 			const propStyle = this.getProp(props, "style");
@@ -282,8 +287,9 @@ class Main {
 			}
 			let css: string | undefined = this.propsTosStringCss(styles)
 			css = this.cssSanitize(css);
-			selectedComponent.setAttribute("style", css);
 		}
+		this.setComponentProjectById(selectedComponentProject.id, selectedComponentProject);
+		this.buildProject(true)
 	}
 	initNewProject() {
 		this.projectHistory.updateText(this.common.base_json_template);
