@@ -4,6 +4,7 @@ import MainControls from "./main";
 import SelectionBox from "./selection";
 import Actions from "../actions"
 import Bihavior from "../bihavior"
+import ProjectHistory from "../project-history-manager";
 
 class Modes {
 	body = document.querySelector("body");
@@ -12,36 +13,44 @@ class Modes {
 	zoom: Zoom;
 	move: Move;
 	bihavior: Bihavior;
+	projectHistory: ProjectHistory
 	constructor(controls: MainControls) {
 		this.selectionBox = controls.selectionBox;
 		this.actions = controls.actions;
 		this.zoom = controls.zoom;
 		this.move = controls.move;
 		this.bihavior = controls.bihavior;
+		this.projectHistory = controls.main.projectHistory;
 	}
 	onSelectionModeActionsKeyDown(e: KeyboardEvent) {
-		if (e.shiftKey && this.body) {
-			this.body.setAttribute("selected", "move-h");
-		}
-		if (e.key === " " && !this.selectionBox.isSelecting) {
-			this.actions.setMoveMode();
-			this.move.initMove()
-		}
-		if (e.ctrlKey && !this.selectionBox.isSelecting) {
+		if (e.ctrlKey && !e.shiftKey && e.key === 'z') {
+			this.projectHistory.undo();
+			e.preventDefault();
+		} else if (e.ctrlKey && e.shiftKey && e.key === 'Z') {
+			this.projectHistory.redo();
+			e.preventDefault();
+		} else if (e.ctrlKey) {
 			this.actions.setZoomMode();
 			this.zoom.initZoomMode();
-		}
-		if (e.key === "Tab") {
-			if (e.shiftKey) {
-				this.actions.toPrevComponent();
+		} else if (e.shiftKey && e.key === 'Tab') {
+			this.actions.toPrevComponent();
+			e.preventDefault();
+		} else if (e.key === 'Tab') {
+			this.actions.toNextComponent();
+			e.preventDefault();
+		} else if (e.shiftKey) {
+			if (this.body) {
+				this.body.setAttribute("selected", "move-h");
 			}
-			else {
-				this.actions.toNextComponent();
+		} else if (e.key === 'Enter') {
+			this.actions.toInnerComponent();
+			e.preventDefault();
+		} else if (e.key === ' ') {
+			if (!this.selectionBox.isSelecting) {
+				this.actions.setMoveMode();
+				this.move.initMove()
 			}
 			e.preventDefault();
-		}
-		if (e.key === "Enter") {
-			this.actions.toInnerComponent();
 		}
 	}
 	onActionsKeyUp(e: KeyboardEvent) {

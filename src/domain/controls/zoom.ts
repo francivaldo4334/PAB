@@ -8,9 +8,9 @@ class Zoom {
     private readonly MIN_ZOOM: number = 0.1;
     private readonly MAX_ZOOM: number = 3.0;
     private readonly NORMAL_SCALE: number = 1.0;
-    private point: { x: number; y: number } = { x: 0, y: 0 };
-    private elPoint: { x: number; y: number } = { x: 0, y: 0 };
-    private deltaPoint: { x: number; y: number } = { x: 0, y: 0 };
+    // private point: { x: number; y: number } = { x: 0, y: 0 };
+    // private elPoint: { x: number; y: number } = { x: 0, y: 0 };
+    // private deltaPoint: { x: number; y: number } = { x: 0, y: 0 };
 
     constructor(controls: MainControls, projectHistory: ProjectHistory) {
         this.controls = controls;
@@ -30,19 +30,19 @@ class Zoom {
         //     y: this.elPoint.y - this.point.y
         // };
     }
-    finishZoomMode(){
-    //     const { move } = this.controls;
-    //     const newPosition = this.getUpdatePositionWithScale(this.getScale());
-	   //  move.setPositionDraw(newPosition.x, newPosition.y)
-    //     this.point = { x: 0, y: 0 };
-    //     this.deltaPoint = { x: 0, y: 0 };
+    finishZoomMode() {
+        //     const { move } = this.controls;
+        //     const newPosition = this.getUpdatePositionWithScale(this.getScale());
+        //  move.setPositionDraw(newPosition.x, newPosition.y)
+        //     this.point = { x: 0, y: 0 };
+        //     this.deltaPoint = { x: 0, y: 0 };
     }
 
     // private getUpdatePositionWithScale(scale: number) : {x: number, y: number}{
     //     const scaleFactor = scale; 
     //     const w = this.deltaPoint.x * scaleFactor;
     //     const h = this.deltaPoint.y * scaleFactor;
-	   //  return {x:this.elPoint.x - this.deltaPoint.x + w, y:this.elPoint.y - this.deltaPoint.y + h};
+    //  return {x:this.elPoint.x - this.deltaPoint.x + w, y:this.elPoint.y - this.deltaPoint.y + h};
     // }
 
     updateZoomState() {
@@ -51,8 +51,8 @@ class Zoom {
             ? this.controls.SCALE_JUMP
             : -this.controls.SCALE_JUMP;
         const newScale = this.getScale() + scaleJump;
-     //    const newPosition = this.getUpdatePositionWithScale(newScale);
-	    // move.setPositionDraw(newPosition.x, newPosition.y)
+        //    const newPosition = this.getUpdatePositionWithScale(newScale);
+        // move.setPositionDraw(newPosition.x, newPosition.y)
         this.setScale(newScale);
     }
 
@@ -63,8 +63,10 @@ class Zoom {
     }
 
     private setScaleProject(scale: number) {
-        if (this.projectHistory.current_project && scale <= this.MAX_ZOOM && scale >= this.MIN_ZOOM) {
-            this.projectHistory.current_project.zoom = scale;
+        const project = this.projectHistory.current_project
+        if (project && scale <= this.MAX_ZOOM && scale >= this.MIN_ZOOM) {
+            project.zoom = scale;
+            this.projectHistory.updateText(project, false)
         }
     }
 

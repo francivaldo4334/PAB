@@ -22,7 +22,7 @@ class Move {
 		this.setPositionDraw(x, y);
 		this.setPositionProject(x, y);
 	}
-	
+
 	getPositionDrawX(): number {
 		const rect = this.drawPosition?.getBoundingClientRect();
 		return rect ? rect.left : 0;
@@ -43,14 +43,16 @@ class Move {
 	}
 
 	getPositionProjectPoint(): { x: number, y: number } {
-		return this.projectHistory.current_project?.position ?? {x: 0, y: 0}
+		return this.projectHistory.current_project?.position ?? { x: 0, y: 0 }
 	}
 
 	setPositionProject(x: number, y: number) {
-		const position = this.projectHistory.current_project?.position;
+		const project = this.projectHistory.current_project
+		const position = project?.position;
 		if (position) {
 			position.x = x;
 			position.y = y;
+			this.projectHistory.updateText(project, false)
 		}
 	}
 
@@ -95,7 +97,7 @@ class Move {
 			}
 		}
 	}
-	initMove(){
+	initMove() {
 	}
 
 	finishMove() {

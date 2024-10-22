@@ -22,7 +22,7 @@ class Main {
 		this.bihavior = new Bihavior(this);
 		this.actions = new Actions(this.bihavior);
 		this.keybinds = new Keybinds(this.actions, this.bihavior);
-		this.projectHistory = new ProjectHistory();
+		this.projectHistory = new ProjectHistory(this);
 		this.controls = new MainControls(this);
 		this.translations = new Translation(this.common, "pt_br");
 		this.updateNameAndTagOfSelectedComponent();
@@ -41,6 +41,10 @@ class Main {
 		}
 		return undefined
 	}
+	isValidTagName(tag: string) {
+		const tagNameRegex = /^[a-zA-Z][a-zA-Z0-9:-]*$/;
+		return tagNameRegex.test(tag);
+	}
 	updateNameAndTagOfSelectedComponent() {
 		const nameField = this.getComponentNameInput();
 		const tagField = this.getComponentTagInput();
@@ -51,6 +55,9 @@ class Main {
 				const componentProject = this.getComponentProjectById(component.getAttribute(`${this.RENDER_LABEL}id`) ?? "")
 				if (componentProject) {
 					componentProject.name = target.value
+					if (componentProject.id) {
+						this.setComponentProjectById(componentProject.id, componentProject)
+					}
 					this.buildProject(true);
 				}
 			}
@@ -60,8 +67,11 @@ class Main {
 			const target = e.target as HTMLInputElement
 			if (component) {
 				const componentProject = this.getComponentProjectById(component.getAttribute(`${this.RENDER_LABEL}id`) ?? "")
-				if (componentProject && target.value.length > 0) {
+				if (componentProject && this.isValidTagName(target.value)) {
 					componentProject.tag = target.value
+					if (componentProject.id) {
+						this.setComponentProjectById(componentProject.id, componentProject)
+					}
 					this.buildProject(true);
 				}
 			}
@@ -198,10 +208,10 @@ class Main {
 	setComponentProjectById(
 		id: string,
 		component: Component,
+		setUndo = true,
 		localComponent: Component | undefined = this.projectHistory.current_project,
-		add: (it: Component) => void = (it) => {
-			this.projectHistory.updateText(it)
-		}
+		add: (it: Component) => void = () => { },
+		isMain = true,
 	) {
 		if (!localComponent) return
 		if (localComponent.id === id) {
@@ -209,11 +219,14 @@ class Main {
 		}
 		if (Array.isArray(localComponent.content)) {
 			for (let i = 0; i < localComponent.content.length; i++) {
-				this.setComponentProjectById(id, component, localComponent.content[i] as Component, (it) => {
+				this.setComponentProjectById(id, component, setUndo, localComponent.content[i] as Component, (it) => {
 					if (Array.isArray(localComponent.content))
 						localComponent.content[i] = it
-				});
+				}, false);
 			}
+		}
+		if (isMain) {
+			this.projectHistory.updateText(localComponent, setUndo)
 		}
 	}
 	removeProprety(propId: string) {
@@ -283,6 +296,9 @@ class Main {
 				const component = this.getComponentProjectById(this.getComponentId(el));
 				if (component) {
 					component.selected = false;
+					if (component.id) {
+						this.setComponentProjectById(component.id, component, false);
+					}
 				}
 			});
 		}
@@ -315,6 +331,9 @@ class Main {
 			}
 			for (const attr of componentProject.styles) {
 				this.actions.addNewProp("CSS", attr)
+			}
+			if (componentProject.id) {
+				this.setComponentProjectById(componentProject.id, componentProject, false);
 			}
 		}
 	}
@@ -370,7 +389,7 @@ class Main {
 		return document.querySelector(`[${this.RENDER_LABEL}selected="true"]`)
 	}
 	buildBodyRenderMode(component: Component) {
-		const TEMPLATE: Component = { ...this.common.base_view_body };
+		const TEMPLATE: Component = JSON.parse(JSON.stringify(this.common.base_view_body));
 		const position = component.position ?? TEMPLATE.position
 		if (position) {
 			TEMPLATE.styles.push({ name: "left", value: `${position.x}px`, id: this.bihavior.generateSlug() });
@@ -421,6 +440,9 @@ class Main {
 				it.id = this.bihavior.generateSlug()
 			return it
 		})
+		if (component.id) {
+			this.setComponentProjectById(component.id, component, false)
+		}
 		props.push({ name: "style", value: this.propsTosStringCss(component.styles), id: this.bihavior.generateSlug() })
 		const PROPS = this.propsTosString(props);
 		const INNER = component.content
@@ -453,12 +475,15 @@ class Main {
 		}
 		return newItemThee;
 	}
-	loadThee(templateItemThee?: HTMLElement, localThee?: HTMLElement) {
+	loadThee(templateItemThee?: HTMLElement, localThee?: HTMLElement, isMain = true) {
+		if (isMain && localThee) {
+			localThee.innerHTML = "";
+		}
 		if (!localThee || !templateItemThee) {
 			const _templateItemThee = document.getElementById("item_thee_template");
 			const _localThee = document.getElementById("components_three");
 			if (!_localThee || !_templateItemThee) return;
-			this.loadThee(_templateItemThee, _localThee);
+			this.loadThee(_templateItemThee, _localThee, false);
 			return
 		}
 		const body = this.getComponentProjectById("body");
