@@ -1,4 +1,4 @@
-import ProjectHistory from "../project-history-manager";
+import ProjectHistory from "../project-manager/project-history";
 import MainControls from "./main";
 
 class Zoom {
@@ -46,7 +46,6 @@ class Zoom {
     // }
 
     updateZoomState() {
-        const { move } = this.controls;
         const scaleJump = this.controls.SCROLL_STATE === "UP"
             ? this.controls.SCALE_JUMP
             : -this.controls.SCALE_JUMP;

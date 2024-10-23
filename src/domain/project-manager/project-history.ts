@@ -1,5 +1,5 @@
-import { Component } from "./common"
-import Main from "./main";
+import { Component } from "../common"
+import Main from "../main";
 class ProjectHistory {
 	past: Component[] = [];
 	main: Main;

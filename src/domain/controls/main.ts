@@ -1,10 +1,13 @@
-import Actions from "../actions";
-import Bihavior from "../bihavior";
 import SelectionBox from "./selection";
 import Move from "./move";
 import Modes from "./mode-manager";
 import Zoom from "./zoom";
 import Main from "../main";
+import Actions from "../project-manager/actions";
+import Bihavior from "../project-manager/bihavior";
+import { MainProjectManager } from "../project-manager/main";
+import Keybinds from "./keybinds";
+import ProjectHistory from "../project-manager/project-history";
 
 
 class MainControls {
@@ -20,7 +23,6 @@ class MainControls {
 	M_BUTTON_LEFT = false;
 	M_BUTTON_MIDDLE = false;
 	M_BUTTON_RIGHT = false;
-	FOCUS = "DRAW";
 	SCROLL_STATE = "STOP";
 	SCALE_JUMP = 0.1;
 	isScrolling: any = 0;
@@ -31,18 +33,22 @@ class MainControls {
 	zoom: Zoom;
 	bihavior: Bihavior;
 	main: Main;
+	keybinds: Keybinds;
+	mainProjectManager: MainProjectManager;
 	drawRect = document.getElementById("project_draw_rect");
 	sideBars = document.getElementsByClassName("side_bar_border");
 	sideBarLeft = document.getElementById("side_bar_right")?.parentElement?.querySelector("[is_open]");
 
-	constructor(main: Main) {
+	constructor(main: Main, mainProjectManager: MainProjectManager, actions: Actions, bihavior: Bihavior, projectHistory: ProjectHistory) {
+		this.mainProjectManager = mainProjectManager;
+		this.actions = actions;
+		this.bihavior = bihavior;
 		this.main = main;
-		this.actions = main.actions;
-		this.move = new Move(this, main.projectHistory);
-		this.zoom = new Zoom(this, main.projectHistory);
+		this.move = new Move(this, projectHistory);
+		this.zoom = new Zoom(this, projectHistory);
+		this.keybinds = new Keybinds(actions, bihavior);
 		this.selectionBox = new SelectionBox(this, this.move);
-		this.bihavior = main.bihavior;
-		this.modes = new Modes(this);
+		this.modes = new Modes(this.selectionBox, actions, this.zoom, this.move, bihavior, projectHistory);
 		this.addEventListeners();
 	}
 
@@ -59,7 +65,7 @@ class MainControls {
 		this.drawRect?.addEventListener("click", this.handleClick.bind(this));
 	}
 	handleClick(e: MouseEvent) {
-		this.main.cleanAllSelectables();
+		this.mainProjectManager.cleanAllSelectables();
 	}
 	handleKeyDown(e: KeyboardEvent) {
 		if (e.altKey && e.key === "1") {
@@ -81,10 +87,10 @@ class MainControls {
 		} else
 			switch (this.actions.EDIT_MODE) {
 				case "SELECTION":
-					if (this.FOCUS === "PROPS") {
+					if (this.main.FOCUS === "PROPS") {
 						//TODO: Props actions
 					}
-					else if (this.FOCUS === "DRAW") {
+					else if (this.main.FOCUS === "DRAW") {
 						this.modes.onSelectionModeActionsKeyDown(e);
 					}
 					break;

@@ -1,5 +1,5 @@
-import Actions from "./actions"
-import Bihavior from "./bihavior"
+import Actions from "../project-manager/actions"
+import Bihavior from "../project-manager/bihavior"
 type KeyMap = Record<string, object>;
 type Keybind = {
 	action?: () => void;

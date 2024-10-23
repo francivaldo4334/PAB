@@ -1,5 +1,5 @@
+import ProjectHistory from "../project-manager/project-history";
 import MainControls from "./main";
-import ProjectHistory from "../project-history-manager";
 
 class Move {
 	drawPosition = document.getElementById("project_draw_position");
@@ -87,7 +87,6 @@ class Move {
 		const updateJumpScrollMove = this.controls.SCROLL_STATE === "UP"
 			? this.controls.JUMP_SCROLL_MOVE
 			: -this.controls.JUMP_SCROLL_MOVE;
-
 		const position = this.projectHistory.current_project?.position;
 		if (position) {
 			if (e.shiftKey) {

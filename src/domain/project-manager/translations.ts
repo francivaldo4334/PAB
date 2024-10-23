@@ -1,8 +1,9 @@
-import { Translations, Common } from "./common";
+import { Common, Translations } from "../common";
+
 class Translation {
 	translations: Translations;
-	constructor(common: Common, language: string) {
-		this.translations = common.translations;
+	constructor(language: string) {
+		this.translations = Common.translations;
 		this.setLanguage(language);
 	}
 	setLanguage(lang: string) {

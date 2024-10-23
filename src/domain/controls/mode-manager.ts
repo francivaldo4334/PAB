@@ -1,10 +1,9 @@
 import Move from "./move";
 import Zoom from "./zoom";
-import MainControls from "./main";
 import SelectionBox from "./selection";
-import Actions from "../actions"
-import Bihavior from "../bihavior"
-import ProjectHistory from "../project-history-manager";
+import Actions from "../project-manager/actions";
+import Bihavior from "../project-manager/bihavior";
+import ProjectHistory from "../project-manager/project-history";
 
 class Modes {
 	body = document.querySelector("body");
@@ -14,13 +13,13 @@ class Modes {
 	move: Move;
 	bihavior: Bihavior;
 	projectHistory: ProjectHistory
-	constructor(controls: MainControls) {
-		this.selectionBox = controls.selectionBox;
-		this.actions = controls.actions;
-		this.zoom = controls.zoom;
-		this.move = controls.move;
-		this.bihavior = controls.bihavior;
-		this.projectHistory = controls.main.projectHistory;
+	constructor(selectionBox: SelectionBox, actions: Actions, zoom: Zoom, move: Move, bihavior: Bihavior, projectHistory: ProjectHistory) {
+		this.selectionBox = selectionBox;
+		this.actions = actions;
+		this.zoom = zoom;
+		this.move = move;
+		this.bihavior = bihavior;
+		this.projectHistory = projectHistory;
 	}
 	onSelectionModeActionsKeyDown(e: KeyboardEvent) {
 		if (e.ctrlKey && !e.shiftKey && e.key === 'z') {

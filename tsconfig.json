@@ -4,6 +4,7 @@
         "module": "ESNext",
         "outDir": "./docs",
         "strict": true,
+        "moduleResolution": "node",
         "esModuleInterop": true,
         "lib": ["es2023", "dom"],
         "rootDir": "./src"

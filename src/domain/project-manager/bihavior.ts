@@ -1,30 +1,20 @@
-import { Prop } from "./common";
-import Main from "./main"
+import { Prop } from "../common";
+import Main from "../main"
+import { Utils } from "../utils";
+import { MainProjectManager } from "./main";
 class Bihavior {
+	mainProjectManager: MainProjectManager;
 	main: Main;
-	constructor(main: Main) {
-		this.main = main;
+	constructor(mainProjectManager: MainProjectManager, main: Main) {
+		this.mainProjectManager = mainProjectManager;
+		this.main = main
 		document.addEventListener("click", (e) => {
 			const element = document.querySelector(".popover");
 			if (element && e.target instanceof Node && !element.contains(e.target)) {
-				main.actions.closeMenuNewElement();
+				mainProjectManager.actions.closeMenuNewElement();
 				this.closePopovers();
 			}
 		});
-	}
-	tryGenerateSlug() {
-		return "pab__id__xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-			const r = (Math.random() * 16) | 0;
-			const v = c === "x" ? r : (r & 0x3) | 0x8;
-			return v.toString(16);
-		});
-	}
-	generateSlug() {
-		let id = this.tryGenerateSlug();
-		while (this.main.getElementByComponentId(id)) {
-			id = this.tryGenerateSlug()
-		}
-		return id;
 	}
 	toggleIsOpen(element: HTMLElement) {
 		const attributeName = "is_open";
@@ -56,7 +46,7 @@ class Bihavior {
 			?.cloneNode(true);
 		if (template) {
 			(template as HTMLElement).removeAttribute("visible");
-			(template as HTMLElement).setAttribute("id", prop?.id ?? this.generateSlug());
+			(template as HTMLElement).setAttribute("id", prop?.id ?? Utils.generateSlug());
 		}
 		return template as HTMLElement
 	}
@@ -65,11 +55,11 @@ class Bihavior {
 		const inputValue = input.querySelector(`.prop_input_value input`) as HTMLInputElement;
 		inputName?.addEventListener("input", (e) => {
 			const target = e.target as HTMLInputElement
-			this.main.setPropertyInSelectedComponent(prop?.id ?? input.id, "name", target.value, listProps)
+			this.mainProjectManager.setPropertyInSelectedComponent(prop?.id ?? input.id, "name", target.value, listProps)
 		})
 		inputValue?.addEventListener("input", (e) => {
 			const target = e.target as HTMLInputElement
-			this.main.setPropertyInSelectedComponent(prop?.id ?? input.id, "value", target.value, listProps)
+			this.mainProjectManager.setPropertyInSelectedComponent(prop?.id ?? input.id, "value", target.value, listProps)
 		})
 		if (prop) {
 			inputName.value = prop.name;
@@ -77,7 +67,7 @@ class Bihavior {
 		}
 	}
 	addPropertieHTML(_prop?: Prop) {
-		const prop: Prop | undefined = _prop ? { ..._prop, id: _prop.id ?? this.generateSlug() } : undefined
+		const prop: Prop | undefined = _prop ? { ..._prop, id: _prop.id ?? Utils.generateSlug() } : undefined
 		const listProps = document.getElementById("list_props_html");
 		const newPropertie = this.newPropertie(prop);
 		if (newPropertie) {
@@ -86,7 +76,7 @@ class Bihavior {
 		}
 	}
 	addPropertieCSS(_prop?: Prop) {
-		const prop: Prop | undefined = _prop ? { ..._prop, id: _prop.id ?? this.generateSlug() } : undefined
+		const prop: Prop | undefined = _prop ? { ..._prop, id: _prop.id ?? Utils.generateSlug() } : undefined
 		const listProps = document.getElementById("list_props_css");
 		const newPropertie = this.newPropertie(prop);
 		if (newPropertie) {
@@ -96,7 +86,7 @@ class Bihavior {
 	}
 
 	removeProprety(propId: string) {
-		this.main.removeProprety(propId)
+		this.mainProjectManager.removeProprety(propId)
 	}
 	removeUiPropretie(element: HTMLElement) {
 		if (element) {

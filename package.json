@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Projeto de exemplo para construção com Node.js",
   "main": "build.js",
+  "baseUrl": "./",
+  "paths": {
+    "*": "node_modules/*"
+  },
   "scripts": {
     "build": "node build.js",
     "webpack": "webpack",
@@ -21,6 +25,8 @@
   "dependencies": {
     "cheerio": "^1.0.0",
     "http-server": "^14.0.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "undici": "^6.20.1",
+    "undici-types": "^6.20.0"
   }
 }

@@ -1,23 +1,29 @@
+import Main from "../main";
 import Bihavior from "./bihavior"
-import { Prop } from "./common";
+import { Common, Prop } from "../common";
+import { MainProjectManager } from "./main";
 class Actions {
 	EDIT_MODE = "SELECTION";
 	projectDrawScope = document.getElementById("project_draw_rect");
+	mainProjectManager: MainProjectManager;
 	bihavior: Bihavior;
+	main: Main;
 	drawRect = document.getElementById("project_draw_rect");
 	sideRight = document.getElementById("side_bar_right");
-	constructor(bihavior: Bihavior) {
+	constructor(mainProjectManager: MainProjectManager, main: Main, bihavior: Bihavior) {
+		this.mainProjectManager = mainProjectManager
 		this.bihavior = bihavior;
+		this.main = main;
 	}
 	toggleWithDrawAndPropsFocus() {
-		if (this.bihavior.main.controls.FOCUS === "DRAW") {
-			this.bihavior.main.controls.FOCUS = "PROPS";
+		if (this.main.FOCUS === "DRAW") {
+			this.main.FOCUS = "PROPS";
 			this.drawRect?.setAttribute("focus", "false")
 			this.sideRight?.setAttribute("focus", "true")
 			this.sideRight?.parentElement?.querySelector("[is_open]")?.setAttribute("is_open", "true")
 		}
 		else {
-			this.bihavior.main.controls.FOCUS = "DRAW";
+			this.main.FOCUS = "DRAW";
 			this.drawRect?.setAttribute("focus", "true")
 			this.sideRight?.setAttribute("focus", "false")
 		}
@@ -46,33 +52,33 @@ class Actions {
 		}
 	}
 	toPrevComponent() {
-		this.bihavior.main.toPrevComponent();
+		this.mainProjectManager.toPrevComponent();
 	}
 	toNextComponent() {
-		this.bihavior.main.toNextComponent();
+		this.mainProjectManager.toNextComponent();
 	}
 	toInnerComponent() {
-		this.bihavior.main.toInnerComponent();
+		this.mainProjectManager.toInnerComponent();
 	}
 	addNewElement(type: string) {
 		switch (type) {
 			case "OVAL":
-				this.bihavior.main.setComponentProjectInSelectedComponent(
-					this.bihavior.main.common.oval_json_template
+				this.mainProjectManager.setComponentProjectInSelectedComponent(
+					Common.oval_json_template
 				)
-				this.bihavior.main.buildProject(true)
+				this.main.buildProject(true)
 				break;
 			case "RECT":
-				this.bihavior.main.setComponentProjectInSelectedComponent(
-					this.bihavior.main.common.rect_json_template
+				this.mainProjectManager.setComponentProjectInSelectedComponent(
+					Common.rect_json_template
 				)
-				this.bihavior.main.buildProject(true)
+				this.main.buildProject(true)
 				break;
 			case "TEXT":
-				this.bihavior.main.setComponentProjectInSelectedComponent(
-					this.bihavior.main.common.text_json_template
+				this.mainProjectManager.setComponentProjectInSelectedComponent(
+					Common.text_json_template
 				)
-				this.bihavior.main.buildProject(true)
+				this.main.buildProject(true)
 				break;
 			case "FRAME":
 				console.log("TODO");
