@@ -6,8 +6,7 @@
     <style>
         [visible="false"] {
             visibility: hidden;
-            width: 0;
-            height: 0;
+            display: none !important; 
         }
         [visible="true"] {
             visibility: visible;
@@ -296,6 +295,16 @@
 
             <div class="item" style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;" id="comp_tag">
   <div style="width: var(--48dp);">tag</div>
+  <div style="flex-grow: 1;" title="Value" class="prop_input_value prop_input">
+  <div style="display: flex;">
+    <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled">
+  </div>
+</div>
+
+</div>
+
+            <div class="item" style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;" id="comp_text" visible="false">
+  <div style="width: var(--48dp);">text</div>
   <div style="flex-grow: 1;" title="Value" class="prop_input_value prop_input">
   <div style="display: flex;">
     <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--4dp); color: var(--white);" include="disabled">

@@ -43,20 +43,43 @@ class Bihavior {
 	newPropertie(prop?: Prop): HTMLElement | undefined {
 		const template = document
 			.getElementById("item_prop_template")
-			?.cloneNode(true);
+			?.cloneNode(true) as HTMLElement;
 		if (template) {
 			(template as HTMLElement).removeAttribute("visible");
 			(template as HTMLElement).setAttribute("id", prop?.id ?? Utils.generateSlug());
 		}
-		return template as HTMLElement
+		return template
 	}
 	loadPropertieInput(input: HTMLElement, listProps: string, prop?: Prop) {
+		const jumpShort = 1;
+		const jumpLoog = 10;
 		const inputName = input.querySelector(`.prop_input_name input`) as HTMLInputElement;
 		const inputValue = input.querySelector(`.prop_input_value input`) as HTMLInputElement;
 		inputName?.addEventListener("input", (e) => {
 			const target = e.target as HTMLInputElement
 			this.mainProjectManager.setPropertyInSelectedComponent(prop?.id ?? input.id, "name", target.value, listProps)
 		})
+		inputValue?.addEventListener("keydown", event => {
+			let value = inputValue.value.trim();
+			let numericValue = parseFloat(value);
+			if (!isNaN(numericValue)) {
+				let jump = event.shiftKey ? jumpLoog : jumpShort;
+				if (event.key === "ArrowUp") {
+					numericValue += jump;
+				}
+				else if (event.key === "ArrowDown") {
+					numericValue -= jump;
+				}
+				const unit = value.replace(/-?[0-9.]+/g, "").trim();
+				inputValue.value = numericValue + unit;
+				this.mainProjectManager.setPropertyInSelectedComponent(
+					prop?.id ?? input.id,
+					"value",
+					inputValue.value,
+					listProps
+				);
+			}
+		});
 		inputValue?.addEventListener("input", (e) => {
 			const target = e.target as HTMLInputElement
 			this.mainProjectManager.setPropertyInSelectedComponent(prop?.id ?? input.id, "value", target.value, listProps)

@@ -9,11 +9,7 @@ export type Vector = {
 	x: number;
 	y: number;
 }
-export interface IComponent {
-	id: string;
-	getElement(): HTMLElement | null;
-};
-export class Component implements IComponent {
+export class Component {
 	id: string;
 	selected: boolean;
 	name: string;
@@ -37,7 +33,7 @@ export class Component implements IComponent {
 			content: Component[] | string,
 			selected?: boolean,
 			zoom?: number,
-			position?: Vector
+			position: Vector
 		}
 	) {
 		this.id = data.id ?? Utils.generateSlug();
@@ -50,16 +46,13 @@ export class Component implements IComponent {
 		this.styles = data.styles;
 		this.content = data.content;
 		this._zoom = data.zoom;
-		this.position = data.position ?? { x: 0, y: 0 };
+		this.position = data.position;
 	}
 	get zoom(): number {
 		return this._zoom ?? Common.SCALE_DEFAULT;
 	}
 	set zoom(zoom: number) {
 		this._zoom = zoom;
-	}
-	getElement(): HTMLElement | null {
-		return document.querySelector(`[${Common.RENDER_LABEL}id=${this.id}]`);
 	}
 };
 export type Translations = Record<string, any>;
@@ -104,6 +97,7 @@ export class Common {
 				is_view: false,
 				tag: "head",
 				template: "",
+				position: { x: 0, y: 0 },
 				props: [],
 				styles: [],
 				content: [
@@ -112,6 +106,7 @@ export class Common {
 						is_view: false,
 						tag: "meta",
 						template: "",
+						position: { x: 0, y: 0 },
 						props: [{ name: "charset", value: "UTF-8" }],
 						styles: [],
 						content: [],
@@ -121,6 +116,7 @@ export class Common {
 						is_view: false,
 						tag: "meta",
 						template: "",
+						position: { x: 0, y: 0 },
 						props: [
 							{ name: "name", value: "viewport" },
 							{
@@ -136,6 +132,7 @@ export class Common {
 						is_view: false,
 						tag: "title",
 						template: "",
+						position: { x: 0, y: 0 },
 						props: [],
 						styles: [],
 						content: "My Site",
@@ -148,6 +145,7 @@ export class Common {
 				tag: "body",
 				id: "body",
 				template: "",
+				position: { x: -250, y: -250 },
 				props: [],
 				styles: [],
 				content: [
@@ -157,6 +155,7 @@ export class Common {
 						id: "teste_h1",
 						tag: "h1",
 						template: "",
+						position: { x: 0, y: 0 },
 						props: [],
 						styles: [
 							{
@@ -206,6 +205,7 @@ export class Common {
 		is_view: true,
 		tag: "h4",
 		template: "",
+		position: { x: 0, y: 0 },
 		props: [],
 		styles: [
 			{
@@ -220,6 +220,7 @@ export class Common {
 		is_view: true,
 		tag: "div",
 		template: "",
+		position: { x: 0, y: 0 },
 		props: [],
 		styles: [
 			{
@@ -242,6 +243,7 @@ export class Common {
 		is_view: true,
 		tag: "div",
 		template: "",
+		position: { x: 0, y: 0 },
 		props: [],
 		styles: [
 			{

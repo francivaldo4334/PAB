@@ -11,16 +11,15 @@ export class MainProjectManager {
   main: Main;
   actions: Actions;
   bihavior: Bihavior;
-  nameField: HTMLInputElement
-  tagField: HTMLInputElement
+  nameField: HTMLInputElement = document.querySelector("#comp_name input")!!;
+  tagField: HTMLInputElement = document.querySelector("#comp_tag input")!!;
+  textField: HTMLInputElement = document.querySelector("#comp_text input")!!;
   propListHtml = document.getElementById("list_props_html");
   propListCSS = document.getElementById("list_props_css");
   constructor(main: Main) {
     this.projectHistory = new ProjectHistory(main);
     this.bihavior = new Bihavior(this, main);
     this.actions = new Actions(this, main, this.bihavior);
-    this.nameField = document.querySelector("#comp_name input")!!;
-    this.tagField = document.querySelector("#comp_tag input")!!;
     this.main = main;
     this.updateNameAndTagOfSelectedComponent();
   }
@@ -49,14 +48,28 @@ export class MainProjectManager {
           this.main.buildProject(true);
         }
       }
+      e.preventDefault();
     })
     this.tagField.addEventListener("input", (e) => {
       const component = this.getComponentSelected()
       const target = e.target as HTMLInputElement
       if (component) {
-        const componentProject = Utils.findComponentById(this.projectHistory.current_project, component.getComponentId());
-        if (componentProject && Utils.isValidTagName(target.value)) {
+        const componentProject = Utils.findComponentById(this.projectHistory.current_project, component.getComponentId()); if (componentProject && Utils.isValidTagName(target.value)) {
           componentProject.tag = target.value
+          if (componentProject.id) {
+            this.setComponentProjectById(componentProject.id, componentProject)
+          }
+          this.main.buildProject(true);
+        }
+      }
+    })
+    this.textField.addEventListener("input", (e) => {
+      const component = this.getComponentSelected()
+      const target = e.target as HTMLInputElement
+      if (component) {
+        const componentProject = Utils.findComponentById(this.projectHistory.current_project, component.getComponentId());
+        if (componentProject && typeof componentProject.content === "string") {
+          componentProject.content = target.value
           if (componentProject.id) {
             this.setComponentProjectById(componentProject.id, componentProject)
           }
@@ -95,7 +108,7 @@ export class MainProjectManager {
     if (!currentComponentProject || !currentComponentProject.id) return;
     const prevBrotherComponent = this.getPrevBrotherComponent(currentComponentProject);
     if (prevBrotherComponent && prevBrotherComponent.id) {
-      const prevComponent = prevBrotherComponent.getElement()
+      const prevComponent = Utils.getElementByComponent(prevBrotherComponent)
       if (prevComponent) {
         this.onSelectComponente(prevComponent as HTMLElement);
       }
@@ -103,7 +116,7 @@ export class MainProjectManager {
     }
     const prevComponentProject = this.getPreviousComponent(currentComponentProject.id)
     if (prevComponentProject && prevComponentProject.id) {
-      const prevComponent = prevComponentProject.getElement()
+      const prevComponent = Utils.getElementByComponent(prevComponentProject)
       if (prevComponent) {
         this.onSelectComponente(prevComponent as HTMLElement);
       }
@@ -117,7 +130,7 @@ export class MainProjectManager {
     if (Array.isArray(currentComponentProject.content) && currentComponentProject.content.length > 0) {
       const nextComponentProject = currentComponentProject.content[0] as Component;
       if (nextComponentProject && nextComponentProject.id) {
-        const nextComponent = nextComponentProject.getElement();
+        const nextComponent = Utils.getElementByComponent(nextComponentProject);
         if (nextComponent) {
           this.onSelectComponente(nextComponent as HTMLElement);
         }
@@ -129,7 +142,7 @@ export class MainProjectManager {
     if (!currentComponent) {
       const mainComponenProject = Utils.findComponentById(this.projectHistory.current_project, "body");
       if (!mainComponenProject || !mainComponenProject.id) return;
-      const mainComponent = mainComponenProject.getElement()
+      const mainComponent = Utils.getElementByComponent(mainComponenProject)
       if (!mainComponent) return;
       this.onSelectComponente(mainComponent as HTMLElement);
       return;
@@ -138,7 +151,7 @@ export class MainProjectManager {
     if (!currentComponentProject) return;
     const brotherComponent = this.getNextBrotherComponent(currentComponentProject);
     if (brotherComponent && brotherComponent.id) {
-      const brotherComponentEl = brotherComponent.getElement();
+      const brotherComponentEl = Utils.getElementByComponent(brotherComponent);
       if (brotherComponentEl) {
         this.onSelectComponente(brotherComponentEl as HTMLElement);
         return;
@@ -147,7 +160,7 @@ export class MainProjectManager {
     if (Array.isArray(currentComponentProject.content) && currentComponentProject.content.length > 0) {
       const nextComponentProject = currentComponentProject.content[0] as Component;
       if (nextComponentProject && nextComponentProject.id) {
-        const nextComponent = nextComponentProject.getElement()
+        const nextComponent = Utils.getElementByComponent(nextComponentProject)
         if (nextComponent) {
           this.onSelectComponente(nextComponent as HTMLElement);
         }
@@ -234,9 +247,9 @@ export class MainProjectManager {
       css = Utils.cssSanitize(css);
     }
     this.setComponentProjectById(selectedComponentProject.id, selectedComponentProject);
-    this.main.buildProject(true)
+    this.main.buildProject(true, false)
   }
-  cleanAllSelectables() {
+  cleanAllSelectables(updateLispOfProps = true) {
     const allElementsOfProject = document.querySelectorAll(`[${Common.RENDER_LABEL}selectable]`);
     if (allElementsOfProject) {
       allElementsOfProject.forEach((element) => {
@@ -251,32 +264,42 @@ export class MainProjectManager {
         }
       });
     }
-    if (this.propListHtml)
-      this.propListHtml.innerHTML = "";
-    if (this.propListCSS)
-      this.propListCSS.innerHTML = "";
-    this.nameField.value = "";
-    this.tagField.value = "";
+    if (updateLispOfProps) {
+      if (this.propListHtml)
+        this.propListHtml.innerHTML = "";
+      if (this.propListCSS)
+        this.propListCSS.innerHTML = "";
+      this.nameField.value = "";
+      this.tagField.value = "";
+      this.textField.value = "";
+      this.textField.parentElement?.parentElement?.parentElement?.setAttribute("visible", "false");
+    }
   }
-  onSelectComponente(component: HTMLElement) {
+  onSelectComponente(component: HTMLElement, updateLispOfProps = true) {
     if (this.actions.EDIT_MODE !== "SELECTION") {
       return;
     }
-    this.cleanAllSelectables();
+    this.cleanAllSelectables(updateLispOfProps);
     component.setAttribute(`${Common.RENDER_LABEL}selected`, "true");
-    const nameField = this.nameField;
     const componentProject = Utils.findComponentById(this.projectHistory.current_project, component.getComponentId())
     if (componentProject) {
       componentProject.selected = true;
-      nameField.value = componentProject.name
+      this.nameField.value = componentProject.name
       this.tagField.value = componentProject.tag
-      for (const attr of componentProject.props) {
-        if (!attr.name.toLowerCase().startsWith(Common.RENDER_LABEL.toLowerCase()) && attr.name !== "style") {
-          this.actions.addNewProp("HTML", attr)
-        }
+      if (typeof componentProject.content === "string") {
+        this.textField.parentElement?.parentElement?.parentElement?.setAttribute("visible", "true");
+        this.textField.value = componentProject.content
       }
-      for (const attr of componentProject.styles) {
-        this.actions.addNewProp("CSS", attr)
+      if (updateLispOfProps) {
+        for (const attr of componentProject.props) {
+          if (!attr.name.toLowerCase().startsWith(Common.RENDER_LABEL.toLowerCase()) && attr.name !== "style") {
+            this.actions.addNewProp("HTML", attr)
+          }
+        }
+        const styles = componentProject.styles.filter(it => !(componentProject.id === "body" && ["left", "top", "position"].includes(it.name)))
+        for (const attr of styles) {
+          this.actions.addNewProp("CSS", attr)
+        }
       }
       if (componentProject.id) {
         this.setComponentProjectById(componentProject.id, componentProject, false);

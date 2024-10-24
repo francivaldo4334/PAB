@@ -1,4 +1,4 @@
-import { Common, IComponent, Component, Prop } from "./common";
+import { Common, Component, Prop } from "./common";
 declare global {
   interface Element {
     getComponentId(): string;
@@ -7,7 +7,11 @@ declare global {
 Element.prototype.getComponentId = function(): string {
   return this.getAttribute(`${Common.RENDER_LABEL}id`) ?? "";
 }
+
 export class Utils {
+  static getElementByComponent(component: Component): HTMLElement | null {
+    return document.querySelector(`[${Common.RENDER_LABEL}id=${component.id}]`);
+  }
   static generateSlug(): string {
     let id = Utils.tryGenerateSlug();
     while (Utils.getElementByComponentId(id)) {

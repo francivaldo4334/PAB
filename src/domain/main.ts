@@ -98,8 +98,8 @@ class Main {
 		let component = content as Component;
 		if (renderMode && component.tag === "body") {
 			component = this.buildBodyRenderMode(component);
-			if (component.id) this.mainProjectManager.setComponentProjectById(component.id, component)
 		}
+		if (component.id) this.mainProjectManager.setComponentProjectById(component.id, component)
 		return this.generateTag(component, renderMode);
 	}
 	buildItemTheeWithComponent(component: Component, templateItemThee: HTMLElement): HTMLElement {
@@ -116,7 +116,7 @@ class Main {
 		}
 		return newItemThee;
 	}
-	buildProject(devMode = false) {
+	buildProject(devMode = false, updateListOfProp = true) {
 		let builded_project = "";
 		if (this.projectHistory.current_project) {
 			if (devMode) {
@@ -125,6 +125,7 @@ class Main {
 				builded_project += this.buildTag(this.projectHistory.current_project.content[1], true);
 				my_body.innerHTML = builded_project;
 				this.loadOnclickEvents();
+				this.mainProjectManager.onSelectComponente(this.mainProjectManager.getComponentSelected(), updateListOfProp)
 			}
 			else {
 				builded_project = "<!DOCTYPE html>";
