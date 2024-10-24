@@ -1,0 +1,26 @@
+<div class="pab_project__button">
+    <comp 
+        src="./ui/components/button.html" 
+        expanded 
+        is_open="false" 
+        id="menu_actions"
+        class="popover pab_project__button"
+        onclick="main.actions.openMenuFile()"
+    >
+        <comp src="./ui/components/icons/menu.svg"></comp>
+        <comp 
+            src="./ui/components/icons/arrow_down_16.svg" 
+            arrow_down_16
+        ></comp>
+    </comp>
+    <div style="position: fixed; z-index: 1;" class="content multiselection">
+        <comp 
+            src="./ui/components/drop_down_item.html" 
+            title="Export to index.html" 
+            class="item_multiselection pab_project__button"
+            onclick="main.actions.exportIndexHtml();"
+        >
+            <comp src="./ui/components/icons/rect.svg"></comp>
+        </comp> 
+    </div>
+</div>

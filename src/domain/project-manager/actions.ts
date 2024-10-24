@@ -30,7 +30,10 @@ class Actions {
 		}
 	}
 	openMenuFile() {
-		console.log("TODO");
+		const menuActions = document.getElementById("menu_actions");
+		if (menuActions) {
+			this.bihavior.toggleIsOpen(menuActions);
+		}
 	}
 
 	openRecentProjects() {
@@ -175,6 +178,9 @@ class Actions {
 		Utils.getClipboard(txt => {
 			this.mainProjectManager.setComponetJsonInSelectedComponent(txt);
 		})
+	}
+	exportIndexHtml() {
+		this.main.exportProject();
 	}
 }
 export default Actions;
