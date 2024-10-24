@@ -63,21 +63,19 @@ class Bihavior {
 			let value = inputValue.value.trim();
 			let numericValue = parseFloat(value);
 			if (!isNaN(numericValue)) {
-				let jump = event.shiftKey ? jumpLoog : jumpShort;
-				if (event.key === "ArrowUp") {
-					numericValue += jump;
+				const jump = event.shiftKey ? jumpLoog : jumpShort;
+				const newJump = (event.key === "ArrowUp") ? jump : (event.key === "ArrowDown") ? -jump : undefined;
+				if (newJump) {
+					numericValue += newJump;
+					const unit = value.replace(/-?[0-9.]+/g, "").trim();
+					inputValue.value = numericValue + unit;
+					this.mainProjectManager.setPropertyInSelectedComponent(
+						prop?.id ?? input.id,
+						"value",
+						inputValue.value,
+						listProps
+					);
 				}
-				else if (event.key === "ArrowDown") {
-					numericValue -= jump;
-				}
-				const unit = value.replace(/-?[0-9.]+/g, "").trim();
-				inputValue.value = numericValue + unit;
-				this.mainProjectManager.setPropertyInSelectedComponent(
-					prop?.id ?? input.id,
-					"value",
-					inputValue.value,
-					listProps
-				);
 			}
 		});
 		inputValue?.addEventListener("input", (e) => {

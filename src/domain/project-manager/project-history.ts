@@ -33,7 +33,7 @@ class ProjectHistory {
 				this.future.push(this._current_project);
 			}
 			this._current_project = this.past.pop();
-			this.main.buildProject(true);
+			this.main.buildProject(true, true, false);
 		}
 	}
 
@@ -43,7 +43,7 @@ class ProjectHistory {
 				this.past.push(this._current_project);
 			}
 			this._current_project = this.future.pop();
-			this.main.buildProject(true);
+			this.main.buildProject(true, true, false);
 		}
 	}
 }

@@ -43,7 +43,7 @@ export class MainProjectManager {
         if (componentProject) {
           componentProject.name = target.value
           if (componentProject.id) {
-            this.setComponentProjectById(componentProject.id, componentProject)
+            this.setComponentProjectById(componentProject.id, componentProject, false)
           }
           this.main.buildProject(true);
         }
@@ -57,7 +57,7 @@ export class MainProjectManager {
         const componentProject = Utils.findComponentById(this.projectHistory.current_project, component.getComponentId()); if (componentProject && Utils.isValidTagName(target.value)) {
           componentProject.tag = target.value
           if (componentProject.id) {
-            this.setComponentProjectById(componentProject.id, componentProject)
+            this.setComponentProjectById(componentProject.id, componentProject, false)
           }
           this.main.buildProject(true);
         }
@@ -71,7 +71,7 @@ export class MainProjectManager {
         if (componentProject && typeof componentProject.content === "string") {
           componentProject.content = target.value
           if (componentProject.id) {
-            this.setComponentProjectById(componentProject.id, componentProject)
+            this.setComponentProjectById(componentProject.id, componentProject, false)
           }
           this.main.buildProject(true);
         }
@@ -179,7 +179,7 @@ export class MainProjectManager {
     const newComponent = JSON.parse(JSON.stringify(componentTemplate))
     newComponent.id = Utils.generateSlug();
     selectedComponentProject.content.push(newComponent);
-    this.setComponentProjectById(selectedComponentProject.id, selectedComponentProject)
+    this.setComponentProjectById(selectedComponentProject.id, selectedComponentProject, false)
     this.main.buildProject(true)
   }
   removeSelectedComponent() {
@@ -192,7 +192,7 @@ export class MainProjectManager {
       parentComponent.content = parentComponent.content.filter(it => it.id !== selectedComponentProject.id)
     }
     if (!parentComponent || !parentComponent.id) return;
-    this.setComponentProjectById(parentComponent.id, parentComponent)
+    this.setComponentProjectById(parentComponent.id, parentComponent, false)
     this.main.buildProject(true)
   }
   setComponentProjectById(
@@ -200,16 +200,14 @@ export class MainProjectManager {
     component: Component,
     setUndo = true,
     localComponent: Component | undefined = this.projectHistory.current_project,
-    add: (it: Component) => void = (cmp) => {
-      if (localComponent) {
-        this.projectHistory.updateText(cmp)
-      }
+    add: (it: Component, undo: boolean) => void = (cmp, undo) => {
+      this.projectHistory.updateText(cmp, undo)
     },
     isMain = true,
   ) {
     if (!localComponent) return
     if (localComponent.id === id) {
-      add(component);
+      add(component, setUndo);
     }
     if (Array.isArray(localComponent.content)) {
       for (let i = 0; i < localComponent.content.length; i++) {
@@ -260,7 +258,7 @@ export class MainProjectManager {
       let css: string = Utils.propsTosStringCss(styles)
       css = Utils.cssSanitize(css);
     }
-    this.setComponentProjectById(selectedComponentProject.id, selectedComponentProject);
+    this.setComponentProjectById(selectedComponentProject.id, selectedComponentProject, false);
     this.main.buildProject(true, false)
   }
   cleanAllSelectables(updateLispOfProps = true) {

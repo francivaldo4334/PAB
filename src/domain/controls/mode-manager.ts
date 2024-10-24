@@ -22,10 +22,10 @@ class Modes {
 		this.projectHistory = projectHistory;
 	}
 	onSelectionModeActionsKeyDown(e: KeyboardEvent) {
-		if (e.ctrlKey && !e.shiftKey && e.key === 'z') {
+		if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'z') {
 			this.projectHistory.undo();
 			e.preventDefault();
-		} else if (e.ctrlKey && e.shiftKey && e.key === 'Z') {
+		} else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') {
 			this.projectHistory.redo();
 			e.preventDefault();
 		} else if (e.ctrlKey) {

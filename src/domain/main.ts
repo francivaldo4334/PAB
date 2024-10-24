@@ -48,7 +48,7 @@ class Main {
 		TEMPLATE.content = component.content;
 		return TEMPLATE;
 	}
-	generateTag(component: Component, renderMode: boolean): string {
+	generateTag(component: Component, renderMode: boolean, setUndo = true): string {
 		const TAG = component.tag;
 		let props = [...component.props];
 		if (renderMode) {
@@ -89,18 +89,18 @@ class Main {
 		const INNER = component.content
 			? !Array.isArray(component.content)
 				? component.content
-				: component.content.map((it) => this.buildTag(it, renderMode)).join("\n")
+				: component.content.map((it) => this.buildTag(it, renderMode, setUndo)).join("\n")
 			: "";
 		return `<${TAG} ${PROPS}>${INNER}</${TAG}>`;
 	}
-	buildTag(content: Component | string | object, renderMode = false): string {
+	buildTag(content: Component | string | object, renderMode = false, setUndo = true): string {
 		if (typeof content === "string") return content;
 		let component = content as Component;
 		if (renderMode && component.tag === "body") {
 			component = this.buildBodyRenderMode(component);
 		}
-		if (component.id) this.mainProjectManager.setComponentProjectById(component.id, component)
-		return this.generateTag(component, renderMode);
+		if (component.id) this.mainProjectManager.setComponentProjectById(component.id, component, setUndo)
+		return this.generateTag(component, renderMode, setUndo);
 	}
 	buildItemTheeWithComponent(component: Component, templateItemThee: HTMLElement): HTMLElement {
 		const newItemThee = templateItemThee.cloneNode() as HTMLElement
@@ -116,20 +116,19 @@ class Main {
 		}
 		return newItemThee;
 	}
-	buildProject(devMode = false, updateListOfProp = true) {
+	buildProject(devMode = false, updateListOfProp = true, setUndo = true) {
 		let builded_project = "";
 		if (this.projectHistory.current_project) {
 			if (devMode) {
 				const my_body = document.getElementById("project_draw") as HTMLElement;
-
-				builded_project += this.buildTag(this.projectHistory.current_project.content[1], true);
+				builded_project += this.buildTag(this.projectHistory.current_project.content[1], true, setUndo);
 				my_body.innerHTML = builded_project;
 				this.loadOnclickEvents();
 				this.mainProjectManager.onSelectComponente(this.mainProjectManager.getComponentSelected(), updateListOfProp)
 			}
 			else {
 				builded_project = "<!DOCTYPE html>";
-				builded_project += this.buildTag(this.projectHistory.current_project);
+				builded_project += this.buildTag(this.projectHistory.current_project, false, setUndo);
 			}
 		}
 		return builded_project;
