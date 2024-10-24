@@ -79,7 +79,7 @@
 }
 
 .prop_input input{
-  border-radius: var(--4dp);
+  border-radius: var(--pab_project_4dp);
   border: none;
   background: var(--pab_project_background);
 }
@@ -88,7 +88,7 @@
 }
 
 .prop_list {
-  gap: var(--8dp);
+  gap: var(--pab_project_8dp);
 }
 [BAB_project__selected="false"]{
   z-index: 2;
@@ -108,15 +108,15 @@
   clip-path: polygon(0 0, 75% 0, 100% 35%, 100% 100%,  0 100%);
 }
 [focus="true"]::after {
-  bottom: var(--4dp);
-  left: var(--4dp);
-  padding: var(--4dp);
+  bottom: var(--pab_project_4dp);
+  left: var(--pab_project_4dp);
+  padding: var(--pab_project_4dp);
   background: var(--pab_project_primary_color_800);
 }
 [focus="true"]::before {
   bottom: 0;
   left: 0;
-  padding: var(--8dp);
+  padding: var(--pab_project_8dp);
   background: var(--pab_project_primary_color_700);
 }
 [focus="true"],
@@ -132,13 +132,13 @@
     position: absolute;
     top: 100%; 
     left: 0;
-    transform: translateY(var(--4dp));
+    transform: translateY(var(--pab_project_4dp));
     z-index: 9999;
     width: auto; 
     height: auto;
-    padding: var(--4dp);
+    padding: var(--pab_project_4dp);
     background: var(--pab_project_primary_color_800);
-    border-radius: var(--4dp);
+    border-radius: var(--pab_project_4dp);
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
