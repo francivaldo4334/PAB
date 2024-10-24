@@ -1,4 +1,4 @@
-import { Prop } from "../common";
+import { Common, Prop } from "../common";
 import Main from "../main"
 import { Utils } from "../utils";
 import { MainProjectManager } from "./main";
@@ -45,7 +45,7 @@ class Bihavior {
 			.getElementById("item_prop_template")
 			?.cloneNode(true) as HTMLElement;
 		if (template) {
-			(template as HTMLElement).removeAttribute("pab_project_visible");
+			(template as HTMLElement).removeAttribute("pab_project__visible");
 			(template as HTMLElement).setAttribute("id", prop?.id ?? Utils.generateSlug());
 		}
 		return template

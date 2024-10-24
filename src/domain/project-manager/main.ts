@@ -286,7 +286,7 @@ export class MainProjectManager {
       this.nameField.value = "";
       this.tagField.value = "";
       this.textField.value = "";
-      this.textField.parentElement?.parentElement?.parentElement?.setAttribute("pab_project_visible", "false");
+      this.textField.parentElement?.parentElement?.parentElement?.setAttribute("pab_project__visible", "false");
     }
   }
   onSelectComponente(component: HTMLElement | null, updateLispOfProps = true) {
@@ -302,7 +302,7 @@ export class MainProjectManager {
       this.nameField.value = componentProject.name
       this.tagField.value = componentProject.tag
       if (typeof componentProject.content === "string") {
-        this.textField.parentElement?.parentElement?.parentElement?.setAttribute("pab_project_visible", "true");
+        this.textField.parentElement?.parentElement?.parentElement?.setAttribute("pab_project__visible", "true");
         this.textField.value = componentProject.content
       }
       if (updateLispOfProps) {

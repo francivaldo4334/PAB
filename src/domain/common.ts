@@ -266,6 +266,6 @@ export class Common {
 		content: []
 
 	})
-	static RENDER_LABEL = "BAB_project__";
+	static RENDER_LABEL = "bab_project__";
 	static SCALE_DEFAULT = 1;
 }
