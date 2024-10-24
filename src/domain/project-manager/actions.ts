@@ -18,14 +18,14 @@ class Actions {
 	toggleWithDrawAndPropsFocus() {
 		if (this.main.FOCUS === "DRAW") {
 			this.main.FOCUS = "PROPS";
-			this.drawRect?.setAttribute("focus", "false")
-			this.sideRight?.setAttribute("focus", "true")
+			this.drawRect?.setAttribute("pab_project__focus", "false")
+			this.sideRight?.setAttribute("pab_project__focus", "true")
 			this.sideRight?.parentElement?.querySelector("[is_open]")?.setAttribute("is_open", "true")
 		}
 		else {
 			this.main.FOCUS = "DRAW";
-			this.drawRect?.setAttribute("focus", "true")
-			this.sideRight?.setAttribute("focus", "false")
+			this.drawRect?.setAttribute("pab_project__focus", "true")
+			this.sideRight?.setAttribute("pab_project__focus", "false")
 		}
 	}
 	openMenuFile() {
