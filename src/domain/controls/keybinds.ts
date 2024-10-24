@@ -36,6 +36,16 @@ class Keybinds {
 			}
 		},
 		Control: {
+			c: {
+				action: () => {
+					this.actions.copySelectedComponent();
+				}
+			},
+			v: {
+				action: () => {
+					this.actions.pasteComponetInSelectedComponent();
+				}
+			},
 			n: {
 				mode: true,
 				...this.newElement,

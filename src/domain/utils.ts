@@ -107,4 +107,13 @@ export class Utils {
     }
     return undefined
   }
+  static getClipboard(onResult: (txt: string) => void) {
+    navigator.clipboard.readText().then(txt => {
+      onResult(txt)
+      return txt
+    })
+  }
+  static setClipboard(txt: string) {
+    navigator.clipboard.writeText(txt)
+  }
 }

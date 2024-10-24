@@ -320,4 +320,21 @@ export class MainProjectManager {
   getComponentSelected(): HTMLElement {
     return document.querySelector(`[${Common.RENDER_LABEL}selected="true"]`) as HTMLElement
   }
+  getSelectedComponentJson(): string {
+    const selectedComponentId = this.getComponentSelected()?.getComponentId()
+    if (!selectedComponentId) return "";
+    const componentProject = Utils.findComponentById(this.projectHistory.current_project, selectedComponentId)
+    if (!componentProject) return "";
+    return JSON.stringify(componentProject)
+  }
+  setComponetJsonInSelectedComponent(componentJson: string) {
+    const selectedComponentId = this.getComponentSelected()?.getComponentId()
+    if (!selectedComponentId) return;
+    try {
+      const componentProject = JSON.parse(componentJson);
+      this.setComponentProjectInSelectedComponent(componentProject)
+    } catch (err) {
+      throw err;
+    }
+  }
 }

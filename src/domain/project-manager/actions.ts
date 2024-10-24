@@ -2,6 +2,7 @@ import Main from "../main";
 import Bihavior from "./bihavior"
 import { Common, Prop } from "../common";
 import { MainProjectManager } from "./main";
+import { Utils } from "../utils";
 class Actions {
 	EDIT_MODE = "SELECTION";
 	projectDrawScope = document.getElementById("project_draw_rect");
@@ -163,6 +164,17 @@ class Actions {
 		if (prop) {
 			this.bihavior.removeUiPropretie(prop);
 		}
+	}
+
+	copySelectedComponent() {
+		const componet = this.mainProjectManager.getSelectedComponentJson();
+		console.log(componet)
+		Utils.setClipboard(componet)
+	}
+	pasteComponetInSelectedComponent() {
+		Utils.getClipboard(txt => {
+			this.mainProjectManager.setComponetJsonInSelectedComponent(txt);
+		})
 	}
 }
 export default Actions;
