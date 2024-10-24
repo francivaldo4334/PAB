@@ -230,6 +230,7 @@ export class MainProjectManager {
     if (!selectedComponentProject) return;
     selectedComponentProject.props = selectedComponentProject.props.filter((prop) => prop.id !== propId)
     selectedComponentProject.styles = selectedComponentProject.styles.filter((prop) => prop.id !== propId)
+    this.setComponentProjectById(selectedComponentProject.id, selectedComponentProject)
   }
   setPropertyInSelectedComponent(id: string, fieldName: string, newValue: string, listProp: string) {
     const selectedComponent = this.getComponentSelected();
