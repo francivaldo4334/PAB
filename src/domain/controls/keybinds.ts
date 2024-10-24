@@ -30,6 +30,11 @@ class Keybinds {
 		},
 	};
 	keymaps: KeyMap = {
+		Delete: {
+			action: () => {
+				this.actions.removeSelectedComponent();
+			}
+		},
 		Control: {
 			n: {
 				mode: true,

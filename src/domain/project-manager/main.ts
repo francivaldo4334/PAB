@@ -182,6 +182,19 @@ export class MainProjectManager {
     this.setComponentProjectById(selectedComponentProject.id, selectedComponentProject)
     this.main.buildProject(true)
   }
+  removeSelectedComponent() {
+    const selectedComponent = this.getComponentSelected();
+    if (!selectedComponent) return;
+    const selectedComponentProject = Utils.findComponentById(this.projectHistory.current_project, selectedComponent.getComponentId());
+    if (!selectedComponentProject || !selectedComponentProject.id) return;
+    const parentComponent = this.getPreviousComponent(selectedComponentProject.id)
+    if (Array.isArray(parentComponent?.content)) {
+      parentComponent.content = parentComponent.content.filter(it => it.id !== selectedComponentProject.id)
+    }
+    if (!parentComponent || !parentComponent.id) return;
+    this.setComponentProjectById(parentComponent.id, parentComponent)
+    this.main.buildProject(true)
+  }
   setComponentProjectById(
     id: string,
     component: Component,
@@ -275,7 +288,8 @@ export class MainProjectManager {
       this.textField.parentElement?.parentElement?.parentElement?.setAttribute("visible", "false");
     }
   }
-  onSelectComponente(component: HTMLElement, updateLispOfProps = true) {
+  onSelectComponente(component: HTMLElement | null, updateLispOfProps = true) {
+    if (!component) return;
     if (this.actions.EDIT_MODE !== "SELECTION") {
       return;
     }

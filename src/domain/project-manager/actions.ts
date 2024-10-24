@@ -60,6 +60,9 @@ class Actions {
 	toInnerComponent() {
 		this.mainProjectManager.toInnerComponent();
 	}
+	removeSelectedComponent() {
+		this.mainProjectManager.removeSelectedComponent();
+	}
 	addNewElement(type: string) {
 		switch (type) {
 			case "OVAL":
