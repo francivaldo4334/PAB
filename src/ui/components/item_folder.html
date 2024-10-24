@@ -1,16 +1,15 @@
 <div 
-  style="padding: var(--8dp) var(--12dp); width: 100%;"
+  style="padding: var(--pab_project__8dp) var(--pab_project__12dp); width: 100%;"
 >
   <div 
     style="display: flex; align-items:center;"
     expanded 
     is_open="false"
     path="./"
-    onclick="toggleIsOpen(this);openFolder(this.getAttribute('path'))"
-    
+    onclick="main.bihavior.toggleIsOpen(this);main.actions.openFolder(this.getAttribute('path'))"
   >
     <comp src="./ui/components/icons/arrow_down_16.svg" arrow_down_folder></comp>
-    <comp src="./ui/components/icons/folder.svg" style="margin-right: var(--8dp);"></comp>
+    <comp src="./ui/components/icons/code_xml.svg" style="margin-right: var(--pab_project__8dp);"></comp>
     <text></text>
   </div>
   <div class="content">

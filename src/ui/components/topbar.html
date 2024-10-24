@@ -1,60 +1,63 @@
-<div style="width: 100vw; height: var(--48dp); display: flex;" class="menu_bar">
-    <div style="width: var(--240dp); height: 100%; display: flex; align-items: center;">
-        <comp 
-            src="./ui/components/button.html"
-            onclick="openMenuFile()"
-        >
-            <comp src="./ui/components/icons/menu.svg"></comp>
-        </comp>
-        <comp 
-            src="./ui/components/button.html" 
-            style="width: 100%; display: flex; height: 100%; align-items: center; padding: var(--8dp);"
-            onclick="openRecentProjects()"
-        >
-            <h3 style="flex-grow: 1; text-align: start;" data-translate="project_name">Projet Name</h3>
-            <comp src="./ui/components/icons/arrow_down_16.svg"></comp>
-        </comp>
+<div style="width: 100vw; height: var(--pab_project__48dp); position: absolute; z-index: 10;" class="pab_project__menu_bar">
+    <div style="display: flex;height: var(--pab_project__48dp);">
+        <div style="width: var(--pab_project__240dp); height: 100%; display: flex; align-items: center;">
+            <comp 
+                src="./ui/components/button_menu.html"
+            >
+            </comp>
+            <comp 
+                src="./ui/components/button.html" 
+                style="width: 100%; display: flex; height: 100%; align-items: center; padding: var(--pab_project__8dp);"
+                onclick="main.actions.openRecentProjects()"
+            >
+                <h3 style="flex-grow: 1; text-align: start;" data-translate="project_name">Projet Name</h3>
+                <comp src="./ui/components/icons/arrow_down_16.svg"></comp>
+            </comp>
+        </div>
+        <div style="height: 100%; display: flex; flex-grow: 1;">
+            <comp 
+                src="./ui/components/button_with_dropdown.html"
+            ></comp>
+            <comp 
+                src="./ui/components/button.html"
+                id="btn_selection_mode"
+                class="selection pab_project__button"
+                selected="true"
+                onclick="main.actions.setSelectionMode()"
+                pab_project__tip="CtrlUp"
+            >
+                <comp src="./ui/components/icons/mouse_pointer.svg"></comp>
+            </comp>
+            <comp 
+                src="./ui/components/button.html"
+                id="btn_move_mode"
+                class="selection pab_project__button"
+                onclick="main.actions.setMoveMode()"
+                pab_project__tip="Space · Click"
+            >
+                <comp src="./ui/components/icons/move.svg"></comp>
+            </comp>
+            <comp 
+                src="./ui/components/button.html"
+                id="btn_zoom_mode"
+                class="selection pab_project__button"
+                onclick="main.actions.setZoomMode()"
+                pab_project__tip="Ctrl · Scroll"
+            >
+                <comp src="./ui/components/icons/zoom_in.svg"></comp>
+            </comp>
+            <comp 
+                src="./ui/components/button.html"
+                id="btn_plugin"
+                class="selection pab_project__button"
+                onclick="main.actions.openMenuPlugins()"
+            >
+                <comp src="./ui/components/icons/plugins.svg"></comp>
+            </comp>
+        </div>
+        <div style="width: var(--pab_project__240dp); height: 100%; display: flex; align-items: center;">
+            <h3 style="margin: 0; padding: 0 var(--pab_project__12dp);" data-translate="user_name">Username</h3>
+        </div>
     </div>
-    <div style="height: 100%; display: flex; flex-grow: 1;">
-        <comp 
-            src="./ui/components/button_with_dropdown.html"
-        ></comp>
-        <comp 
-            src="./ui/components/button.html"
-            id="btn_selection_mode"
-            class="selection button"
-            selected="true"
-            onclick="setSelectionMode()"
-        >
-            <comp src="./ui/components/icons/mouse_pointer.svg"></comp>
-        </comp>
-        <comp 
-            src="./ui/components/button.html"
-            id="btn_move_mode"
-            class="selection button"
-            onclick="setMoveMode()"
-        >
-            <comp src="./ui/components/icons/move.svg"></comp>
-        </comp>
-        <comp 
-            src="./ui/components/button.html"
-            id="btn_zoom_mode"
-            class="selection button"
-            onclick="setZoomMode()"
-        >
-            <comp src="./ui/components/icons/zoom_in.svg"></comp>
-        </comp>
-        <comp 
-            src="./ui/components/button.html"
-            id="btn_plugin"
-            class="selection button"
-            onclick="openMenuPlugins()"
-        >
-            <comp src="./ui/components/icons/plugins.svg"></comp>
-        </comp>
-    </div>
-    <div style="width: var(--240dp); height: 100%; display: flex; align-items: center;">
-        <h3 style="margin: 0; padding: 0 var(--12dp);" data-translate="user_name">Username</h3>
-    </div>
+    <hr style="margin: 0; padding: 0;" id="pab_project__hr">
 </div>
-<hr style="margin: 0; padding: 0;">

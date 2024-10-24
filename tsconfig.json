@@ -1,11 +1,14 @@
 {
-	"compilerOptions": {
-		"outDir": "./build",
-		"rootDir": "./src",
-		"strict": true,
-		"esModuleInterop": true,
-		"lib": ["es2023", "dom"]
-	},
-	"include": ["src/**/*.ts"],
-	"exclude": ["src/**/*.svg"]
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "ESNext",
+        "outDir": "./docs",
+        "strict": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "lib": ["es2023", "dom"],
+        "rootDir": "./src"
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["src/**/*.svg", "node_modules"]
 }

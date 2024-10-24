@@ -1,76 +1,146 @@
-function initNewProject() {
-	current_project = base_json_template;
-}
+import MainControls from "./controls/main";
+import { Common, Component } from "./common";
+import Translation from "./project-manager/translations";
+import ProjectHistory from "./project-manager/project-history";
+import { Utils } from "./utils";
+import { MainProjectManager } from "./project-manager/main";
+import Actions from "./project-manager/actions";
 
-function updateCssProp(cssStr: string, prop: string, value: string): string {
-	const regex = new RegExp(`${prop}:\\s*[^;]+;`);
-	const newProp = `${prop}: ${value};`;
-	return cssStr.match(regex)
-		? cssStr.replace(regex, newProp)
-		: `${cssStr} ${newProp}`;
-}
-
-function buildTag(_component_json: object | string, mode_prod = false): string {
-	const component_json = _component_json as Project;
-	if (typeof component_json === "string") return component_json;
-	let comp: Project = { ...base_view_body };
-	const is_tag_comp = mode_prod && component_json.tag === "body";
-	if (is_tag_comp) {
-		const prop_style: { name: string; value: string } | undefined =
-			comp.props.find((it: { name: string }) => it.name === "style");
-		comp.props =
-			component_json.props && component_json.props.length > 0
-				? component_json.props.map((it) => {
-						if (it.name === "style" && prop_style) {
-							return { name: "style", value: prop_style.value + it.value };
-						}
-						return it;
-					})
-				: comp.props;
-		comp.content = component_json.content;
-	} else {
-		comp = component_json as Project;
+class Main {
+	projectHistory: ProjectHistory;
+	controls: MainControls;
+	translations: Translation;
+	mainProjectManager: MainProjectManager;
+	actions: Actions;
+	FOCUS = "DRAW";
+	constructor() {
+		this.translations = new Translation("pt_br");
+		this.mainProjectManager = new MainProjectManager(this)
+		this.controls = new MainControls(this, this.mainProjectManager, this.mainProjectManager.actions, this.mainProjectManager.bihavior, this.mainProjectManager.projectHistory);
+		this.projectHistory = this.mainProjectManager.projectHistory;
+		this.actions = this.mainProjectManager.actions;
 	}
-	const tag_name = comp.tag;
-	const tag_props = comp.props
-		? comp.props
-				.map(
-					(it: { name: string; value: string }) => `${it.name}="${it.value}"`,
-				)
-				.join(" ")
-		: "";
-	const tag_content = comp.content
-		? !Array.isArray(comp.content)
-			? comp.content
-			: comp.content.map((it) => buildTag(it)).join("")
-		: "";
-	return `<${tag_name} ${tag_props}>${tag_content}</${tag_name}>`;
-}
-
-function buildProject() {
-	let builded_project = "<!DOCTYPE html>";
-	if (current_project) {
-		builded_project += buildTag(current_project);
+	initNewProject() {
+		this.projectHistory.updateText(Common.base_json_template);
 	}
-	return builded_project;
+	loadOnclickEvents() {
+		const allElementsOfProject = document.querySelectorAll(`[${Common.RENDER_LABEL}selectable]`);
+		if (allElementsOfProject) {
+			allElementsOfProject.forEach((el) => {
+				(el as HTMLElement).onclick = (e) => {
+					const target = e.target as HTMLElement;
+					this.mainProjectManager.onSelectComponente(target)
+					e.stopPropagation();
+				}
+			});
+		}
+	}
+	buildBodyRenderMode(component: Component) {
+		const TEMPLATE: Component = JSON.parse(JSON.stringify(Common.base_view_body));
+		const position = component.position ?? TEMPLATE.position
+		if (position) {
+			TEMPLATE.styles.push({ name: "left", value: `${position.x}px`, id: Utils.generateSlug() });
+			TEMPLATE.styles.push({ name: "top", value: `${position.y}px`, id: Utils.generateSlug() });
+		}
+		TEMPLATE.props = component.props.concat(TEMPLATE.props);
+		TEMPLATE.props.push({ name: `${Common.RENDER_LABEL}body`, value: "", id: Utils.generateSlug() });
+		TEMPLATE.styles = component.props.concat(TEMPLATE.styles);
+		TEMPLATE.content = component.content;
+		return TEMPLATE;
+	}
+	generateTag(component: Component, renderMode: boolean, setUndo = true): string {
+		const TAG = component.tag;
+		let props = [...component.props];
+		if (renderMode) {
+			props = props.map((it) => {
+				if (it.name === "class") {
+					it.value = it.value.split(' ').map((cls) => {
+						return (!cls.startsWith(Common.RENDER_LABEL)) ? `${Common.RENDER_LABEL}${cls}` : cls;
+					}).join(" ");
+				}
+				return it;
+			});
+			props.push({
+				name: `${Common.RENDER_LABEL}selectable`,
+				value: ""
+			})
+			props.push({
+				name: `${Common.RENDER_LABEL}selected`,
+				value: String(component.selected)
+			})
+			props.push({
+				name: `${Common.RENDER_LABEL}id`,
+				value: component.id ?? ""
+			})
+		}
+		else {
+			props = props.filter((prop) => !prop.name.startsWith(Common.RENDER_LABEL));
+		}
+		component.styles = component.styles.map(it => {
+			if (!it.id)
+				it.id = Utils.generateSlug()
+			return it
+		})
+		if (component.id) {
+			this.mainProjectManager.setComponentProjectById(component.id, component, false)
+		}
+		props.push({ name: "style", value: Utils.propsTosStringCss(component.styles), id: Utils.generateSlug() })
+		const PROPS = Utils.propsTosString(props);
+		const INNER = component.content
+			? !Array.isArray(component.content)
+				? component.content
+				: component.content.map((it) => this.buildTag(it, renderMode, setUndo)).join("\n")
+			: "";
+		return `<${TAG} ${PROPS}>${INNER}</${TAG}>`;
+	}
+	buildTag(content: Component | string | object, renderMode = false, setUndo = true): string {
+		if (typeof content === "string") return content;
+		let component = content as Component;
+		if (renderMode && component.tag === "body") {
+			component = this.buildBodyRenderMode(component);
+		}
+		if (component.id) this.mainProjectManager.setComponentProjectById(component.id, component, setUndo)
+		return this.generateTag(component, renderMode, setUndo);
+	}
+	buildItemTheeWithComponent(component: Component, templateItemThee: HTMLElement): HTMLElement {
+		const newItemThee = templateItemThee.cloneNode() as HTMLElement
+		newItemThee.removeAttribute("id");
+		newItemThee.setAttribute("pab_project__visible", "true");
+		if (Array.isArray(component.content) && component.content.length > 0) {
+			for (const item of component.content as Component[]) {
+				const contentItemThee = newItemThee.querySelector(".content");
+				if (contentItemThee) {
+					contentItemThee.appendChild(this.buildItemTheeWithComponent(item, templateItemThee))
+				}
+			}
+		}
+		return newItemThee;
+	}
+	buildProject(devMode = false, updateListOfProp = true, setUndo = true) {
+		let builded_project = "";
+		if (this.projectHistory.current_project) {
+			if (devMode) {
+				const my_body = document.getElementById("project_draw") as HTMLElement;
+				builded_project += this.buildTag(this.projectHistory.current_project.content[1], true, setUndo);
+				my_body.innerHTML = builded_project;
+				this.loadOnclickEvents();
+				this.mainProjectManager.onSelectComponente(this.mainProjectManager.getComponentSelected(), updateListOfProp)
+			}
+			else {
+				builded_project = "<!DOCTYPE html>";
+				builded_project += this.buildTag(this.projectHistory.current_project, false, setUndo);
+			}
+		}
+		return builded_project;
+	}
+	exportProject() {
+		this.initNewProject();
+		const blob = new Blob([this.buildProject()], { type: "text/html" });
+		const link = document.createElement("a");
+		link.href = URL.createObjectURL(blob);
+		link.download = "index.html";
+		link.click();
+		URL.revokeObjectURL(link.href);
+	}
 }
-
-function exportProject() {
-	initNewProject();
-	const blob = new Blob([buildProject()], { type: "text/html" });
-	const link = document.createElement("a");
-	link.href = URL.createObjectURL(blob);
-	link.download = "my_project.html";
-	link.click();
-	URL.revokeObjectURL(link.href);
-	console.log();
-}
-
-initNewProject();
-const my_body = document.getElementById("project_draw");
-if (current_project && current_project.content.length > 1) {
-	(my_body as HTMLElement).innerHTML = buildTag(
-		current_project.content[1],
-		true,
-	);
-}
+export default Main;

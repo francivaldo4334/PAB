@@ -1,11 +1,11 @@
-<div class="button">
+<div class="pab_project__button">
     <comp 
         src="./ui/components/button.html" 
         expanded 
         is_open="false" 
         id="menu_new_element"
-        class="popover button"
-        onclick="openMenuNewElement();"
+        class="popover pab_project__button"
+        onclick="main.actions.openMenuNewElement();"
     >
         <comp src="./ui/components/icons/frame.svg"></comp>
         <comp 
@@ -14,21 +14,21 @@
         ></comp>
     </comp>
     <div style="position: fixed; z-index: 1;" class="content multiselection">
-        <comp 
-            src="./ui/components/drop_down_item.html" 
-            title="Frame" 
-            keybind="F" 
-            class="item_multiselection button"
-            onclick="addNewElement('FRAME')"
-        >
-            <comp src="./ui/components/icons/frame.svg"></comp>
-        </comp> 
+        <!-- <comp  -->
+        <!--     src="./ui/components/drop_down_item.html"  -->
+        <!--     title="Frame"  -->
+        <!--     keybind="F"  -->
+        <!--     class="item_multiselection pab_project__button" -->
+        <!--     onclick="main.actions.addNewElement('FRAME')" -->
+        <!-- > -->
+        <!--     <comp src="./ui/components/icons/frame.svg"></comp> -->
+        <!-- </comp>  -->
         <comp 
             src="./ui/components/drop_down_item.html" 
             title="Rectangle" 
             keybind="R" 
-            class="item_multiselection button"
-            onclick="addNewElement('RECT')"
+            class="item_multiselection pab_project__button"
+            onclick="main.actions.addNewElement('RECT')"
         >
             <comp src="./ui/components/icons/rect.svg"></comp>
         </comp> 
@@ -36,19 +36,28 @@
             src="./ui/components/drop_down_item.html" 
             title="Oval" 
             keybind="O" 
-            class="item_multiselection button"
-            onclick="addNewElement('OVAL')"
+            class="item_multiselection pab_project__button"
+            onclick="main.actions.addNewElement('OVAL')"
         >
             <comp src="./ui/components/icons/oval.svg"></comp>
         </comp> 
         <comp 
             src="./ui/components/drop_down_item.html" 
-            title="Image" 
-            keybind="I"
-            class="item_multiselection button"
-            onclick="addNewElement('IMAGE')"
+            title="Text" 
+            keybind="T" 
+            class="item_multiselection pab_project__button"
+            onclick="main.actions.addNewElement('TEXT')"
         >
-            <comp src="./ui/components/icons/image.svg"></comp>
+            <comp src="./ui/components/icons/text_icon.svg"></comp>
         </comp> 
+        <!-- <comp  -->
+        <!--     src="./ui/components/drop_down_item.html"  -->
+        <!--     title="Image"  -->
+        <!--     keybind="I" -->
+        <!--     class="item_multiselection pab_project__button" -->
+        <!--     onclick="main.actions.addNewElement('IMAGE')" -->
+        <!-- > -->
+        <!--     <comp src="./ui/components/icons/image.svg"></comp> -->
+        <!-- </comp>  -->
     </div>
 </div>

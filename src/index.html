@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projeto PAB</title>
-    <link rel="stylesheet" type="text/css" href="./ui/components.css">
+    <link rel="stylesheet" type="text/css" href="./ui/components.css" importance="high">
     <style>
-        [visible="false"] {
+        [pab_project__visible="false"] {
             visibility: hidden;
-            width: 0;
-            height: 0;
+            display: none !important; 
         }
-        [visible="true"] {
+        [pab_project__visible="true"] {
             visibility: visible;
         }
         [expanded][is_open="false"] + .content {
@@ -39,27 +38,28 @@
     </style>
     <style>
         :root {
-            --4dp: 0.25rem;
-            --8dp: 0.5rem;
-            --12dp: 0.75rem;
-            --16dp: 1rem;
-            --24dp: 1.5rem;
-            --32dp: 2rem;
-            --40dp: 2.5rem;
-            --48dp: 3rem;
-            --224dp: 14rem;
-            --240dp: 15rem;
+            --pab_project__2dp: 0.25rem;
+            --pab_project__4dp: 0.25rem;
+            --pab_project__6dp: 0.375rem;
+            --pab_project__8dp: 0.5rem;
+            --pab_project__12dp: 0.75rem;
+            --pab_project__16dp: 1rem;
+            --pab_project__24dp: 1.5rem;
+            --pab_project__32dp: 2rem;
+            --pab_project__40dp: 2.5rem;
+            --pab_project__48dp: 3rem;
+            --pab_project__224dp: 14rem;
+            --pab_project__240dp: 15rem;
         } 
     </style>
-    <script src="./domain/common.js" importance="high"></script>
 </head>
-<body style="margin:0;" class="selection">
+<body style="margin:0;" class="selection" id="pab_project__body">
     <comp src="./ui/components/templates/templates.html" style="display: none;"></comp>
     <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
         <comp src="./ui/components/topbar.html"></comp>
-        <div style="width: 100vw; flex-grow:1; display: flex;">
+        <div style="width: 100vw; height: 100vh; flex-grow:1; display: flex;">
             <comp src="./ui/components/side_bar_left.html"></comp>
-            <div style="z-index: 0; flex-grow:1; position: relative; overflow: hidden;" id="project_draw_rect" class="selection">
+            <div style="z-index: 0; flex-grow:1; position: relative; overflow: hidden;" id="project_draw_rect" class="selection" pab_project__focus="true">
                 <div style="position: relative; top: 50%; left: 50%;">
                 <div id="project_draw_position" style="position: relative; width: 0; height: 0;">
                     <div id="selection_box" style="position: absolute; border: 2px dashed #00f; background-color: rgba(0,0,255,0.2); display: none; z-index: 3;"></div>
@@ -71,6 +71,7 @@
             <comp src="./ui/components/side_bar_right.html"></comp>
         </div>
     </div>
+<<<<<<< HEAD
     <script src="./ui/bihavior.js" importance="high"></script>
     <script src="./domain/actions.js" importance="high"></script>
     <script src="./domain/editor_manager.js" importance="high"></script>
@@ -81,6 +82,9 @@
 
     <script src="./ui/translations.js"></script>
     <script src="./domain/keybinds.js"></script>
+=======
+    <script src="./script.js" importance="high" type="module" defer></script>
+>>>>>>> bd08507f2e1dc2777e9428373a48e3ca8c1a3c31
 </body>
 </html>
 

@@ -1,12 +1,13 @@
 <div 
   class="item" 
-  style="display: flex; justify-content: space-between; padding: var(--8dp) var(--8dp) var(--8dp) var(--12dp); gap: var(--8dp); align-items: end;">
-  <comp src="./ui/components/prop_input.html" title="Name"></comp>
-  <comp src="./ui/components/prop_input.html" title="Value"></comp>
+  style="display: flex; justify-content: space-between; padding: var(--pab_project__8dp) var(--pab_project__8dp) var(--pab_project__8dp) var(--pab_project__12dp); gap: var(--pab_project__8dp); align-items: end;"
+>
+  <comp src="./ui/components/prop_input.html" title="Name" class="pab_project__prop_input_name pab_project__prop_input"></comp>
+  <comp src="./ui/components/prop_input.html" title="Value" class="pab_project__prop_input_value pab_project__prop_input"></comp>
   <comp
     src="./ui/components/button.html" 
-    style="width: var(--32dp); height: var(--32dp); display: flex; align-items: center; justify-content: center;"
-    onclick="removePropretie(this.parentNode.getAttribute('id'))"
+    style="width: var(--pab_project__32dp); height: var(--pab_project__32dp); display: flex; align-items: center; justify-content: center;"
+    onclick="main.actions.removePropretie(this.parentNode.getAttribute('id'))"
     >
     <comp src="./ui/components/icons/minus.svg"></comp>
   </comp>

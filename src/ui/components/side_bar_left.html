@@ -1,27 +1,28 @@
 <div 
     style="display: flex; flex-direction: row-reverse;"
-    class="side_bar">
+    class="pab_project__side_bar"
+>
     <div 
-        style="width: var(--16dp); flex-grow:1; background: gray; display: flex; align-items: center;" 
+        style="width: var(--pab_project__16dp); flex-grow:1; background: gray; display: flex; align-items: center;" 
         expanded 
         is_open="true" 
-        onclick="toggleIsOpen(this)"
-        class="side_bar_border">
-        <comp src="./ui/components/icons/chevrons_left.svg" chevrons_left></comp>
+        onclick="main.bihavior.toggleIsOpen(this)"
+        class="pab_project__side_bar_border">
+        <div pab_project__tip="Ctrl · \" style="width: var(--pab_project__16dp); display: flex;">
+            <comp src="./ui/components/icons/chevrons_left.svg" chevrons_left></comp>
+        </div>
     </div>
     <div class="content">
         <comp src="./ui/components/side_bar.html">
-            <div style="display: flex;" class="menu_bar">
+            <div style="display: flex; margin-top: var(--pab_project__48dp);" class="menu_bar">
                 <comp src="./ui/components/button.html" data-translate="html">Html</comp>
                 <comp src="./ui/components/button.html" data-translate="css">Css</comp>
                 <comp src="./ui/components/button.html" data-translate="javascript">Js</comp>
                 <comp src="./ui/components/button.html" data-translate="assets">Assets</comp>
             </div>
-            <hr style="margin: 0; padding: 0;">
-            <comp src="./ui/components/item_folder.html" text="teste">
-                <comp src="./ui/components/item_folder.html" text="teste">
-                </comp>
-            </comp>
+            <hr style="margin: 0; padding: 0;" id="pab_project__hr">
+            <div id="components_three">
+            </div>
         </comp>
     </div>
 </div>
