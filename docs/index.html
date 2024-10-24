@@ -4,11 +4,11 @@
     <title>Projeto PAB</title>
     <link rel="stylesheet" type="text/css" href="./ui/components.css" importance="high">
     <style>
-        [visible="false"] {
+        [pab_project_visible="false"] {
             visibility: hidden;
             display: none !important; 
         }
-        [visible="true"] {
+        [pab_project_visible="true"] {
             visibility: visible;
         }
         [expanded][is_open="false"] + .content {
@@ -53,7 +53,7 @@
 </head>
 <body style="margin:0;" class="selection" id="pab_project_body">
     <div style="display: none;">
-  <div class="item" style="display: flex; justify-content: space-between; padding: var(--pab_project_8dp) var(--pab_project_8dp) var(--pab_project_8dp) var(--pab_project_12dp); gap: var(--pab_project_8dp); align-items: end;" visible="false" id="item_prop_template">
+  <div class="item" style="display: flex; justify-content: space-between; padding: var(--pab_project_8dp) var(--pab_project_8dp) var(--pab_project_8dp) var(--pab_project_12dp); gap: var(--pab_project_8dp); align-items: end;" pab_project_visible="false" id="item_prop_template">
   <div style="flex-grow: 1;" title="Name" class="prop_input_name prop_input">
   <div style="display: flex;">
     <input style="width: 0; flex-grow: 1; z-index: 10; padding: var(--pab_project_4dp); color: var(--pab_project_white);" include="disabled">
@@ -75,7 +75,7 @@
 
 </div>
 
-  <div style="padding: var(--pab_project_8dp) var(--pab_project_12dp); width: 100%;" visible="false" id="item_thee_template">
+  <div style="padding: var(--pab_project_8dp) var(--pab_project_12dp); width: 100%;" pab_project_visible="false" id="item_thee_template">
   <div style="display: flex; align-items:center;" expanded="" is_open="false" path="./" onclick="main.bihavior.toggleIsOpen(this);main.actions.openFolder(this.getAttribute('path'))">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down" arrow_down_folder=""><path d="m6 9 6 6 6-6"></path></svg>
 
@@ -303,7 +303,7 @@
 
 </div>
 
-            <div class="item" style="display: flex; justify-content: space-between; padding: var(--pab_project_8dp) var(--pab_project_8dp) var(--pab_project_8dp) var(--pab_project_12dp); gap: var(--pab_project_8dp); align-items: end;" id="comp_text" visible="false">
+            <div class="item" style="display: flex; justify-content: space-between; padding: var(--pab_project_8dp) var(--pab_project_8dp) var(--pab_project_8dp) var(--pab_project_12dp); gap: var(--pab_project_8dp); align-items: end;" id="comp_text" pab_project_visible="false">
   <div style="width: var(--pab_project_48dp);">text</div>
   <div style="flex-grow: 1;" title="Value" class="prop_input_value prop_input">
   <div style="display: flex;">
