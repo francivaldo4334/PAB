@@ -105,7 +105,7 @@ class Main {
 	buildItemTheeWithComponent(component: Component, templateItemThee: HTMLElement): HTMLElement {
 		const newItemThee = templateItemThee.cloneNode() as HTMLElement
 		newItemThee.removeAttribute("id");
-		newItemThee.setAttribute("visible", "true");
+		newItemThee.setAttribute("pab_project_visible", "true");
 		if (Array.isArray(component.content) && component.content.length > 0) {
 			for (const item of component.content as Component[]) {
 				const contentItemThee = newItemThee.querySelector(".content");

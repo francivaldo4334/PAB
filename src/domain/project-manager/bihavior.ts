@@ -45,7 +45,7 @@ class Bihavior {
 			.getElementById("item_prop_template")
 			?.cloneNode(true) as HTMLElement;
 		if (template) {
-			(template as HTMLElement).removeAttribute("visible");
+			(template as HTMLElement).removeAttribute("pab_project_visible");
 			(template as HTMLElement).setAttribute("id", prop?.id ?? Utils.generateSlug());
 		}
 		return template
