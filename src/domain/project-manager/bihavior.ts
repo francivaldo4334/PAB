@@ -53,8 +53,8 @@ class Bihavior {
 	loadPropertieInput(input: HTMLElement, listProps: string, prop?: Prop) {
 		const jumpShort = 1;
 		const jumpLoog = 10;
-		const inputName = input.querySelector(`.prop_input_name input`) as HTMLInputElement;
-		const inputValue = input.querySelector(`.prop_input_value input`) as HTMLInputElement;
+		const inputName = input.querySelector(`.pab_project__prop_input_name input`) as HTMLInputElement;
+		const inputValue = input.querySelector(`.pab_project__prop_input_value input`) as HTMLInputElement;
 		inputName?.addEventListener("input", (e) => {
 			const target = e.target as HTMLInputElement
 			this.mainProjectManager.setPropertyInSelectedComponent(prop?.id ?? input.id, "name", target.value, listProps)
