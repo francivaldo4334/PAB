@@ -104,7 +104,10 @@ class Actions {
 				console.log("TODO");
 				break;
 			case "IMAGE":
-				console.log("TODO");
+				this.mainProjectManager.setComponentProjectInSelectedComponent(
+					Common.image_json_template
+				)
+				this.main.buildProject(true)
 				break;
 			default:
 				break;

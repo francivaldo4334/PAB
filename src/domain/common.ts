@@ -264,7 +264,29 @@ export class Common {
 			}
 		],
 		content: []
-
+	})
+	static image_json_template = new Component({
+		name: "image",
+		is_view: true,
+		tag: "img",
+		template: "",
+		position: { x: 0, y: 0 },
+		props: [
+			{
+				name: "src", value: "https://github.com/LogoShareHub.png"
+			}
+		],
+		styles: [
+			{
+				name: "width",
+				value: "100px"
+			},
+			{
+				name: "height",
+				value: "100px"
+			},
+		],
+		content: []
 	})
 	static RENDER_LABEL = "bab_project__";
 	static SCALE_DEFAULT = 1;
