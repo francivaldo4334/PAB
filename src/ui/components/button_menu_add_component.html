@@ -5,7 +5,7 @@
         is_open="false" 
         id="menu_new_element"
         class="popover pab_project__button"
-        onclick="main.actions.openMenuNewElement();"
+        onclick="main.actions.openMenuNewElement()"
     >
         <comp src="./ui/components/icons/frame.svg"></comp>
         <comp 
@@ -14,15 +14,6 @@
         ></comp>
     </comp>
     <div style="position: fixed; z-index: 1;" class="content multiselection">
-        <!-- <comp  -->
-        <!--     src="./ui/components/drop_down_item.html"  -->
-        <!--     title="Frame"  -->
-        <!--     keybind="F"  -->
-        <!--     class="item_multiselection pab_project__button" -->
-        <!--     onclick="main.actions.addNewElement('FRAME')" -->
-        <!-- > -->
-        <!--     <comp src="./ui/components/icons/frame.svg"></comp> -->
-        <!-- </comp>  -->
         <comp 
             src="./ui/components/drop_down_item.html" 
             title="Rectangle" 
@@ -49,15 +40,6 @@
             onclick="main.actions.addNewElement('TEXT')"
         >
             <comp src="./ui/components/icons/text_icon.svg"></comp>
-        </comp> 
-        <!-- <comp  -->
-        <!--     src="./ui/components/drop_down_item.html"  -->
-        <!--     title="Image"  -->
-        <!--     keybind="I" -->
-        <!--     class="item_multiselection pab_project__button" -->
-        <!--     onclick="main.actions.addNewElement('IMAGE')" -->
-        <!-- > -->
-        <!--     <comp src="./ui/components/icons/image.svg"></comp> -->
-        <!-- </comp>  -->
+        </comp>  
     </div>
 </div>
