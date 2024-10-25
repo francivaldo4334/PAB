@@ -6,6 +6,8 @@ class Move {
 	drawRect = document.getElementById("project_draw_rect");
 	projectHistory: ProjectHistory;
 	controls: MainControls;
+	readonly minJump = 1;
+	readonly maxJump = 20;
 
 	constructor(controls: MainControls, projectHistory: ProjectHistory) {
 		this.controls = controls;
@@ -106,6 +108,34 @@ class Move {
 				position.x + this.controls.M_DELTA_X,
 				position.y + this.controls.M_DELTA_Y
 			);
+		}
+	}
+	moveProjectUp(e: KeyboardEvent) {
+		const jump = e.shiftKey ? this.maxJump : this.minJump;
+		const position = this.projectHistory.current_project?.position
+		if (position) {
+			this.setPosition(position.x, position.y - jump)
+		}
+	}
+	moveProjectDown(e: KeyboardEvent) {
+		const jump = e.shiftKey ? this.maxJump : this.minJump;
+		const position = this.projectHistory.current_project?.position
+		if (position) {
+			this.setPosition(position.x, position.y + jump)
+		}
+	}
+	moveProjectLeft(e: KeyboardEvent) {
+		const jump = e.shiftKey ? this.maxJump : this.minJump;
+		const position = this.projectHistory.current_project?.position
+		if (position) {
+			this.setPosition(position.x - jump, position.y)
+		}
+	}
+	moveProjectRight(e: KeyboardEvent) {
+		const jump = e.shiftKey ? this.maxJump : this.minJump;
+		const position = this.projectHistory.current_project?.position
+		if (position) {
+			this.setPosition(position.x + jump, position.y)
 		}
 	}
 }

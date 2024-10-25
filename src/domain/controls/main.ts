@@ -94,6 +94,20 @@ class MainControls {
 						this.modes.onSelectionModeActionsKeyDown(e);
 					}
 					break;
+				case "MOVE":
+					if (e.key === "ArrowUp") {
+						this.move.moveProjectUp(e);
+					}
+					if (e.key === "ArrowDown") {
+						this.move.moveProjectDown(e);
+					}
+					if (e.key === "ArrowLeft") {
+						this.move.moveProjectLeft(e);
+					}
+					if (e.key === "ArrowRight") {
+						this.move.moveProjectRight(e);
+					}
+					break;
 				default:
 					break;
 			}
