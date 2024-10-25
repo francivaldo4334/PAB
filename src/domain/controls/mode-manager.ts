@@ -28,6 +28,9 @@ class Modes {
 		} else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') {
 			this.projectHistory.redo();
 			e.preventDefault();
+		} else if (e.shiftKey && e.key.toLowerCase() === "d") {
+			this.actions.duplicateSelectedComponent();
+			e.preventDefault();
 		} else if (e.ctrlKey) {
 			this.actions.setZoomMode();
 			this.zoom.initZoomMode();

@@ -187,7 +187,6 @@ class Actions {
 
 	copySelectedComponent() {
 		const componet = this.mainProjectManager.getSelectedComponentJson();
-		console.log(componet)
 		Utils.setClipboard(componet)
 	}
 	pasteComponetInSelectedComponent() {
@@ -197,6 +196,10 @@ class Actions {
 	}
 	exportIndexHtml() {
 		this.main.exportProject();
+	}
+	duplicateSelectedComponent() {
+		this.mainProjectManager.duplicateSelectedComponent()
+		this.main.buildProject(true)
 	}
 }
 export default Actions;

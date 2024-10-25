@@ -337,4 +337,17 @@ export class MainProjectManager {
       throw err;
     }
   }
+  duplicateSelectedComponent() {
+    const selectedComponentId = this.getComponentSelected()?.getComponentId();
+    if (!selectedComponentId) return;
+    const parentComponent = this.getPreviousComponent(selectedComponentId)
+    if (!parentComponent) return;
+    const selectedComponent = Utils.findComponentById(this.projectHistory.current_project, selectedComponentId);
+    if (!selectedComponent) return;
+    if (!Array.isArray(parentComponent.content))
+      parentComponent.content = []
+    const index = parentComponent.content.findIndex(it => it.id === selectedComponentId)
+    parentComponent.content.splice(index + 1, 0, JSON.parse(JSON.stringify(selectedComponent)))
+    this.setComponentProjectById(parentComponent.id, parentComponent)
+  }
 }
