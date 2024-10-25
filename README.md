@@ -11,7 +11,14 @@
 ```Space```+```Shift```+```ArrowRight```|Movimenta o projetop para direina em um espaço maior<p>
 ### Seleção de Elementos
 | Comando | Ação
-| :- | -: |
+| :- | -: 
 ```Tab```| Navega para o proximo elemento
-```Shift```+```Tab```| Navega para o elemento Anterior
+```Shift```+```Tab```| Navega para o elemento Anterior e se o nao ouver elemento anterior voltara para o elemento pai.
 ```Enter```| Navega para o elemento interno do elemento selecionado
+### Inserção de Elementos
+| Comando | Ação
+| :- | -: 
+```Insert```+```R```| Inserir novo elemento retangular
+```Insert```+```O```| Inserir novo elemento oval
+```Insert```+```T```| Inserir novo elemento de texto
+```Insert```+```I```| Inserir novo elemento imagen
