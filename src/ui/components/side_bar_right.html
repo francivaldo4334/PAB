@@ -1,20 +1,20 @@
 <div 
     style="display: flex; flex-direction: row;"
-    class="pab_project__side_bar"
+    class="data-pab-project-side_bar"
 >
     <div 
-        style="width: var(--pab_project__16dp); flex-grow:1; background: gray; display: flex; align-items: center;" 
+        style="width: var(--data-pab-project-16dp); flex-grow:1; background: gray; display: flex; align-items: center;" 
         expanded 
-        is_open="true" 
+        data-pab-project-is-open="true" 
         onclick="main.bihavior.toggleIsOpen(this)"
-        class="pab_project__side_bar_border">
-        <div pab_project__tip="Ctrl · \ ⇌ Alt · 1" style="width: var(--pab_project__16dp); display: flex;">
+        class="data-pab-project-side_bar_border">
+        <div data-pab-project-tip="Ctrl · \ ⇌ Alt · 1" style="width: var(--data-pab-project-16dp); display: flex;">
             <comp src="./ui/components/icons/chevrons_right.svg" chevrons_right></comp>
         </div>
     </div>
     <div class="content" id="side_bar_right">
         <comp src="./ui/components/side_bar.html">
-            <div style="display: flex;margin-top: var(--pab_project__48dp);" class="menu_bar">
+            <div style="display: flex;margin-top: var(--data-pab-project-48dp);" class="menu_bar">
                 <comp 
                     src="./ui/components/button.html"
                     data-translate="design"
@@ -26,13 +26,13 @@
                     onclick="actions.setEditMode('PROTOTYPE')"
                 >Prototype</comp>
             </div>
-            <hr style="margin: 0; padding: 0;" id="pab_project__hr">
+            <hr style="margin: 0; padding: 0;" id="data-pab-project-hr">
             <comp src="./ui/components/prop_item_name_fixed.html" name="name" id="comp_name"></comp>
             <comp src="./ui/components/prop_item_name_fixed.html" name="tag" id="comp_tag"></comp>
             <comp src="./ui/components/prop_item_name_fixed.html" name="text" id="comp_text"></comp>
-            <hr style="margin: 0; padding: 0;" id="pab_project__hr">
+            <hr style="margin: 0; padding: 0;" id="data-pab-project-hr">
             <comp src="./ui/components/prop_list_html.html"></comp>
-            <hr style="margin: 0; padding: 0;" id="pab_project__hr">
+            <hr style="margin: 0; padding: 0;" id="data-pab-project-hr">
             <comp src="./ui/components/prop_list_css.html"></comp>
         </comp>
     </div>

@@ -17,17 +17,16 @@ class Bihavior {
 		});
 	}
 	toggleIsOpen(element: HTMLElement) {
-		const attributeName = "is_open";
-		const currentValue = element.getAttribute(attributeName);
+		const currentValue = element.getAttribute("data-pab-project-is-open");
 		if (currentValue === "true") {
-			element.setAttribute(attributeName, "false");
+			element.setAttribute("data-pab-project-is-open", "false");
 		} else {
-			element.setAttribute(attributeName, "true");
+			element.setAttribute("data-pab-project-is-open", "true");
 		}
 	}
 	selectElement(element: HTMLElement) {
 		this.decelAllElement();
-		element.setAttribute("selected", "true");
+		element.setAttribute("data-pab-project-selected", "true");
 	}
 	decelAllElement() {
 		const elementsSelections = Array.from(
@@ -38,14 +37,14 @@ class Bihavior {
 		}
 	}
 	decelElement(element: HTMLElement) {
-		element.setAttribute("selected", "false");
+		element.setAttribute("data-pab-project-selected", "false");
 	}
 	newPropertie(prop?: Prop): HTMLElement | undefined {
 		const template = document
 			.getElementById("item_prop_template")
 			?.cloneNode(true) as HTMLElement;
 		if (template) {
-			(template as HTMLElement).removeAttribute("pab_project__visible");
+			(template as HTMLElement).removeAttribute("data-pab-project-visible");
 			(template as HTMLElement).setAttribute("id", prop?.id ?? Utils.generateSlug());
 		}
 		return template
@@ -53,8 +52,8 @@ class Bihavior {
 	loadPropertieInput(input: HTMLElement, listProps: string, prop?: Prop) {
 		const jumpShort = 1;
 		const jumpLoog = 10;
-		const inputName = input.querySelector(`.pab_project__prop_input_name input`) as HTMLInputElement;
-		const inputValue = input.querySelector(`.pab_project__prop_input_value input`) as HTMLInputElement;
+		const inputName = input.querySelector(`.data-pab-project-prop_input_name input`) as HTMLInputElement;
+		const inputValue = input.querySelector(`.data-pab-project-prop_input_value input`) as HTMLInputElement;
 		inputName?.addEventListener("input", (e) => {
 			const target = e.target as HTMLInputElement
 			this.mainProjectManager.setPropertyInSelectedComponent(prop?.id ?? input.id, "name", target.value, listProps)
@@ -119,7 +118,7 @@ class Bihavior {
 	closePopovers() {
 		const element = document.querySelector(".popover");
 		if (element) {
-			element.setAttribute("is_open", "false");
+			element.setAttribute("data-pab-project-is-open", "false");
 		}
 	}
 }

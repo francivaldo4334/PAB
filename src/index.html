@@ -6,60 +6,60 @@
     <title>Projeto PAB</title>
     <link rel="stylesheet" type="text/css" href="./ui/components.css" importance="high">
     <style>
-        [pab_project__visible="false"] {
+        [data-pab-project-visible="false"] {
             visibility: hidden;
             display: none !important; 
         }
-        [pab_project__visible="true"] {
+        [data-pab-project-visible="true"] {
             visibility: visible;
         }
-        [expanded][is_open="false"] + .content {
+        [expanded][data-pab-project-is-open="false"] {
             display: none;
         }
-        [expanded][is_open="true"] + .content {
+        [expanded][data-pab-project-is-open="true"] {
             display: block;
         }
-        [expanded][is_open="false"] > [arrow_down_folder] {
+        [expanded][data-pab-project-is-open="false"] > [arrow_down_folder] {
             transform: rotate(-90deg);
         }
-        [expanded][is_open="true"] > [arrow_down_folder] {
+        [expanded][data-pab-project-is-open="true"] > [arrow_down_folder] {
             transform: rotate(0deg);
         }
-        [expanded][is_open="true"] > [arrow_down_16],
-        [expanded][is_open="false"] > [chevrons_left],
-        [expanded][is_open="false"] > [chevrons_right] {
+        [expanded][data-pab-project-is-open="true"] > [arrow_down_16],
+        [expanded][data-pab-project-is-open="false"] > [chevrons_left],
+        [expanded][data-pab-project-is-open="false"] > [chevrons_right] {
             transform: rotate(-180deg);
         }
-        [expanded][is_open="false"] > [arrow_down_16],
-        [expanded][is_open="true"] > [chevrons_left],
-        [expanded][is_open="true"] > [chevrons_right] {
+        [expanded][data-pab-project-is-open="false"] > [arrow_down_16],
+        [expanded][data-pab-project-is-open="true"] > [chevrons_left],
+        [expanded][data-pab-project-is-open="true"] > [chevrons_right] {
             transform: rotate(0deg);
         }
     </style>
     <style>
         :root {
-            --pab_project__2dp: 0.25rem;
-            --pab_project__4dp: 0.25rem;
-            --pab_project__6dp: 0.375rem;
-            --pab_project__8dp: 0.5rem;
-            --pab_project__12dp: 0.75rem;
-            --pab_project__16dp: 1rem;
-            --pab_project__24dp: 1.5rem;
-            --pab_project__32dp: 2rem;
-            --pab_project__40dp: 2.5rem;
-            --pab_project__48dp: 3rem;
-            --pab_project__224dp: 14rem;
-            --pab_project__240dp: 15rem;
+            --data-pab-project-2dp: 0.25rem;
+            --data-pab-project-4dp: 0.25rem;
+            --data-pab-project-6dp: 0.375rem;
+            --data-pab-project-8dp: 0.5rem;
+            --data-pab-project-12dp: 0.75rem;
+            --data-pab-project-16dp: 1rem;
+            --data-pab-project-24dp: 1.5rem;
+            --data-pab-project-32dp: 2rem;
+            --data-pab-project-40dp: 2.5rem;
+            --data-pab-project-48dp: 3rem;
+            --data-pab-project-224dp: 14rem;
+            --data-pab-project-240dp: 15rem;
         } 
     </style>
 </head>
-<body style="margin:0;" class="selection" id="pab_project__body">
+<body style="margin:0;" class="selection" id="data-pab-project-body">
     <comp src="./ui/components/templates/templates.html" style="display: none;"></comp>
     <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
         <comp src="./ui/components/topbar.html"></comp>
         <div style="width: 100vw; height: 100vh; flex-grow:1; display: flex;">
             <comp src="./ui/components/side_bar_left.html"></comp>
-            <div style="z-index: 0; flex-grow:1; position: relative; overflow: hidden;" id="project_draw_rect" class="selection" pab_project__focus="true">
+            <div style="z-index: 0; flex-grow:1; position: relative; overflow: hidden;" id="project_draw_rect" class="selection" data-pab-project-focus="true">
                 <div style="position: relative; top: 50%; left: 50%;">
                 <div id="project_draw_position" style="position: relative; width: 0; height: 0;">
                     <div id="selection_box" style="position: absolute; border: 2px dashed #00f; background-color: rgba(0,0,255,0.2); display: none; z-index: 3;"></div>
@@ -71,20 +71,7 @@
             <comp src="./ui/components/side_bar_right.html"></comp>
         </div>
     </div>
-<<<<<<< HEAD
-    <script src="./ui/bihavior.js" importance="high"></script>
-    <script src="./domain/actions.js" importance="high"></script>
-    <script src="./domain/editor_manager.js" importance="high"></script>
-    <script src="./domain/main.js" importance="high"></script>
-    <script src="./domain/controls.selection-box.js" importance="high"></script>
-    <script src="./domain/controls.movimentation.js " importance="high"></script>
-    <script src="./domain/controls.js" importance="high"></script>
-
-    <script src="./ui/translations.js"></script>
-    <script src="./domain/keybinds.js"></script>
-=======
     <script src="./script.js" importance="high" type="module" defer></script>
->>>>>>> bd08507f2e1dc2777e9428373a48e3ca8c1a3c31
 </body>
 </html>
 

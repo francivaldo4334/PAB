@@ -37,7 +37,7 @@ class MainControls {
 	mainProjectManager: MainProjectManager;
 	drawRect = document.getElementById("project_draw_rect");
 	sideBars = document.getElementsByClassName("side_bar_border");
-	sideBarLeft = document.getElementById("side_bar_right")?.parentElement?.querySelector("[is_open]");
+	sideBarLeft = document.getElementById("side_bar_right")?.parentElement?.querySelector("[data-pab-project-is-open]");
 
 	constructor(main: Main, mainProjectManager: MainProjectManager, actions: Actions, bihavior: Bihavior, projectHistory: ProjectHistory) {
 		this.mainProjectManager = mainProjectManager;
@@ -74,13 +74,13 @@ class MainControls {
 		}
 		if (e.ctrlKey && e.key == "\\") {
 			if (this.sideBars && this.sideBars.length > 0) {
-				const isCloneAllSideBars = this.sideBarLeft?.getAttribute("is_open")
+				const isCloneAllSideBars = this.sideBarLeft?.getAttribute("data-pab-project-is-open")
 				Array.from(this.sideBars).forEach(bar => {
 					if (isCloneAllSideBars === "false") {
-						bar.setAttribute("is_open", "true");
+						bar.setAttribute("data-pab-project-is-open", "true");
 					}
 					else {
-						bar.setAttribute("is_open", "false");
+						bar.setAttribute("data-pab-project-is-open", "false");
 					}
 				})
 			}

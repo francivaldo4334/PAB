@@ -39,7 +39,7 @@ class Modes {
 			e.preventDefault();
 		} else if (e.shiftKey) {
 			if (this.body) {
-				this.body.setAttribute("selected", "move-h");
+				this.body.setAttribute("data-pab-project-selected", "move-h");
 			}
 		} else if (e.key === 'Enter') {
 			this.actions.toInnerComponent();
@@ -57,7 +57,8 @@ class Modes {
 			this.zoom.finishZoomMode();
 		}
 		this.bihavior.decelAllElement();
-		this.actions.setSelectionMode();
+		if (e.key === "Control" || e.key === " ")
+			this.actions.setSelectionMode();
 		e.preventDefault();
 	}
 }

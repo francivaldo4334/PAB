@@ -130,6 +130,7 @@ class Keybinds {
 			}
 			if (e.key === "Escape") {
 				this.actions.closeMenuNewElement();
+				this.actions.closeMenuFile();
 				this.bihavior.closePopovers();
 				this.currentKeybind = [];
 			}

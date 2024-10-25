@@ -58,24 +58,8 @@ async function replaceAttributes(element, newElement) {
 			const subelements = newElement.find(attribute.name);
 			if (subelements.length > 0) {
 				subelements.replaceWith(attribute.value);
-			} else if (attribute.name !== "src" && attribute.name !== "include") {
+			} else if (attribute.name !== "src") {
 				newElement.attr(attribute.name, attribute.value);
-			}
-		}
-	});
-}
-
-async function loadAttributesIncludes(element, newElement) {
-	element.each((_, el) => {
-		const attributes = el.attributes;
-		for (let attribute of attributes) {
-			if (attribute.name === "include") {
-				const parentAttr = Array.from(attributes).find(
-					(attr) => attr.name == attribute.value,
-				);
-				if (parentAttr) {
-					newElement.attr(parentAttr.name, parentAttr.value);
-				}
 			}
 		}
 	});
@@ -86,7 +70,6 @@ async function replaceElement(element, newElement, $) {
 	const contentNewElement = newElement.find("content").first();
 	if (contentNewElement.length > 0) {
 		contentNewElement.replaceWith(element.html());
-		await loadAttributesIncludes(element, contentNewElement);
 	}
 	element.replaceWith(newElement);
 }
@@ -112,6 +95,21 @@ async function processHTML() {
 			await processComponet(comp, $);
 		}
 		components = $("comp");
+	}
+	let includes = $("[include]");
+	while (includes.length !== 0) {
+		for (const includeEl of includes.toArray()) {
+			const el = $(includeEl);
+			const parent = el.parent();
+			const attrInclude = el.attr("include")
+			const attr = parent.attr(attrInclude)
+			if (attr) {
+				el.attr(attrInclude, attr)
+			}
+			parent.removeAttr(el.attr("include"))
+			el.removeAttr("include")
+		}
+		includes = $("[include]")
 	}
 	await fs.promises.writeFile(path.join(buildDir, "index.html"), $.html());
 }

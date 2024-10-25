@@ -11,6 +11,8 @@ class Actions {
 	main: Main;
 	drawRect = document.getElementById("project_draw_rect");
 	sideRight = document.getElementById("side_bar_right");
+	menuNewElement = document.getElementById("data-pab-project-menu-add-elements");
+	menuActions = document.getElementById("data-pab-project-menu-actions");
 	constructor(mainProjectManager: MainProjectManager, main: Main, bihavior: Bihavior) {
 		this.mainProjectManager = mainProjectManager
 		this.bihavior = bihavior;
@@ -19,20 +21,30 @@ class Actions {
 	toggleWithDrawAndPropsFocus() {
 		if (this.main.FOCUS === "DRAW") {
 			this.main.FOCUS = "PROPS";
-			this.drawRect?.setAttribute("pab_project__focus", "false")
-			this.sideRight?.setAttribute("pab_project__focus", "true")
-			this.sideRight?.parentElement?.querySelector("[is_open]")?.setAttribute("is_open", "true")
+			this.drawRect?.setAttribute("data-pab-project-focus", "false")
+			this.sideRight?.setAttribute("data-pab-project-focus", "true")
+			this.sideRight?.parentElement?.querySelector("[data-pab-project-is-open]")?.setAttribute("data-pab-project-is-open", "true")
 		}
 		else {
 			this.main.FOCUS = "DRAW";
-			this.drawRect?.setAttribute("pab_project__focus", "true")
-			this.sideRight?.setAttribute("pab_project__focus", "false")
+			this.drawRect?.setAttribute("data-pab-project-focus", "true")
+			this.sideRight?.setAttribute("data-pab-project-focus", "false")
 		}
 	}
 	openMenuFile() {
-		const menuActions = document.getElementById("menu_actions");
-		if (menuActions) {
-			this.bihavior.toggleIsOpen(menuActions);
+		const dropDownId = this.menuActions?.getAttribute("data-pab-project-drop-down-id")
+		if (dropDownId) {
+			const dropDown = document.getElementById(dropDownId)
+			if (dropDown) {
+				this.bihavior.toggleIsOpen(dropDown);
+			}
+		}
+	}
+	closeMenuFile() {
+		const dropDownId = this.menuActions?.getAttribute("data-pab-project-drop-down-id");
+		if (dropDownId) {
+			const dropDown = document.getElementById(dropDownId)
+			dropDown?.setAttribute('data-pab-project-is-open', "false");
 		}
 	}
 
@@ -41,18 +53,19 @@ class Actions {
 	}
 
 	openMenuNewElement() {
-		const menuNewElement = document.getElementById("menu_new_element");
-		if (menuNewElement) {
-			this.bihavior.selectElement(menuNewElement);
-			this.bihavior.toggleIsOpen(menuNewElement);
+		const dropDownId = this.menuNewElement?.getAttribute("data-pab-project-drop-down-id");
+		if (dropDownId && this.menuNewElement) {
+			const dropDown = document.getElementById(dropDownId)
+			this.bihavior.selectElement(this.menuNewElement);
+			this.bihavior.toggleIsOpen(dropDown as HTMLElement);
 		}
 	}
 
 	closeMenuNewElement() {
-		const menuNewElement = document.getElementById("menu_new_element");
-		if (menuNewElement) {
-			this.bihavior.decelElement(menuNewElement);
-			menuNewElement.setAttribute('is_open', "false");
+		const dropDownId = this.menuNewElement?.getAttribute("data-pab-project-drop-down-id");
+		if (dropDownId) {
+			const dropDown = document.getElementById(dropDownId)
+			dropDown?.setAttribute('data-pab-project-is-open', "false");
 		}
 	}
 	toPrevComponent() {
@@ -112,7 +125,7 @@ class Actions {
 		if (btnMode && this.projectDrawScope) {
 			this.bihavior.selectElement(btnMode);
 			this.EDIT_MODE = "MOVE";
-			this.projectDrawScope.setAttribute("selected", "move");
+			this.projectDrawScope.setAttribute("data-pab-project-selected", "move");
 		}
 	}
 
@@ -121,7 +134,7 @@ class Actions {
 		if (btnMode && this.projectDrawScope) {
 			this.bihavior.selectElement(btnMode);
 			this.EDIT_MODE = "ZOOM";
-			this.projectDrawScope.setAttribute("selected", "zoom");
+			this.projectDrawScope.setAttribute("data-pab-project-selected", "zoom");
 		}
 	}
 
