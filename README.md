@@ -15,6 +15,8 @@
 ```Tab```| Navega para o proximo elemento
 ```Shift```+```Tab```| Navega para o elemento Anterior e se o nao ouver elemento anterior voltara para o elemento pai.
 ```Enter```| Navega para o elemento interno do elemento selecionado
+```Control```+```F```| Pesquisa um elemento pelo nome
+```Alt```+```1```| Alterna o foco da edição entre edição de componentes e edição de propriedades
 ### Inserção de Elementos
 | Comando | Ação
 | :- | -: 
@@ -22,3 +24,15 @@
 ```Insert```+```O```| Inserir novo elemento oval
 ```Insert```+```T```| Inserir novo elemento de texto
 ```Insert```+```I```| Inserir novo elemento imagen
+### Edição de elemento
+| Comando | Ação
+| :- | -:
+```Delete```| Deleta o elemento selecionado
+```Control```+```D```| Duplica o elemento selecionado
+```Control```+```C```| Copia o elemento selecionado
+```Control```+```V```| Cola o elemento copiado
+```Shift```+```R```| Renomeia o elemento selecionado
+```Shift```+```T```| Altera o nome da tag do elemento
+```Control```+```Alt```+```C```| Alinha os elementos internos do elemento selecionado ao centro
+```Control```+```Alt```+```S```| Alinha os elementos internos do elemento selecionado no inicio
+```Control```+```Alt```+```E```| Alinha os elementos internos do elemento selecionado no final
