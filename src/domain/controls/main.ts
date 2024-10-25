@@ -108,6 +108,16 @@ class MainControls {
 						this.move.moveProjectRight(e);
 					}
 					break;
+				case "ZOOM":
+					if (e.key === "-") {
+						this.zoom.updateZoomDown()
+						e.preventDefault()
+					}
+					if (e.key === "=") {
+						this.zoom.updateZoomUp()
+						e.preventDefault()
+					}
+					break;
 				default:
 					break;
 			}

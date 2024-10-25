@@ -44,7 +44,15 @@ class Zoom {
     //     const h = this.deltaPoint.y * scaleFactor;
     //  return {x:this.elPoint.x - this.deltaPoint.x + w, y:this.elPoint.y - this.deltaPoint.y + h};
     // }
+    updateZoomUp() {
+        const newScale = this.getScale() + this.controls.SCALE_JUMP;
+        this.setScale(newScale);
+    }
+    updateZoomDown() {
+        const newScale = this.getScale() - this.controls.SCALE_JUMP;
+        this.setScale(newScale);
 
+    }
     updateZoomState() {
         const scaleJump = this.controls.SCROLL_STATE === "UP"
             ? this.controls.SCALE_JUMP
