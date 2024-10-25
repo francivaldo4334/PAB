@@ -349,5 +349,6 @@ export class MainProjectManager {
     const index = parentComponent.content.findIndex(it => it.id === selectedComponentId)
     parentComponent.content.splice(index + 1, 0, JSON.parse(JSON.stringify(selectedComponent)))
     this.setComponentProjectById(parentComponent.id, parentComponent)
+
   }
 }

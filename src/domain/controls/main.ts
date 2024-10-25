@@ -53,7 +53,7 @@ class MainControls {
 	}
 
 	addEventListeners() {
-		window.addEventListener("keydown", this.handleKeyDown.bind(this));
+		window.addEventListener("keydown", this.handleKeyDown.bind(this), { capture: true });
 		window.addEventListener("keyup", this.handleKeyUp.bind(this));
 		window.addEventListener("mousemove", this.handleMouseMove.bind(this));
 		window.addEventListener("wheel", this.handleScroll.bind(this), {
