@@ -22,14 +22,29 @@ class Modes {
 		this.projectHistory = projectHistory;
 	}
 	onSelectionModeActionsKeyDown(e: KeyboardEvent) {
-		if (e.shiftKey && e.key.toLowerCase() === "d") {
-			e.preventDefault();
-			this.actions.duplicateSelectedComponent();
-		} else if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'z') {
+		if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'z') {
 			this.projectHistory.undo();
+			e.preventDefault();
+		} else if (e.shiftKey && e.key.toLowerCase() === "d") {
+			this.actions.duplicateSelectedComponent();
 			e.preventDefault();
 		} else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') {
 			this.projectHistory.redo();
+			e.preventDefault();
+		} else if (e.shiftKey && e.altKey && e.key.toLowerCase() === "home") {
+			this.actions.flexDirectionVertical()
+			e.preventDefault();
+		} else if (e.shiftKey && e.altKey && e.key.toLowerCase() === "end") {
+			this.actions.flexDirectionHorizontal()
+			e.preventDefault();
+		} else if (e.shiftKey && e.key.toLowerCase() === "enter") {
+			this.actions.alignItemsCenter()
+			e.preventDefault();
+		} else if (e.shiftKey && e.key.toLowerCase() === "end") {
+			this.actions.alignItemsEnd()
+			e.preventDefault();
+		} else if (e.shiftKey && e.key.toLowerCase() === "home") {
+			this.actions.alignItemsStart()
 			e.preventDefault();
 		} else if (e.ctrlKey) {
 			this.actions.setZoomMode();

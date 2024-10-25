@@ -201,5 +201,20 @@ class Actions {
 		this.mainProjectManager.duplicateSelectedComponent()
 		this.main.buildProject(true)
 	}
+	alignItemsCenter() {
+		this.mainProjectManager.alignItensOfSelectedComponent("center")
+	}
+	alignItemsStart() {
+		this.mainProjectManager.alignItensOfSelectedComponent("start")
+	}
+	alignItemsEnd() {
+		this.mainProjectManager.alignItensOfSelectedComponent("end")
+	}
+	flexDirectionHorizontal() {
+		this.mainProjectManager.flexDirection("row")
+	}
+	flexDirectionVertical() {
+		this.mainProjectManager.flexDirection("column")
+	}
 }
 export default Actions;

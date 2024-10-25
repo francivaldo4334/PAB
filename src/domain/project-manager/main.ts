@@ -1,4 +1,4 @@
-import { Common, Component } from "../common";
+import { Common, Component, Prop } from "../common";
 import MainControls from "../controls/main";
 import Main from "../main";
 import { Utils } from "../utils";
@@ -238,7 +238,10 @@ export class MainProjectManager {
     const props = selectedComponentProject.props;
     if (listProp === "HTML") {
       let prop = props.find(it => it.id === id) || { name: "", value: "", id: id };
-      if (fieldName === "name") { if (prop.name) { selectedComponent.removeAttribute(prop.name); } prop.name = newValue; }
+      if (fieldName === "name") {
+        if (newValue === "style") return;
+        if (prop.name) { selectedComponent.removeAttribute(prop.name); } prop.name = newValue;
+      }
       if (fieldName === "value") { prop.value = newValue; }
       if (!props.includes(prop)) { props.push(prop); }
     }
@@ -347,8 +350,55 @@ export class MainProjectManager {
     if (!Array.isArray(parentComponent.content))
       parentComponent.content = []
     const index = parentComponent.content.findIndex(it => it.id === selectedComponentId)
-    parentComponent.content.splice(index + 1, 0, JSON.parse(JSON.stringify(selectedComponent)))
+    const newComponent = JSON.parse(JSON.stringify(selectedComponent))
+    newComponent.id = Utils.generateSlug()
+    parentComponent.content.splice(index + 1, 0, newComponent)
     this.setComponentProjectById(parentComponent.id, parentComponent)
-
+  }
+  updateOrAddPropCss(prop: Prop, component: Component) {
+    let update = false;
+    component.styles.map(it => {
+      if (prop.name === it.name) {
+        it.value = prop.value;
+        update = true;
+      }
+      return it
+    })
+    if (!update) {
+      component.styles.push(prop);
+    }
+  }
+  updateOrAddProp(prop: Prop, component: Component) {
+    let update = false;
+    component.props.map(it => {
+      if (prop.name === it.name) {
+        it.value = prop.value;
+        update = true;
+      }
+      return it
+    })
+    if (!update) {
+      component.props.push(prop);
+    }
+  }
+  alignItensOfSelectedComponent(alignment: "start" | "center" | "end") {
+    const selectedComponentId = this.getComponentSelected()?.getComponentId();
+    if (!selectedComponentId) return;
+    const selectedComponent = Utils.findComponentById(this.projectHistory.current_project, selectedComponentId);
+    if (!selectedComponent) return;
+    this.updateOrAddPropCss({ name: "display", value: "flex" }, selectedComponent)
+    this.updateOrAddPropCss({ name: "align-items", value: alignment }, selectedComponent)
+    this.setComponentProjectById(selectedComponent.id, selectedComponent)
+    this.main.buildProject(true)
+  }
+  flexDirection(flexDirection: "column" | "row") {
+    const selectedComponentId = this.getComponentSelected()?.getComponentId();
+    if (!selectedComponentId) return;
+    const selectedComponent = Utils.findComponentById(this.projectHistory.current_project, selectedComponentId);
+    if (!selectedComponent) return;
+    this.updateOrAddPropCss({ name: "display", value: "flex" }, selectedComponent)
+    this.updateOrAddPropCss({ name: "flex-direction", value: flexDirection }, selectedComponent)
+    this.setComponentProjectById(selectedComponent.id, selectedComponent)
+    this.main.buildProject(true)
   }
 }
