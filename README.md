@@ -36,3 +36,5 @@
 ```Control```+```Alt```+```C```| Alinha os elementos internos do elemento selecionado ao centro
 ```Control```+```Alt```+```S```| Alinha os elementos internos do elemento selecionado no inicio
 ```Control```+```Alt```+```E```| Alinha os elementos internos do elemento selecionado no final
+```Shift```+```Alt```+```Home```| Altera a direção para column
+```Shift```+```Alt```+```End```| Altera a direção para row
