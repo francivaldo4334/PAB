@@ -28,7 +28,7 @@
 | Comando | Ação
 | :- | -:
 ```Delete```| Deleta o elemento selecionado
-```Control```+```D```| Duplica o elemento selecionado
+```Shift```+```D```| Duplica o elemento selecionado
 ```Control```+```C```| Copia o elemento selecionado
 ```Control```+```V```| Cola o elemento copiado
 ```Shift```+```R```| Renomeia o elemento selecionado
